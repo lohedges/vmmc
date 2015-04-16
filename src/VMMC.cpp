@@ -113,7 +113,7 @@ VMMC::VMMC(unsigned int nParticles_,
 
     // Print version info.
 #ifdef COMMIT
-    std::cout << "Initialsed VMMC: commit " <<  COMMIT << '\n';
+    std::cout << "Initialised VMMC: commit " <<  COMMIT << '\n';
 #endif
 }
 
