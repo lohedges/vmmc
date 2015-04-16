@@ -37,7 +37,7 @@ void minimumImage(std::vector <double>&);
 
 std::vector <Particle> particles;       // particle container
 CellList cells;                         // cell list
-unsigned int dimension = 2;             // dimension of simulation box
+unsigned int dimension = 3;             // dimension of simulation box
 unsigned int nParticles = 1000;         // number of particles
 double interactionEnergy = 2;           // pair interaction energy scale (in units of kBT)
 double cutOffDistance = 2.5;            // size of interaction range (in units of particle diameter)
