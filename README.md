@@ -222,7 +222,7 @@ generality. The demonstration codes illustrate some simple examples.
 * For spherical particles bearing isotropic interactions, e.g. the square-well
 fluid, single particle rotations will always be accepted. While not a problem
 from a thermodynamic perspective, this may cause issues if the user wishes to
-enforce a strict Stoke's scaling of translational and rotational diffusion.
+enforce a strict Stokes scaling of translational and rotational diffusion.
 * The recursive manner in which the trial cluster is built can lead to a stack
 overflow if the cluster contains many particles. Typically, thousands, or tens
 of thousands of particles should be perfectly manageable. The typically memory
