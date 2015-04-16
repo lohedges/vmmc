@@ -62,7 +62,7 @@ Then to compile, we can use something like the following:
 $ g++ example.cpp -lvmmc
 ```
 
-This assumes that we have used the default install location /usr/local/. If
+This assumes that we have used the default install location `/usr/local`. If
 we specify an install location, we would use a command more like the following:
 
 ```bash
@@ -218,7 +218,7 @@ for implementation details.
 to use globals for several variables and data structures. Since this library is
 intended to be used for simulation of relatively simple models, likely with a
 small code base, this was deemed as a reasonable trade-off in terms of preserving
-generality. The [example](#demos) code illustrates some simple examples.
+generality. The demonstration codes illustrate some simple examples.
 * For spherical particles bearing isotropic interactions, e.g. the square-well
 fluid, single particle rotations will always be accepted. While not a problem
 from a thermodynamic perspective, this may cause issues if the user wishes to
