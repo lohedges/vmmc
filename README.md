@@ -165,7 +165,7 @@ particle can make. This will be used to resize LibVMMC's internal data
 structures and the user should assert that this limit isn't exceed in the
 `interactionsCallback` function. The number can be chosen from the symmetry
 of the system, e.g. if particles can only make a certain number of patchy
-interactions, or by estimating the average number of neigbours within the
+interactions, or by estimating the average number of neighbours within the
 interaction volume around a particle.
 
 `boxSize` = The base length of the simulation box in each dimension.
@@ -241,11 +241,11 @@ it's likely that you'll need to calculate the pair interaction energy. For
 certain models it may be more efficient to return a list of pair energies
 along with the interactions, rather than having to recalculate them.
 * For models with an isotropic interaction of fixed energy scale the pair
-energy is simple a constant. As such, the pair energy calculation is entirely
-redundant, i.e. if we knowing that two particles interact is enough to know
-the pair energy.
+energy is simply a constant. As such, the pair energy calculation is entirely
+redundant, i.e. knowing that two particles interact is enough to know the
+pair energy.
 * If using cell lists, the typical size of a trial displacement will be small
-enough such that a particle stays within the same neigbourhood of cells
+enough such that a particle stays within the same neighbourhood of cells
 following the trial move. As such, there is often no need to update cell lists
 until confirming that the post-move configuration is valid, e.g. no overlaps.
 At present the same `postMoveCallback` function is called twice: once in order
