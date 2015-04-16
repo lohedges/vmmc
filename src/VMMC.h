@@ -227,17 +227,29 @@ public:
      */
     unsigned long long getRotations() const;
 
-    //! Get the number of accepted moves for each cluster size.
+    //! Get the number of accepted translation moves for each cluster size.
     /*! \param clusterStatistics_
             An array into which the cluster statistics will be copied.
      */
-    void getClusterStatistics(unsigned long long[]) const;
+    void getClusterTranslations(unsigned long long[]) const;
 
-    //! Get the number of accepted moves for each cluster size.
+    //! Get the number of accepted translation moves for each cluster size.
     /*! \return
             A const reference to the cluster statistics vector.
      */
-    const std::vector <unsigned long long>& getClusterStatistics() const;
+    const std::vector <unsigned long long>& getClusterTranslations() const;
+
+    //! Get the number of accepted rotation moves for each cluster size.
+    /*! \param clusterStatistics_
+            An array into which the cluster statistics will be copied.
+     */
+    void getClusterRotations(unsigned long long[]) const;
+
+    //! Get the number of accepted rotation moves for each cluster size.
+    /*! \return
+            A const reference to the cluster statistics vector.
+     */
+    const std::vector <unsigned long long>& getClusterRotations() const;
 
     //! Reset statistics.
     void reset();
@@ -270,7 +282,8 @@ private:
 
     unsigned int nMoving;                                   //!< the number of particles in the cluster
     std::vector <unsigned int> moveList;                    //!< the indices of particles in the cluster
-    std::vector <unsigned long long> clusterStatistics;     //!< array for storing the number of moves for each cluster size
+    std::vector <unsigned long long> clusterTranslations;   //!< array for storing the number of translations for each cluster size
+    std::vector <unsigned long long> clusterRotations;      //!< array for storing the number of rotations for each cluster size
 
     unsigned int nFrustrated;                               //!< the number of frustrated links
     std::vector <unsigned int> frustratedLinks;             //!< array of particles involved in frustrated links

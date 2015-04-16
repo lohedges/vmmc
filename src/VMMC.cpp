@@ -76,7 +76,8 @@ VMMC::VMMC(unsigned int nParticles_,
     moveParams.trialVector.resize(dimension);
     particles.resize(nParticles);
     moveList.resize(nParticles);
-    clusterStatistics.resize(nParticles);
+    clusterTranslations.resize(nParticles);
+    clusterRotations.resize(nParticles);
     frustratedLinks.resize(nParticles);
 
     // Create particle container.
@@ -165,7 +166,8 @@ void VMMC::step()
             nRotations += moveParams.isRotation;
 
             // Tally cluster size.
-            clusterStatistics[nMoving]++;
+            if (moveParams.isRotation) clusterRotations[nMoving]++;
+            else clusterTranslations[nMoving]++;
         }
         else
         {
@@ -203,21 +205,33 @@ unsigned long long VMMC::getRotations() const
     return nRotations;
 }
 
-void VMMC::getClusterStatistics(unsigned long long clusterStatistics_[]) const
+void VMMC::getClusterTranslations(unsigned long long clusterStatistics[]) const
 {
     for (unsigned int i=0;i<nParticles;i++)
-        clusterStatistics_[i] = clusterStatistics[i];
+        clusterStatistics[i] = clusterTranslations[i];
 }
 
-const std::vector <unsigned long long>& VMMC::getClusterStatistics() const
+const std::vector <unsigned long long>& VMMC::getClusterTranslations() const
 {
-    return clusterStatistics;
+    return clusterTranslations;
+}
+
+void VMMC::getClusterRotations(unsigned long long clusterStatistics[]) const
+{
+    for (unsigned int i=0;i<nParticles;i++)
+        clusterStatistics[i] = clusterRotations[i];
+}
+
+const std::vector <unsigned long long>& VMMC::getClusterRotations() const
+{
+    return clusterRotations;
 }
 
 void VMMC::reset()
 {
     nAttempts = nAccepts = nRotations = 0;
-    std::fill(clusterStatistics.begin(), clusterStatistics.end(), 0);
+    std::fill(clusterTranslations.begin(), clusterTranslations.end(), 0);
+    std::fill(clusterRotations.begin(), clusterRotations.end(), 0);
 }
 
 void VMMC::proposeMove()
