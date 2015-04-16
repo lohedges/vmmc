@@ -286,4 +286,5 @@ clobber:
 	rm -rf $(demo_lib_dir)
 	rm -rf doc
 	rm -f $(demos)
+	rm -f $(demo_library_header)
 	rm -f .compiler_flags
