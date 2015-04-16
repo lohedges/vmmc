@@ -1,0 +1,8 @@
+doc/
+lib/
+obj/
+demos/lib/
+demos/obj/
+demos/square_wellium
+demos/lennard_jones
+.compiler_flags
