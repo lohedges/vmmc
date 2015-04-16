@@ -226,8 +226,8 @@ enforce a strict Stokes scaling of translational and rotational diffusion.
 * The recursive manner in which the trial cluster is built can lead to a stack
 overflow if the cluster contains many particles. Typically, thousands, or tens
 of thousands of particles should be perfectly manageable. The typical memory
-footprint for a simulation of 1000 particles is around 2.5MB for hard particle
-simulations. This is roughly doubled if the potential has finite energy repulsions.
+footprint for a simulation of 1000 particles is around 2.5MB for hard particles.
+This is roughly doubled if the potential has finite energy repulsions.
 
 ## Efficiency
 In aid of generality there are several sources of redundancy that impact the
