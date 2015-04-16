@@ -107,7 +107,7 @@ int main(int argc, char** argv)
     for (unsigned int i=0;i<1000;i++)
     {
         // Increment simulation by 1000 Monte Carlo Sweeps.
-        vmmc += 1000000;
+        vmmc += 1000*nParticles;
 
         // Append particle coordinates to a xyz trajectory.
         if (i == 0) appendXyzTrajectory(particles, true);
