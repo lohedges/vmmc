@@ -14,7 +14,7 @@ attractive particles, S. Whitelam and P.L. Geissler,
 [Journal of Chemical Physics, 127, 154101 (2007)](http://dx.doi.org/10.1063/1.2790421)
 
 * Approximating the dynamical evolution of systems of strongly interacting
-overdamped particles, S.Whitelam,
+overdamped particles, S. Whitelam,
 [Molecular Simulation, 37 (7) (2011)](http://dx.doi.org/10.1080/08927022.2011.565758).
 (Preprint version available [here](http://arxiv.org/abs/1009.2008).)
 
@@ -155,15 +155,15 @@ diameter (or typical particle size).
 
 `maxTrialTranslation` = The maximum trial rotation in radians.
 
-`probTranslate` = The probability of attepting a translation move (relative to rotations).
+`probTranslate` = The probability of attempting a translation move (relative to rotations).
 
 `referenceRadius` = A reference radius for computing the approximate hydrodynamic
 damping factor, e.g. the radius of a typical particle in the system.
 
-`maxInteractions` = The maximum number of pair interactions that an indivual
+`maxInteractions` = The maximum number of pair interactions that an individual
 particle can make. This will be used to resize LibVMMC's internal data
 structures and the user should assert that this limit isn't exceed in the
-`interactionsCallback` function. The number can be chosed from the symmetry
+`interactionsCallback` function. The number can be chosen from the symmetry
 of the system, e.g. if particles can only make a certain number of patchy
 interactions, or by estimating the average number of neigbours within the
 interaction volume around a particle.
@@ -222,7 +222,7 @@ generality. The [example](#demos) code illustrates some simple examples.
 
 ## Efficiency
 In aid of generality there are several sources of redundancy that impact the
-effiency of the VMMC implentation. As written, LibVMMC performs around 3-4
+efficiency of the VMMC implementation. As written, LibVMMC performs around 3-4
 times worse than a fully optimised VMMC code for square-well fluids. A few
 efficiency considerations are listed below in case the user wishes to modify
 the VMMC source code in order to improve performance.
