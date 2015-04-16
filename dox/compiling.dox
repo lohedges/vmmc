@@ -1,0 +1,72 @@
+/**
+\page compiling Compiling & Linking
+
+\section comp_sec Compiling using Make
+
+LibVMMC uses <a href="https://www.gnu.org/software/make">
+GNU Make</a> for builds.
+
+Before Compiling:
+-# If you do not already have it, download and install <a href="http://git-scm.com">
+git</a>. To check if git is installed, try
+\code
+$ git --version
+\endcode
+-# Download the libvmmc source via
+\code
+$ git clone https://github.com/lohedges/vmmc.git
+\endcode
+
+Compiling and Installing:
+-# Change to the newly created vmmc directory
+\code
+$ cd vmmc
+\endcode
+-# run Make
+\code
+$ make build
+$ make install
+\endcode
+By default, the library installs to /usr/local. Therefore, you may need admin
+priveleges for the final "make install" step above. An alternative is to change
+the install location:
+\code
+$ PREFIX={MY_INSTALL_DIR} make install
+\endcode
+Further details on using the Makefile can be found by running make without
+a target, i.e.
+\code
+$ make
+\endcode
+
+\section cpp_sec Linking with C/C++
+
+To use libvmmc with a C/C++ code first include the libvmmc header file somewhere
+in the code.
+
+\code
+//example.cpp
+#include <vmmc/VMMC.h>
+\endcode
+
+Then to compile, we can use something like the following:
+\code
+$ c++ example.cpp -lvmmc
+\endcode
+
+This assumes that we have used the default install location /usr/local/. If
+we specify an install location, we would use a command more like the following:
+\code
+$ c++ example.cpp -I/my/path/include -L/my/path/lib -lvmmc
+\endcode
+
+\section deps External dependencies
+
+LibVMMC uses the <a href="http://en.wikipedia.org/wiki/Mersenne_Twister">
+Mersenne Twister</a> psuedorandom number generator. A C++ implementation
+is included as a bundled header file and is compiled into the libvmmc
+library. The included MersenneTwister.h is taken from
+<a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/VERSIONS/C-LANG/c-lang.html">
+here</a>.
+
+*/

@@ -1,0 +1,25 @@
+/** \mainpage Virtual-Move Monte Carlo (VMMC) library Documentation
+
+\section intro_sec Introduction
+LibVMMC is a simple C++ library that can be used to perform "virtual-move"
+Monte Carlo (VMMC) simulations for systems of pairwise interacting particles.
+Our primary goal is to make VMMC accessible to a wider audience, for whom the
+time required to code the algorithm poses a significant barrier to using the
+method. This allows the user to focus on model development.
+
+For details of the VMMC algorithm, see:
+- \ref references
+
+\section compiling_sec Using the Code
+For specific instructions regarding how to install LibTPS, see:
+- \ref compiling
+
+To get a feel for the how to write a code using the library,
+see the demos:
+- demos/square_wellium.cpp
+- demos/lennard_wellium.cpp
+
+\section References
+- \ref references
+
+*/

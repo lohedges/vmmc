@@ -1,0 +1,13 @@
+/**
+\page references References
+
+-# S. Whitelam and P.L. Geissler, Avoiding unphysical kinetic traps in Monte
+Carlo simulations of strongly attractive particles, <a href="http://dx.doi.org/10.1063/1.2790421">
+Journal of Chemical Physics, 127, 154101 (2007)</a>.
+
+-# S. Whitelam, Approximating the dynamical evolution of systems of strongly
+interacting overdamped particles, <a href="http://dx.doi.org/10.1080/08927022.2011.565758">
+Molecular Simulation, 37 (7) (2011)</a>. (Preprint version available <a href=
+"http://arxiv.org/abs/1009.2008">here</a>.)
+
+*/
