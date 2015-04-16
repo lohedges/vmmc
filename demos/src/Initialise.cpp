@@ -31,9 +31,6 @@ void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box&
         // Whether particle overlaps.
         bool isOverlap = true;
 
-        // Whether this is the first attempted insertion.
-        bool isFirstAttempt = true;
-
         // Temporary vector.
         std::vector <double> vec(box.dimension);
 
@@ -46,46 +43,29 @@ void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box&
             nTrials++;
 
             // Generate a random position.
-            vec[0] = rng()*box.boxSize[0];
-            vec[1] = rng()*box.boxSize[1];
-            if (box.dimension == 3) vec[2] = rng()*box.boxSize[2];
+            for (unsigned int j=0;j<box.dimension;j++)
+                vec[j] = rng()*box.boxSize[j];
 
             particles[i].position = vec;
 
             // Generate a random orientation.
-            vec[0] = rng.randNorm(0,1);
-            vec[1] = rng.randNorm(0,1);
-            if (box.dimension == 3) vec[2] = rng.randNorm(0,1);
+            for (unsigned int j=0;j<box.dimension;j++)
+                vec[j] = rng.randNorm(0,1);
 
             // Calculate vector norm.
-            double norm = vec[0]*vec[0] + vec[1]*vec[1];
-            if (box.dimension == 3) norm += vec[2]*vec[2];
+            double norm = 0;
+            for (unsigned int j=0;j<box.dimension;j++)
+                norm += vec[j]*vec[j];
             norm = sqrt(norm);
 
             // Convert orientation to a unit vector.
-            vec[0] /= norm;
-            vec[1] /= norm;
-            if (box.dimension == 3) vec[2] /= norm;
+            for (unsigned int j=0;j<box.dimension;j++)
+                vec[j] /= norm;
 
             particles[i].orientation = vec;
 
             // Calculate the particle's cell index.
-            unsigned int newCell = cells.getCell(particles[i]);
-
-            // Update the cell list.
-            if (isFirstAttempt)
-            {
-                particles[i].cell = newCell;
-                cells.initCell(newCell, particles[i]);
-                isFirstAttempt = false;
-            }
-            else
-            {
-                unsigned int oldCell = particles[i].cell;
-
-                if (oldCell != newCell)
-                    cells.updateCell(newCell, particles[i], particles);
-            }
+            particles[i].cell = cells.getCell(particles[i]);
 
             // See if there is any overlap between particles.
             isOverlap = checkOverlap(particles[i], particles, cells, box);
@@ -97,6 +77,9 @@ void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box&
                 exit(EXIT_FAILURE);
             }
         }
+
+        // Update cell list.
+        cells.initCell(particles[i].cell, particles[i]);
     }
 }
 
@@ -105,7 +88,7 @@ bool Initialise::checkOverlap(Particle& particle, std::vector <Particle>& partic
     unsigned int cell, neighbour;
 
     // Check all neighbouring cells including same cell.
-    for (unsigned int i=0;i<cells[particle.cell].neighbours.size();i++)
+    for (unsigned int i=0;i<cells.getNeighbours();i++)
     {
         cell = cells[particle.cell].neighbours[i];
 
@@ -120,16 +103,18 @@ bool Initialise::checkOverlap(Particle& particle, std::vector <Particle>& partic
                 // Particle separtion vector.
                 std::vector <double> sep(box.dimension);
 
-                sep[0] = particle.position[0] - particles[neighbour].position[0];
-                sep[1] = particle.position[1] - particles[neighbour].position[1];
-                if (box.dimension == 3) sep[2] = particle.position[2] - particles[neighbour].position[2];
+                // Compute separation.
+                for (unsigned int k=0;k<box.dimension;k++)
+                    sep[k] = particle.position[k] - particles[neighbour].position[k];
 
                 // Compute minimum image.
                 box.minimumImage(sep);
 
-                // Squared norm of vector.
-                double normSqd = sep[0]*sep[0] + sep[1]*sep[1];
-                if (box.dimension == 3) normSqd += sep[2]*sep[2];
+                double normSqd = 0;
+
+                // Calculate squared norm of vector.
+                for (unsigned int k=0;k<box.dimension;k++)
+                    normSqd += sep[k]*sep[k];
 
                 // Overlap if normSqd is less than particle diameter (box is scaled in diameter units).
                 if (normSqd < 1) return true;
