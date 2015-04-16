@@ -260,3 +260,8 @@ return an appropriately large energy so that the move will be rejected.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
+
+## TODO
+A test suite is forthcoming. This will allow comparison between VMMC and single
+particle dynamics for model systems at well-known state points, e.g. equilibrium
+energy and pair distribution functions.
