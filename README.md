@@ -137,7 +137,7 @@ typedef void (*postMoveCallback) (unsigned int index, double position[], double 
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
 constructor:
 ```
-VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[], double orientations[], double maxTrialTranslation, double maxTrialRotation, double probTranslate, double referenceRadius, unsigned int maxInteractions, double boxSize[], bool isRepulsive, energyCallback computeEnergy, pairEnergyCallback computePairEnergy, interactionsCallback computeInteractions, postMoveCallback applyPostMoveUpdates);
+VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[], double orientations[], double maxTrialTranslation, double maxTrialRotation, double probTranslate, double referenceRadius, unsigned int maxInteractions, double boxSize[], bool isRepulsive, energyCallback computeEnergy, pairEnergyCallback computePairEnergy, interactionsCallback computeInteractions, postMoveCallback, applyPostMoveUpdates);
 ```
 `nParticles` = The number of particles in the simulation box.
 
@@ -214,11 +214,20 @@ updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
 for implementation details.
 
 ## Limitations
-The use of simple C-style callback functions means that the user will likely need
+* The use of simple C-style callback functions means that the user will likely need
 to use globals for several variables and data structures. Since this library is
 intended to be used for simulation of relatively simple models, likely with a
 small code base, this was deemed as a reasonable trade-off in terms of preserving
 generality. The [example](#demos) code illustrates some simple examples.
+* For spherical particles bearing isotropic interactions, e.g. the square-well
+fluid, single particle rotations will always be accepted. While not a problem
+from a thermodynamic perspective, this may cause issues if the user wishes to
+enforce a strict Stoke's scaling of translational and rotational diffusion.
+* The recursive manner in which the trial cluster is built can lead to a stack
+overflow if the cluster contains many particles. Typically, thousands, or tens
+of thousands of particles should be perfectly manageable. The typically memory
+footprint for a simulation of 1000 particles is around 2.5MB for hard particle
+simulations. This is roughly doubled if the potential has finite energy repulsions.
 
 ## Efficiency
 In aid of generality there are several sources of redundancy that impact the
@@ -244,7 +253,10 @@ to apply the move; again if the move is subsequently rejected. This means that
 the cell lists will be updated twice if a move is rejected.
 
 ## Tips
-LibVMMC currently assumes that the simulation box is periodic in all dimensions.
+* LibVMMC currently assumes that the simulation box is periodic in all dimensions.
 To impose non-periodic boundaries simply check whether the move leads to a particle
 being displaced by more than half the box width along the restricted dimension and
 return an appropriately large energy so that the move will be rejected.
+* It is not a requirement that all particles in the simulation box be of the same
+type. Make use of the particle indices that are passed to callback functions in
+order to distinguish different species.
