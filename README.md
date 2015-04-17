@@ -92,6 +92,12 @@ typedef double (*energyCallback) (unsigned int index, double position[], double 
 
 `orientation` = The particle's orientation unit vector.
 
+This callback function is currently somewhat redundant since it is possible to
+achieve the same outcome by combining the `pairEnergyCallback` and
+`interactionsCallback` functions described below. Ultimately, the callback
+will be able to account for non-pairwise terms in the potential, such as
+an external field.
+
 ### Pair energy
 Calculate the pair interaction between two particles.
 ```
