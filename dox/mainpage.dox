@@ -17,7 +17,7 @@ For specific instructions regarding how to install LibTPS, see:
 To get a feel for the how to write a code using the library,
 see the demos:
 - demos/square_wellium.cpp
-- demos/lennard_wellium.cpp
+- demos/lennard_jonesium.cpp
 
 \section References
 - \ref references

@@ -207,7 +207,7 @@ The following example codes showing how to interface with LibVMMC are included
 in the `demos` directory.
 
 * `square_wellium.cpp`: A simulation of a square-well fluid in two- or three-dimensions.
-* `lennard_jones.cpp`: A simulation of a Lennard-Jones fluid in two- or three-dimensions.
+* `lennard_jonesium.cpp`: A simulation of a Lennard-Jones fluid in two- or three-dimensions.
 
 The demo code also illustrates how to implement efficient, dynamically
 updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`

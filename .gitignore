@@ -4,5 +4,5 @@ obj/
 demos/lib/
 demos/obj/
 demos/square_wellium
-demos/lennard_jones
+demos/lennard_jonesium
 .compiler_flags
