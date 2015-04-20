@@ -213,7 +213,7 @@ $(demo_obj_dir):
 $(demo_library_header): $(demo_headers)
 	$(call colorecho, 4, "--> Generating CXX library header $(demo_library_header)")
 	@echo -e "#ifndef _DEMO_H\n#define _DEMO_H\n" > $(demo_library_header)
-	@for i in $(demo_headers);					\
+	@for i in $(demo_headers);                  \
 		do h=`echo $$i | cut -d '/' -f 3`;      \
 		echo "#include \"$$h\"";                \
 	done | sort -g >> $(demo_library_header)
