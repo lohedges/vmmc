@@ -476,7 +476,7 @@ double VMMC::computeHydrodynamicRadius() const
 
 void VMMC::computeCoords(unsigned int particle, VMMC_Particle& postMoveParticle)
 {
-    // Initialise post-move coordinates and orientation.
+    // Initialise post-move position and orientation.
     postMoveParticle.postMovePosition = particles[particle].preMovePosition;
     postMoveParticle.postMoveOrientation = particles[particle].preMoveOrientation;
 
@@ -547,7 +547,7 @@ void VMMC::initiateParticle(unsigned int particle, VMMC_Particle& linker)
 
 void VMMC::recursiveMoveAssignment(unsigned int particle)
 {
-    // Abort if we've exceeded the cluster size cut-off.
+    // Abort if the cluster size cut-off is exceeded.
     if (nMoving <= cutOff)
     {
         VMMC_Particle reverseMoveParticle(dimension);
@@ -695,10 +695,10 @@ void VMMC::applyPeriodicBoundaryConditions(std::vector <double>& vec)
 
 double VMMC::computeNorm(std::vector <double>& vec)
 {
-    double norm = 0;
+    double normSquared = 0;
 
     for (unsigned int i=0;i<vec.size();i++)
-        norm += vec[i]*vec[i];
+        normSquared += vec[i]*vec[i];
 
-    return sqrt(norm);
+    return sqrt(normSquared);
 }
