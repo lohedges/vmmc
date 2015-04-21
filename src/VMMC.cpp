@@ -40,10 +40,10 @@ VMMC::VMMC(unsigned int nParticles_,
            unsigned int maxInteractions_,
            double boxSize_[],
            bool isRepusive_,
-           energyCallback computeEnergy_,
-           pairEnergyCallback computePairEnergy_,
-           interactionsCallback computeInteractions_,
-           postMoveCallback applyPostMoveUpdates_) :
+           const VMMC_energyCallback& energyCallback_,
+           const VMMC_pairEnergyCallback& pairEnergyCallback_,
+           const VMMC_interactionsCallback& interactionsCallback_,
+           const VMMC_postMoveCallback& postMoveCallback_) :
 
            nParticles(nParticles_),
            dimension(dimension_),
@@ -53,10 +53,10 @@ VMMC::VMMC(unsigned int nParticles_,
            referenceRadius(referenceRadius_),
            maxInteractions(maxInteractions_),
            isRepusive(isRepusive_),
-           computeEnergy(computeEnergy_),
-           computePairEnergy(computePairEnergy_),
-           computeInteractions(computeInteractions_),
-           applyPostMoveUpdates(applyPostMoveUpdates_)
+           energyCallback(energyCallback_),
+           pairEnergyCallback(pairEnergyCallback_),
+           interactionsCallback(interactionsCallback_),
+           postMoveCallback(postMoveCallback_)
 {
     // Check dimensionality is valid.
     if (dimension == 3) is3D = true;
@@ -319,13 +319,13 @@ bool VMMC::accept()
         for (unsigned int i=0;i<nMoving;i++)
         {
             // Get a list of pair interactions.
-            nPairs = computeInteractions(moveList[i], &particles[moveList[i]].preMovePosition[0],
+            nPairs = interactionsCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                     &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
 
             // Test all pair interactions.
             for (unsigned int j=0;j<nPairs;j++)
             {
-                energy = computePairEnergy(moveList[i],
+                energy = pairEnergyCallback(moveList[i],
                         &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0],
                         pairInteractions[j], &particles[pairInteractions[j]].preMovePosition[0],
                         &particles[pairInteractions[j]].preMoveOrientation[0]);
@@ -362,7 +362,7 @@ bool VMMC::accept()
     {
         if (!isRepusive)
         {
-            energy = computeEnergy(moveList[i], &particles[moveList[i]].preMovePosition[0],
+            energy = energyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                     &particles[moveList[i]].preMoveOrientation[0]);
 
             // Overlap.
@@ -374,12 +374,12 @@ bool VMMC::accept()
             double pairEnergy;
             unsigned int pairInteractions[maxInteractions];
 
-            unsigned int nPairs = computeInteractions(moveList[i], &particles[moveList[i]].preMovePosition[0],
+            unsigned int nPairs = interactionsCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                     &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
 
             for (unsigned int j=0;j<nPairs;j++)
             {
-                energy = computePairEnergy(moveList[i], &particles[moveList[i]].preMovePosition[0],
+                energy = pairEnergyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                         &particles[moveList[i]].preMoveOrientation[0], pairInteractions[j],
                         &particles[pairInteractions[j]].preMovePosition[0], &particles[pairInteractions[j]].preMoveOrientation[0]);
 
@@ -560,7 +560,7 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
         unsigned int pairInteractions[maxInteractions];
 
         // Get list of interactions.
-        unsigned int nPairs = computeInteractions(particle, &particles[particle].preMovePosition[0],
+        unsigned int nPairs = interactionsCallback(particle, &particles[particle].preMovePosition[0],
                 &particles[particle].preMoveOrientation[0], pairInteractions);
 
         // Loop over all interactions.
@@ -572,17 +572,17 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
             if (!particles[neighbour].isMoving)
             {
                 // Pre-move pair energy.
-                double initialEnergy = computePairEnergy(particle,
+                double initialEnergy = pairEnergyCallback(particle,
                         &particles[particle].preMovePosition[0], &particles[particle].preMoveOrientation[0],
                         neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
 
                 // Post-move pair energy.
-                double finalEnergy = computePairEnergy(particle,
+                double finalEnergy = pairEnergyCallback(particle,
                         &particles[particle].postMovePosition[0], &particles[particle].postMovePosition[0],
                         neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
 
                 // Pair energy following the reverse virtual move.
-                double reverseMoveEnergy = computePairEnergy(particle,
+                double reverseMoveEnergy = pairEnergyCallback(particle,
                         &reverseMoveParticle.postMovePosition[0], &reverseMoveParticle.postMoveOrientation[0],
                         neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
 
@@ -631,7 +631,7 @@ void VMMC::swapMoveStatus()
 
     // Apply any post-move updates.
     for (unsigned int i=0;i<nMoving;i++)
-        applyPostMoveUpdates(moveList[i], &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0]);
+        postMoveCallback(moveList[i], &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0]);
 }
 
 void VMMC::rotate3D(std::vector <double>& v1, std::vector <double>& v2, std::vector <double>& v3, double angle)

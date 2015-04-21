@@ -19,6 +19,7 @@
 #define _VMMC_H
 
 #include <cstdlib>
+#include <functional>
 #include <vector>
 
 #include "MersenneTwister.h"
@@ -50,7 +51,7 @@
     \return
         The total interaction energy felt by the particle.
  */
-typedef double (*energyCallback) (unsigned int, double[], double[]);
+typedef std::function<double (unsigned int, double[], double[])> VMMC_energyCallback;
 
 //! Calculate the pair energy between two particles.
 /*! \param particle1
@@ -74,7 +75,7 @@ typedef double (*energyCallback) (unsigned int, double[], double[]);
     \return
         The pair interaction energy between particles 1 and 2.
  */
-typedef double (*pairEnergyCallback) (unsigned int, double[], double[], unsigned int, double[], double[]);
+typedef std::function<double (unsigned int, double[], double[], unsigned int, double[], double[])> VMMC_pairEnergyCallback;
 
 //! Determine the interactions for a particle.
 /*! \param index
@@ -92,7 +93,7 @@ typedef double (*pairEnergyCallback) (unsigned int, double[], double[], unsigned
     \return
         The number of interactions.
  */
-typedef unsigned int (*interactionsCallback) (unsigned int, double[], double[], unsigned int[]);
+typedef std::function<unsigned int (unsigned int, double[], double[], unsigned int[])> VMMC_interactionsCallback;
 
 //! Apply any post-move updates for a given particle.
 /*! \param index
@@ -104,7 +105,7 @@ typedef unsigned int (*interactionsCallback) (unsigned int, double[], double[], 
     \param orientation
         The orientation of the particle following the virtual move.
  */
-typedef void (*postMoveCallback) (unsigned int, double[], double[]);
+typedef std::function<void (unsigned int, double[], double[])> VMMC_postMoveCallback;
 
 // DATA TYPES
 
@@ -179,20 +180,20 @@ public:
         \param isRepusive_
             Whether there are finite repulsive interactions.
 
-        \param computeEnergy_
+        \param energyCallback_
             Callback function for particle energy calculations.
 
-        \param computePairEnergy_
+        \param pairEnergyCallback_
             Callback function for pair energy calculations.
 
-        \param computeInteractions_
+        \param interactionsCallback_
             Callback function for determining particle interactions.
 
-        \param applyPostMoveUpdates_
+        \param postMoveCallback_
             Apply any post-move updates following the virtual particle move.
      */
-    VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int,
-            double[], bool, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool,
+            const VMMC_energyCallback&, const VMMC_pairEnergyCallback&, const VMMC_interactionsCallback&, const VMMC_postMoveCallback&);
 
     //! Overloaded ++ operator. Perform a single VMMC step.
     void operator ++ (const int);
@@ -273,10 +274,10 @@ private:
     bool is3D;                                  //!< whether the simulation is three-dimensional
     bool isRepusive;                            //!< whether there are finite repulsive interactions
 
-    energyCallback computeEnergy;               //!< callback function to calculate particle energies
-    pairEnergyCallback computePairEnergy;       //!< callback function to calculate pair energies
-    interactionsCallback computeInteractions;   //!< callback function to determine particle interactions
-    postMoveCallback applyPostMoveUpdates;      //!< callback function to apply any post-move updates
+    VMMC_energyCallback energyCallback;                 //!< callback function to calculate particle energies
+    VMMC_pairEnergyCallback pairEnergyCallback;         //!< callback function to calculate pair energies
+    VMMC_interactionsCallback interactionsCallback;     //!< callback function to determine particle interactions
+    VMMC_postMoveCallback postMoveCallback;             //!< callback function to apply any post-move updates
 
     std::vector <VMMC_Particle> particles;      //!< vector of particles
 
