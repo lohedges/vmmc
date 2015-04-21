@@ -59,15 +59,17 @@ in the code.
 Then to compile, we can use something like the following:
 
 ```bash
-$ g++ example.cpp -lvmmc
+$ g++ -std=c++11 example.cpp -lvmmc
 ```
 
 This assumes that we have used the default install location `/usr/local`. If
 we specify an install location, we would use a command more like the following:
 
 ```bash
-$ g++ example.cpp -I/my/path/include -L/my/path/lib -lvmmc
+$ g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 ```
+
+Note that the `-std=c++11` compiler flag is needed for std::function.
 
 ## Dependencies
 LibVMMC uses the [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_Twister)
@@ -78,13 +80,14 @@ header file and is compiled into the libvmmc library. The included
 
 ## Callback functions
 LibVMMC works via four user-defined callback functions that abstract model specific
-details, such as the pair potential. These callbacks have the following
-prototypes:
+details, such as the pair potential. We make use of C++11's std::function to provide
+a general-purpose function wrapper, i.e. the callbacks can be free functions, member
+functions, etc. The callbacks have the following prototypes:
 
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
 ```
-typedef double (*energyCallback) (unsigned int index, double position[], double orientation[]);
+typedef std::function<double (unsigned int index, double position[], double orientation[])> VMMC_energyCallback;
 ```
 `index` = The particle index.
 
@@ -101,7 +104,7 @@ an external field.
 ### Pair energy
 Calculate the pair interaction between two particles.
 ```
-typedef double (*pairEnergyCallback) (unsigned int index1, double position1[], double orientation1[], unsigned int index2, double position2[], double orientation2[]);
+typedef std::function<double (unsigned int index1, double position1[], double orientation1[], unsigned int index2, double position2[], double orientation2[])> VMMC_pairEnergyCallback;
 ```
 `index1` = The index of the first particle.
 
@@ -118,7 +121,7 @@ typedef double (*pairEnergyCallback) (unsigned int index1, double position1[], d
 ### Interactions
 Determine the interactions for a given particle.
 ```
-typedef unsigned int (*interactionsCallback) (unsigned int index, double position[], double orientation[], unsigned int interactions[]);
+typedef std::function<unsigned int (unsigned int index, double position[], double orientation[], unsigned int interactions[])> VMMC_interactionsCallback;
 ```
 `index` = The index of the  particle.
 
@@ -131,7 +134,7 @@ typedef unsigned int (*interactionsCallback) (unsigned int index, double positio
 ### Post-move
 Apply any post-move updates, e.g. update cell lists, or neighbour lists.
 ```
-typedef void (*postMoveCallback) (unsigned int index, double position[], double orientation[]);
+typedef std::function<void (unsigned int index, double position[], double orientation[])> VMMC_postMoveCallback;
 ```
 `index` = The index of the  particle.
 
@@ -220,11 +223,6 @@ updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
 for implementation details.
 
 ## Limitations
-* The use of simple C-style callback functions means that the user will likely need
-to use globals for several variables and data structures. Since this library is
-intended to be used for simulation of relatively simple models, likely with a
-small code base, this was deemed as a reasonable trade-off in terms of preserving
-generality. The demonstration codes illustrate some simple examples.
 * For spherical particles bearing isotropic interactions, e.g. the square-well
 fluid, single particle rotations will always be accepted. While not a problem
 from a thermodynamic perspective, this may cause issues if the user wishes to
@@ -266,6 +264,10 @@ return an appropriately large energy so that the move will be rejected.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
+* The use of std::function allows the user to wrap arbitary functions as callbacks
+(rather than only using free functions, as with C-style function pointers). See
+[here](http://en.cppreference.com/w/cpp/utility/functional/function) for details
+on how to bind member functions, or function objects.
 
 ## TODO
 A test suite is forthcoming. This will allow comparison between VMMC and single
