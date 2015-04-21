@@ -264,7 +264,7 @@ return an appropriately large energy so that the move will be rejected.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
-* The use of std::function allows the user to wrap arbitary functions as callbacks
+* The use of `std::function` allows the user to wrap arbitary functions as callbacks
 (rather than only using free functions, as with C-style function pointers). See
 [here](http://en.cppreference.com/w/cpp/utility/functional/function) for details
 on how to bind member functions, or function objects.
