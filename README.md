@@ -69,7 +69,7 @@ we specify an install location, we would use a command more like the following:
 $ g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 ```
 
-Note that the `-std=c++11` compiler flag is needed for std::function.
+Note that the `-std=c++11` compiler flag is needed for `std::function`.
 
 ## Dependencies
 LibVMMC uses the [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_Twister)
@@ -80,7 +80,7 @@ header file and is compiled into the libvmmc library. The included
 
 ## Callback functions
 LibVMMC works via four user-defined callback functions that abstract model specific
-details, such as the pair potential. We make use of C++11's std::function to provide
+details, such as the pair potential. We make use of C++11's `std::function` to provide
 a general-purpose function wrapper, i.e. the callbacks can be free functions, member
 functions, etc. The callbacks have the following prototypes:
 
