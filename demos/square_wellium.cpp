@@ -29,7 +29,7 @@ void applyPostMoveUpdates(unsigned int, double[], double[]);
 
 // FUNCTION PROTOTYPES
 
-double computeEnergy();
+double getEnergy();
 void appendXyzTrajectory(std::vector <Particle>&, bool);
 void minimumImage(std::vector <double>&);
 
@@ -101,9 +101,15 @@ int main(int argc, char** argv)
         }
     }
 
+    // Initialise VMMC callback functions.
+    VMMC_energyCallback energyCallback = computeEnergy;
+    VMMC_pairEnergyCallback pairEnergyCallback = computePairEnergy;
+    VMMC_interactionsCallback interactionsCallback = computeInteractions;
+    VMMC_postMoveCallback postMoveCallback = applyPostMoveUpdates;
+
     // Initalise VMMC object.
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-            &boxSize[0], false, &computeEnergy, &computePairEnergy, &computeInteractions, &applyPostMoveUpdates);
+            &boxSize[0], false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
@@ -116,7 +122,7 @@ int main(int argc, char** argv)
         else appendXyzTrajectory(particles, false);
 
         // Report.
-        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), computeEnergy());
+        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy());
     }
 
     std::cout << "\nComplete!\n";
@@ -267,7 +273,7 @@ void applyPostMoveUpdates(unsigned int particle, double position[], double orien
 
 // FUNCTION DEFINITIONS
 
-double computeEnergy()
+double getEnergy()
 {
     double energy = 0;
 
