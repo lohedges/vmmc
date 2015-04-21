@@ -98,10 +98,10 @@ iflags := -m 0644
 commit := $(shell git describe --abbrev=4 --dirty --always --tags)
 
 # C++ compiler flags for development build.
-cxxflags_devel := -O0 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
+cxxflags_devel := -O0 -std=c++11 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
 
 # C++ compiler flags for release build.
-cxxflags_release := -O3 -funroll-loops -DNDEBUG -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
+cxxflags_release := -O3 -std=c++11 -funroll-loops -DNDEBUG -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
 
 # Default to release build.
 CXXFLAGS := $(cxxflags_release)
