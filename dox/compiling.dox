@@ -51,13 +51,13 @@ in the code.
 
 Then to compile, we can use something like the following:
 \code
-$ c++ example.cpp -lvmmc
+$ c++ -std=c++11 example.cpp -lvmmc
 \endcode
 
 This assumes that we have used the default install location /usr/local/. If
 we specify an install location, we would use a command more like the following:
 \code
-$ c++ example.cpp -I/my/path/include -L/my/path/lib -lvmmc
+$ c++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 \endcode
 
 \section deps External dependencies
