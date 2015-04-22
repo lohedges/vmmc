@@ -27,7 +27,7 @@ A `Makefile` is included for building and installing LibVMMC.
 
 To compile LibVMMC, then install the library, documentation, and demos:
 
-```
+```bash
 $ make build
 $ make install
 ```
@@ -51,7 +51,7 @@ $ make
 To use LibVMMC with a C/C++ code first include the LibVMMC header file somewhere
 in the code.
 
-```
+```bash
 //example.cpp
 #include <vmmc/VMMC.h>
 ```
@@ -92,7 +92,7 @@ The callbacks have the following prototypes:
 
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
-```
+```cpp
 typedef std::function<double (unsigned int index, double position[], double orientation[])> VMMC_energyCallback;
 ```
 `index` = The particle index.
@@ -109,7 +109,7 @@ an external field.
 
 ### Pair energy
 Calculate the pair interaction between two particles.
-```
+```cpp
 typedef std::function<double (unsigned int index1, double position1[], double orientation1[], unsigned int index2, double position2[], double orientation2[])> VMMC_pairEnergyCallback;
 ```
 `index1` = The index of the first particle.
@@ -126,7 +126,7 @@ typedef std::function<double (unsigned int index1, double position1[], double or
 
 ### Interactions
 Determine the interactions for a given particle.
-```
+```cpp
 typedef std::function<unsigned int (unsigned int index, double position[], double orientation[], unsigned int interactions[])> VMMC_interactionsCallback;
 ```
 `index` = The index of the  particle.
@@ -139,7 +139,7 @@ typedef std::function<unsigned int (unsigned int index, double position[], doubl
 
 ### Post-move
 Apply any post-move updates, e.g. update cell lists, or neighbour lists.
-```
+```cpp
 typedef std::function<void (unsigned int index, double position[], double orientation[])> VMMC_postMoveCallback;
 ```
 `index` = The index of the  particle.
@@ -151,7 +151,7 @@ typedef std::function<void (unsigned int index, double position[], double orient
 ## The VMMC object
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
 constructor:
-```
+```cpp
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[], double orientations[], double maxTrialTranslation, double maxTrialRotation, double probTranslate, double referenceRadius, unsigned int maxInteractions, double boxSize[], bool isRepulsive, energyCallback computeEnergy, pairEnergyCallback computePairEnergy, interactionsCallback computeInteractions, postMoveCallback, applyPostMoveUpdates);
 ```
 `nParticles` = The number of particles in the simulation box.
@@ -208,15 +208,15 @@ updates, e.g. cell lists.
 
 ## Executing a virtual-move
 Once an instance of the VMMC object is created, e.g.
-```
+```cpp
 VMMC(...) vmmc;
 ```
 then a single trial move can be executed as follows:
-```
+```cpp
 vmmc.step();
 ```
 To perform 1000 trial moves:
-```
+```cpp
 vmmc.step(1000);
 ```
 The same can be achieved by using the overloaded `++` and `+=` operators,
