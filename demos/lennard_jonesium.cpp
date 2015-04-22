@@ -41,7 +41,7 @@ unsigned int dimension = 3;             // dimension of simulation box
 unsigned int nParticles = 1000;         // number of particles
 double interactionEnergy = 2;           // pair interaction energy scale (in units of kBT)
 double cutOffDistance = 2.5;            // size of interaction range (in units of particle diameter)
-double density = 0.1;                   // particle density
+double density = 0.05;                  // particle density
 double squaredCutOffDistance;           // squared interaction cut-off distance
 double potentialShift;                  // shift factor to zero potential at cut-off
 double baseLength;                      // base length of simulation box
