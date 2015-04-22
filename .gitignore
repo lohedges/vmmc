@@ -6,3 +6,5 @@ demos/obj/
 demos/square_wellium
 demos/lennard_jonesium
 .compiler_flags
+trajectory.xyz
+box.vmd
