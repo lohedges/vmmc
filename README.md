@@ -73,10 +73,8 @@ Note that the `-std=c++11` compiler flag is needed for `std::function`.
 
 ## Dependencies
 LibVMMC uses the [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_Twister)
-psuedorandom number generator. A C++ implementation is included as a bundled
-header file and is compiled into the libvmmc library. The included
-`MersenneTwister.h` is taken from
-[here](http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/VERSIONS/C-LANG/c-lang.html).
+psuedorandom number generator. A C++11 implementation using `std::random` is
+included as a bundled header file, `MersenneTwister.h`.
 
 ## Callback functions
 LibVMMC works via four user-defined callback functions that abstract model specific
