@@ -93,7 +93,8 @@ The callbacks have the following prototypes:
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
 ```cpp
-typedef std::function<double (unsigned int index, double position[], double orientation[])> VMMC_energyCallback;
+typedef std::function<double (unsigned int index, double position[],
+    double orientation[])> VMMC_energyCallback;
 ```
 `index` = The particle index.
 
