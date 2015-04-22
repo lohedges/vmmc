@@ -51,7 +51,7 @@ $ make
 To use LibVMMC with a C/C++ code first include the LibVMMC header file somewhere
 in the code.
 
-```bash
+```cpp
 //example.cpp
 #include <vmmc/VMMC.h>
 ```
