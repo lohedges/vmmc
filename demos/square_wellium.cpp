@@ -32,7 +32,7 @@ void applyPostMoveUpdates(unsigned int, double[], double[]);
 double getEnergy();
 void appendXyzTrajectory(std::vector <Particle>&, bool);
 void minimumImage(std::vector <double>&);
-void vmdBoundingBox(const std::vector <double>& boxSize);
+void vmdScript(const std::vector <double>& boxSize);
 
 // GLOBALS
 
@@ -66,8 +66,8 @@ int main(int argc, char** argv)
     // Initialise simulation box object.
     Box box(boxSize);
 
-    // Create VMD bounding box.
-    vmdBoundingBox(boxSize);
+    // Create VMD script.
+    vmdScript(boxSize);
 
     // Work out cut-off distance.
     double cutOffDistance = 1 + interactionRange;
@@ -325,11 +325,37 @@ void minimumImage(std::vector <double>& separation)
     }
 }
 
-void vmdBoundingBox(const std::vector <double>& boxSize)
+void vmdScript(const std::vector <double>& boxSize)
 {
     FILE *pFile;
 
-    pFile = fopen("box.vmd", "w");
+    pFile = fopen("vmd.tcl", "w");
+
+    // Turn on lights 0 and 1.
+    fprintf(pFile, "light 0 on\n");
+    fprintf(pFile, "light 1 on\n");
+    fprintf(pFile, "light 2 off\n");
+    fprintf(pFile, "light 3 off\n");
+
+    // Position the stage and axes.
+    fprintf(pFile, "axes location off\n");
+    fprintf(pFile, "stage location off\n");
+
+    // Set orthographic projection.
+    fprintf(pFile, "display projection orthographic\n");
+
+    // Set drawing method to van der Waals radius.
+    fprintf(pFile, "mol modstyle 0 0 VDW 1 30\n");
+
+    // Set sensible atom radius.
+    fprintf(pFile, "set sel [atomselect top \"name X\"]\n");
+    fprintf(pFile, "atomselect0 set radius 0.4\n");
+
+    // Set default particle to blue.
+    fprintf(pFile, "color Name X blue\n");
+
+    // Turn off depth cue.
+    fprintf(pFile, "display depthcue off\n");
 
     // Define box boundaries.
     fprintf(pFile, "set minx 0\n");
