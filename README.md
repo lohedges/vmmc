@@ -160,9 +160,9 @@ constructor:
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
-    double boxSize[], bool isRepulsive, VMMC_energyCallback energyCallback,
-    VMMC_pairEnergyCallback pairEnergyCallback, VMMC_interactionsCallback
-    interactionsCallback, VMMC_postMoveCallback postMoveCallback);
+    double boxSize[], bool isRepulsive, const VMMC_energyCallback& energyCallback,
+    const VMMC_pairEnergyCallback& pairEnergyCallback, const VMMC_interactionsCallback&
+    interactionsCallback, const VMMC_postMoveCallback& postMoveCallback);
 ```
 `nParticles` = The number of particles in the simulation box.
 
