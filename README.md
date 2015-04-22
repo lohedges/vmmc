@@ -154,6 +154,23 @@ typedef std::function<void (unsigned int index, double position[],
 
 `orientation` = The orientation unit vector of the particle following the move.
 
+## Assigning a callback
+Using the callbacks above it is easy to create a function wrapper to whatever,
+e.g.
+
+```cpp
+VMMC_energyCallback energyCallback = computeEnergy;
+```
+
+if `computeEnergy` were a free function, or
+
+```cpp
+using namespace std::placeholders;
+VMMC_energyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
+```
+
+if `computeEnergy` were instead a member of some class called `Foo`.
+
 ## The VMMC object
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
 constructor:
