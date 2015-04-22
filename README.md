@@ -88,7 +88,8 @@ them from a specific design choice for the model in hand. It is possible to
 glue together components written in different ways, or to use the callbacks
 themselves as C/C++ wrappers to external libraries.
 
-The callbacks have the following prototypes:
+Details of the callback prototypes are given below (where `typedef` has
+been used to simplify their declaration).
 
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
