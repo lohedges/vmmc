@@ -32,6 +32,7 @@ void applyPostMoveUpdates(unsigned int, double[], double[]);
 double getEnergy();
 void appendXyzTrajectory(std::vector <Particle>&, bool);
 void minimumImage(std::vector <double>&);
+void vmdBoundingBox(const std::vector <double>& boxSize);
 
 // GLOBALS
 
@@ -64,6 +65,9 @@ int main(int argc, char** argv)
 
     // Initialise simulation box object.
     Box box(boxSize);
+
+    // Create VMD bounding box.
+    vmdBoundingBox(boxSize);
 
     // Work out cut-off distance.
     double cutOffDistance = 1 + interactionRange;
@@ -319,4 +323,47 @@ void minimumImage(std::vector <double>& separation)
             }
         }
     }
+}
+
+void vmdBoundingBox(const std::vector <double>& boxSize)
+{
+    FILE *pFile;
+
+    pFile = fopen("box.vmd", "w");
+
+    // Define box boundaries.
+    fprintf(pFile, "set minx 0\n");
+    fprintf(pFile, "set maxx %5.4f\n", boxSize[0]);
+    fprintf(pFile, "set miny 0\n");
+    fprintf(pFile, "set maxy %5.4f\n", boxSize[1]);
+    if (dimension == 3)
+    {
+        fprintf(pFile, "set minz 0\n");
+        fprintf(pFile, "set maxz %5.4f\n", boxSize[2]);
+    }
+    else
+    {
+        fprintf(pFile, "set minz 0\n");
+        fprintf(pFile, "set maxz 0\n");
+    }
+
+    // Set colours.
+    fprintf(pFile, "draw materials off\n");
+    fprintf(pFile, "draw color white\n");
+
+    // Draw cube edges.
+    fprintf(pFile, "draw line \"$minx $miny $minz\" \"$maxx $miny $minz\"\n");
+    fprintf(pFile, "draw line \"$minx $miny $minz\" \"$minx $maxy $minz\"\n");
+    fprintf(pFile, "draw line \"$minx $miny $minz\" \"$minx $miny $maxz\"\n");
+    fprintf(pFile, "draw line \"$maxx $miny $minz\" \"$maxx $maxy $minz\"\n");
+    fprintf(pFile, "draw line \"$maxx $miny $minz\" \"$maxx $miny $maxz\"\n");
+    fprintf(pFile, "draw line \"$minx $maxy $minz\" \"$maxx $maxy $minz\"\n");
+    fprintf(pFile, "draw line \"$minx $maxy $minz\" \"$minx $maxy $maxz\"\n");
+    fprintf(pFile, "draw line \"$minx $miny $maxz\" \"$maxx $miny $maxz\"\n");
+    fprintf(pFile, "draw line \"$minx $miny $maxz\" \"$minx $maxy $maxz\"\n");
+    fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$maxx $maxy $minz\"\n");
+    fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$minx $maxy $maxz\"\n");
+    fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$maxx $miny $maxz\"\n");
+
+    fclose(pFile);
 }
