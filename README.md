@@ -164,6 +164,11 @@ Coordinates should run from 0 to the box size in each dimension.
 
 `orientations` = An array containing orientations (unit vectors) for all of the
 particles in the system, i.e. `nx1, ny1, nz1, nx2, ny2, nz2, ... , nxN, nyN, nzN.`
+In the case of particles interacting via an isotropic potential, the particle
+orientations are simply dummy unit vectors that provide a means for LibVMMC
+to execute rotational moves, i.e. the orientation has no effect on the potential.
+This allows the use of a single set of callback functions for models with both
+isotropic and anisotropic potentials.
 
 `maxTrialTranslation` = The maximum trial translation, in units of the particle
 diameter (or typical particle size).
