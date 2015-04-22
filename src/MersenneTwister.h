@@ -18,7 +18,6 @@
 #ifndef _MERSENNETWISTER_H
 #define _MERSENNETWISTER_H
 
-#include <chrono>
 #include <random>
 
 /*! \file MersenneTwister.h
