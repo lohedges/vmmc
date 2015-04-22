@@ -165,6 +165,7 @@ VMMC_energyCallback energyCallback = computeEnergy;
 if `computeEnergy` were a free function, or
 
 ```cpp
+Foo foo;
 using namespace std::placeholders;
 VMMC_energyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
 ```
