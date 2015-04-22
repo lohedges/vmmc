@@ -239,6 +239,17 @@ in the `demos` directory.
 * `square_wellium.cpp`: A simulation of a square-well fluid in two- or three-dimensions.
 * `lennard_jonesium.cpp`: A simulation of a Lennard-Jones fluid in two- or three-dimensions.
 
+Both demo codes output a trajectory file, `trajectory.xyz`, and a TcL script,
+`vmd.tcl` that can be used to set camera and particle attributes and to draw the
+periodic simulation box when visualising the trajectory with
+[VMD](http://www.ks.uiuc.edu/Research/vmd/). To generate and view a trajectory,
+run, e.g.
+
+```bash
+$ ./demos/square_wellium
+$ vmd trajectory.xyz -e vmd.tcl
+```
+
 The demo code also illustrates how to implement efficient, dynamically
 updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
 for implementation details.
