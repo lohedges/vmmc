@@ -391,5 +391,13 @@ void vmdScript(const std::vector <double>& boxSize)
     fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$minx $maxy $maxz\"\n");
     fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$maxx $miny $maxz\"\n");
 
+    // Rotate box.
+    if (dimension == 3)
+    {
+        fprintf(pFile, "rotate x by -60\n");
+        fprintf(pFile, "rotate y by -30\n");
+        fprintf(pFile, "rotate z by -15\n");
+    }
+
     fclose(pFile);
 }
