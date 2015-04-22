@@ -103,8 +103,8 @@ typedef std::function<double (unsigned int index, double position[],
 `orientation` = The particle's orientation unit vector.
 
 This callback function is currently somewhat redundant since it is possible to
-achieve the same outcome by combining the `pairEnergyCallback` and
-`interactionsCallback` functions described below. Ultimately, the callback
+achieve the same outcome by combining the `VMMC_pairEnergyCallback` and
+`VMMC_interactionsCallback` functions described below. Ultimately, the callback
 will be able to account for non-pairwise terms in the potential, such as
 an external field.
 
@@ -160,9 +160,9 @@ constructor:
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
-    double boxSize[], bool isRepulsive, energyCallback computeEnergy,
-    pairEnergyCallback computePairEnergy, interactionsCallback computeInteractions,
-    postMoveCallback, applyPostMoveUpdates);
+    double boxSize[], bool isRepulsive, VMMC_energyCallback energyCallback,
+    VMMC_pairEnergyCallback pairEnergyCallback, VMMC_interactionsCallback
+    interactionsCallback, VMMC_postMoveCallback postMoveCallback);
 ```
 `nParticles` = The number of particles in the simulation box.
 
@@ -202,16 +202,16 @@ interaction volume around a particle.
 
 `isRepulsive` = Whether the potential has finite energy repulsions.
 
-`computeEnergy` = The callback function to calculate the total pair interaction
+`energyCallback` = The callback function to calculate the total pair interaction
 for a particle.
 
-`computePairEnergy` = The callback function to calculate the pair interaction
+`pairEnergyCallback` = The callback function to calculate the pair interaction
 between two particles.
 
-`computeInteractions` = The callback function to determine the neighbours with
+`interactionsCallback` = The callback function to determine the neighbours with
 which a particle interacts.
 
-`applyPostMoveUpdates` = The callback function to perform any required updates
+`postMoveCallback` = The callback function to perform any required updates
 following the move. Here you should copy the updated particle position and
 orientation back into your own data structures and implement any additional
 updates, e.g. cell lists.
