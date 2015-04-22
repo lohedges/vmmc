@@ -77,10 +77,18 @@ psuedorandom number generator. A C++11 implementation using `std::random` is
 included as a bundled header file, `MersenneTwister.h`.
 
 ## Callback functions
-LibVMMC works via four user-defined callback functions that abstract model specific
-details, such as the pair potential. We make use of C++11's `std::function` to provide
-a general-purpose function wrapper, i.e. the callbacks can be free functions, member
-functions, etc. The callbacks have the following prototypes:
+LibVMMC works via four user-defined callback functions that abstract model
+specific details, such as the pair potential. We make use of C++11's
+`std::function` to provide a general-purpose function wrapper, i.e.
+the callbacks can be free functions, member functions, etc. These callbacks
+allow LibVMMC to be blind to the implementation of the model, as well as
+the model to be blind to the details of the VMMC algorithm. The generic
+nature of the function wrapper provides great flexibility to the user, freeing
+them from a specific design choice for the model in hand. It is possible to
+glue together components written in different ways, or to use the callbacks
+themselves as C/C++ wrappers to external libraries.
+
+The callbacks have the following prototypes:
 
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
