@@ -77,7 +77,7 @@ int main(int argc, char** argv)
     cells.initialise(box.boxSize, cutOffDistance);
 
     // Initialise random number generator.
-    MTRand rng;
+    MersenneTwister rng;
 
     // Initialise particle initialisation object.
     Initialise initialise;

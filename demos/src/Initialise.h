@@ -48,7 +48,7 @@ public:
         \param rng
             A reference to the random number generator.
      */
-    void random(std::vector <Particle>&, CellList&, Box&, MTRand&);
+    void random(std::vector <Particle>&, CellList&, Box&, MersenneTwister&);
 
 private:
     //! Helper function for testing particle insertions.

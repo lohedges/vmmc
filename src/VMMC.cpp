@@ -237,7 +237,7 @@ void VMMC::reset()
 void VMMC::proposeMove()
 {
     // Choose a seed particle.
-    moveParams.seed = rng.randInt(nParticles-1);
+    moveParams.seed = rng.integer(0, nParticles-1);
 
     // Get a uniform random number in range [0-1].
     double r = rng();
@@ -250,7 +250,7 @@ void VMMC::proposeMove()
 
     // Choose a random point on the surface of the unit sphere/circle.
     for (unsigned int i=0;i<dimension;i++)
-        moveParams.trialVector[i] = rng.randNorm(0,1);
+        moveParams.trialVector[i] = rng.normal();
 
     // Normalise the trial vector.
     double norm = computeNorm(moveParams.trialVector);

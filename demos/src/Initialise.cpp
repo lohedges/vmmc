@@ -21,7 +21,7 @@ Initialise::Initialise()
 {
 }
 
-void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box& box, MTRand& rng)
+void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box& box, MersenneTwister& rng)
 {
     for (unsigned i=0;i<particles.size();i++)
     {
@@ -50,7 +50,7 @@ void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box&
 
             // Generate a random orientation.
             for (unsigned int j=0;j<box.dimension;j++)
-                vec[j] = rng.randNorm(0,1);
+                vec[j] = rng.normal();
 
             // Calculate vector norm.
             double norm = 0;

@@ -45,9 +45,6 @@ double density = 0.05;                  // particle density
 double squaredCutOffDistance;           // squared interaction cut-off distance
 double baseLength;                      // base length of simulation box
 unsigned int maxInteractions = 15;      // maximum number of interactions per particle
-
-// PORTABLE NUMERIC CONSTANTS
-
 double INF = std::numeric_limits<double>::infinity();
 
 // MAIN FUNCTION
@@ -79,7 +76,7 @@ int main(int argc, char** argv)
     squaredCutOffDistance = cutOffDistance*cutOffDistance;
 
     // Initialise random number generator.
-    MTRand rng;
+    MersenneTwister rng;
 
     // Initialise particle initialisation object.
     Initialise initialise;

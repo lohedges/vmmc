@@ -19,6 +19,7 @@
 #define _VMMC_H
 
 #include <cstdlib>
+#include <iostream>
 #include <functional>
 #include <vector>
 
@@ -255,7 +256,7 @@ public:
     //! Reset statistics.
     void reset();
 
-    MTRand rng;                                 //!< random number generator
+    MersenneTwister rng;                        //!< random number generator
 
 private:
     VMMC_Params moveParams;                     //!< parameters for the trial move
