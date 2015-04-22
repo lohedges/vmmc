@@ -230,7 +230,7 @@ public:
     unsigned long long getRotations() const;
 
     //! Get the number of accepted translation moves for each cluster size.
-    /*! \param clusterStatistics_
+    /*! \param clusterStatistics
             An array into which the cluster statistics will be copied.
      */
     void getClusterTranslations(unsigned long long[]) const;
@@ -242,7 +242,7 @@ public:
     const std::vector <unsigned long long>& getClusterTranslations() const;
 
     //! Get the number of accepted rotation moves for each cluster size.
-    /*! \param clusterStatistics_
+    /*! \param clusterStatistics
             An array into which the cluster statistics will be copied.
      */
     void getClusterRotations(unsigned long long[]) const;
