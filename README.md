@@ -281,8 +281,8 @@ enforce a strict Stokes scaling of translational and rotational diffusion.
 * The calculation of the hydrodynamic damping factor assumes a spherical cluster,
 which is only approximate in two dimensions. In general, it is likely that
 particles on a flat surface may diffuse in a system specific way, so there may
-be no good general approximation of Stokes scaling. In future versions
-we intend to provide an additional callback function so that the user can
+be no good general approximation of Stokes scaling in two dimensions. In future
+versions we intend to provide an additional callback function so that the user can
 enforce a model specific damping factor.
 * The recursive manner in which the trial cluster is built can lead to a stack
 overflow if the cluster contains many particles. Typically, thousands, or tens
