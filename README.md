@@ -278,6 +278,12 @@ for implementation details.
 fluid, single particle rotations will always be accepted. While not a problem
 from a thermodynamic perspective, this may cause issues if the user wishes to
 enforce a strict Stokes scaling of translational and rotational diffusion.
+* The calculation of the hydrodynamic factor makes assumes a spherical cluster,
+which is only approximate in two dimensions. In general, it is likely that
+particles on a flat surface may diffuse in a system specific way, so there may
+be no good general approximation of Stokes scaling. In future versions
+we intend to provide an additional callback function so that the user can
+enforce a model specific damping factor.
 * The recursive manner in which the trial cluster is built can lead to a stack
 overflow if the cluster contains many particles. Typically, thousands, or tens
 of thousands of particles should be perfectly manageable. The typical memory
