@@ -312,6 +312,14 @@ until confirming that the post-move configuration is valid, e.g. no overlaps.
 At present the same `postMoveCallback` function is called twice: once in order
 to apply the move; again if the move is subsequently rejected. This means that
 the cell lists will be updated twice if a move is rejected.
+* When testing for particle overlaps following a virtual move it is normally
+not necessary to test pairs within the moving cluster. As written, all links
+are tested, not just those external to the cluster. Note that *all* internal
+pairs should be tested following a rotational move since it's possible to
+rotate a cluster on top of itself. This can occur in a dense system when one
+axis of a cluster is longer than the box size, e.g. the cluster lies diagonally
+in a square box. In this case, a rotation across the periodic boundary can cause
+the cluster to overlap.
 
 ## Tips
 * LibVMMC currently assumes that the simulation box is periodic in all dimensions.
