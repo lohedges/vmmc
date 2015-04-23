@@ -30,9 +30,7 @@ void applyPostMoveUpdates(unsigned int, double[], double[]);
 // FUNCTION PROTOTYPES
 
 double getEnergy();
-void appendXyzTrajectory(std::vector <Particle>&, bool);
 void minimumImage(std::vector <double>&);
-void vmdScript(const std::vector <double>& boxSize);
 
 // GLOBALS
 
@@ -66,8 +64,11 @@ int main(int argc, char** argv)
     // Initialise simulation box object.
     Box box(boxSize);
 
+    // Initialise input/output class,
+    InputOutput io;
+
     // Create VMD script.
-    vmdScript(boxSize);
+    io.vmdScript(boxSize);
 
     // Work out cut-off distance.
     double cutOffDistance = 1 + interactionRange;
@@ -119,8 +120,8 @@ int main(int argc, char** argv)
         vmmc += 1000*nParticles;
 
         // Append particle coordinates to a xyz trajectory.
-        if (i == 0) appendXyzTrajectory(particles, true);
-        else appendXyzTrajectory(particles, false);
+        if (i == 0) io.appendXyzTrajectory(dimension, particles, true);
+        else io.appendXyzTrajectory(dimension, particles, false);
 
         // Report.
         printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy());
@@ -284,29 +285,6 @@ double getEnergy()
     return energy/(2*nParticles);
 }
 
-void appendXyzTrajectory(std::vector <Particle>& particles, bool clearFile)
-{
-    FILE* pFile;
-
-    // Wipe existing trajectory file.
-    if (clearFile)
-    {
-        pFile = fopen("trajectory.xyz", "w");
-        fclose(pFile);
-    }
-
-    pFile = fopen("trajectory.xyz", "a");
-    fprintf(pFile, "%lu\n\n", particles.size());
-
-    for (unsigned int i=0;i<particles.size();i++)
-    {
-        fprintf(pFile, "0 %5.4f %5.4f %5.4f\n",
-            particles[i].position[0], particles[i].position[1], (dimension == 3) ? particles[i].position[2] : 0);
-    }
-
-    fclose(pFile);
-}
-
 void minimumImage(std::vector <double>& separation)
 {
     for (unsigned int i=0;i<dimension;i++)
@@ -323,81 +301,4 @@ void minimumImage(std::vector <double>& separation)
             }
         }
     }
-}
-
-void vmdScript(const std::vector <double>& boxSize)
-{
-    FILE *pFile;
-
-    pFile = fopen("vmd.tcl", "w");
-
-    // Turn on lights 0 and 1.
-    fprintf(pFile, "light 0 on\n");
-    fprintf(pFile, "light 1 on\n");
-    fprintf(pFile, "light 2 off\n");
-    fprintf(pFile, "light 3 off\n");
-
-    // Position the stage and axes.
-    fprintf(pFile, "axes location off\n");
-    fprintf(pFile, "stage location off\n");
-
-    // Set orthographic projection.
-    fprintf(pFile, "display projection orthographic\n");
-
-    // Set drawing method to van der Waals radius.
-    fprintf(pFile, "mol modstyle 0 0 VDW 1 30\n");
-
-    // Set sensible atom radius.
-    fprintf(pFile, "set sel [atomselect top \"name X\"]\n");
-    fprintf(pFile, "atomselect0 set radius 0.4\n");
-
-    // Set default particle to blue.
-    fprintf(pFile, "color Name X blue\n");
-
-    // Turn off depth cue.
-    fprintf(pFile, "display depthcue off\n");
-
-    // Define box boundaries.
-    fprintf(pFile, "set minx 0\n");
-    fprintf(pFile, "set maxx %5.4f\n", boxSize[0]);
-    fprintf(pFile, "set miny 0\n");
-    fprintf(pFile, "set maxy %5.4f\n", boxSize[1]);
-    if (dimension == 3)
-    {
-        fprintf(pFile, "set minz 0\n");
-        fprintf(pFile, "set maxz %5.4f\n", boxSize[2]);
-    }
-    else
-    {
-        fprintf(pFile, "set minz 0\n");
-        fprintf(pFile, "set maxz 0\n");
-    }
-
-    // Set colours.
-    fprintf(pFile, "draw materials off\n");
-    fprintf(pFile, "draw color white\n");
-
-    // Draw cube edges.
-    fprintf(pFile, "draw line \"$minx $miny $minz\" \"$maxx $miny $minz\"\n");
-    fprintf(pFile, "draw line \"$minx $miny $minz\" \"$minx $maxy $minz\"\n");
-    fprintf(pFile, "draw line \"$minx $miny $minz\" \"$minx $miny $maxz\"\n");
-    fprintf(pFile, "draw line \"$maxx $miny $minz\" \"$maxx $maxy $minz\"\n");
-    fprintf(pFile, "draw line \"$maxx $miny $minz\" \"$maxx $miny $maxz\"\n");
-    fprintf(pFile, "draw line \"$minx $maxy $minz\" \"$maxx $maxy $minz\"\n");
-    fprintf(pFile, "draw line \"$minx $maxy $minz\" \"$minx $maxy $maxz\"\n");
-    fprintf(pFile, "draw line \"$minx $miny $maxz\" \"$maxx $miny $maxz\"\n");
-    fprintf(pFile, "draw line \"$minx $miny $maxz\" \"$minx $maxy $maxz\"\n");
-    fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$maxx $maxy $minz\"\n");
-    fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$minx $maxy $maxz\"\n");
-    fprintf(pFile, "draw line \"$maxx $maxy $maxz\" \"$maxx $miny $maxz\"\n");
-
-    // Rotate box.
-    if (dimension == 3)
-    {
-        fprintf(pFile, "rotate x by -60\n");
-        fprintf(pFile, "rotate y by -30\n");
-        fprintf(pFile, "rotate z by -15\n");
-    }
-
-    fclose(pFile);
 }
