@@ -170,7 +170,7 @@ using namespace std::placeholders;
 VMMC_energyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
 ```
 
-if `computeEnergy` were instead a member of some class called `Foo`.
+if `computeEnergy` were instead a member of some object called `Foo`.
 
 ## The VMMC object
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
@@ -278,7 +278,7 @@ for implementation details.
 fluid, single particle rotations will always be accepted. While not a problem
 from a thermodynamic perspective, this may cause issues if the user wishes to
 enforce a strict Stokes scaling of translational and rotational diffusion.
-* The calculation of the hydrodynamic factor makes assumes a spherical cluster,
+* The calculation of the hydrodynamic damping factor assumes a spherical cluster,
 which is only approximate in two dimensions. In general, it is likely that
 particles on a flat surface may diffuse in a system specific way, so there may
 be no good general approximation of Stokes scaling. In future versions
