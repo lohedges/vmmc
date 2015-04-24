@@ -235,6 +235,35 @@ following the move. Here you should copy the updated particle position and
 orientation back into your own data structures and implement any additional
 updates, e.g. cell lists.
 
+## C-style arrays
+The VMMC object constructor and callback functions use C-style arrays as
+arguments for simplicity and generality. This (hopefully) makes it as easy
+as possible for a user unfamiliar with C++ to make use of LibVMMC (although
+everyone should take time to learn `std::vector`). We can also exploit the
+fact that the C++ standard imposes that `std::vector` elements are contiguous,
+which allows `std::vector` containers to be passed as naked arrays.
+
+For example, if we have some function called `foo` that accepts a C-style
+double array as an argument,
+
+```cpp
+void foo(double arr[]);
+```
+
+then both of the following are valid function calls
+
+```cpp
+// C style
+double c_arr[10];
+foo(c_arr);
+
+// C++ style
+std::vector <double> cpp_arr(10);
+foo(&cpp_arr[0]);
+```
+Internally, LibVMMC uses `std::vector` containers for its data structures, with
+data passed to the callback functions in the manner described above.
+
 ## Executing a virtual-move
 Once an instance of the VMMC object is created, e.g.
 ```cpp
