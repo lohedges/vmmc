@@ -476,9 +476,10 @@ double VMMC::computeHydrodynamicRadius() const
 
 void VMMC::computeCoords(unsigned int particle, VMMC_Particle& postMoveParticle)
 {
-    // Initialise post-move position and orientation.
+    // Initialise post-move position, orientation, and psuedo-position.
     postMoveParticle.postMovePosition = particles[particle].preMovePosition;
     postMoveParticle.postMoveOrientation = particles[particle].preMoveOrientation;
+    postMoveParticle.pseudoPosition = particles[particle].pseudoPosition;
 
     if (!moveParams.isRotation) // Translation.
     {
