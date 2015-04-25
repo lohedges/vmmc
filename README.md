@@ -180,7 +180,8 @@ VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
     double boxSize[], bool isRepulsive, bool isIsotropic,
-    const VMMC_energyCallback& energyCallback, const VMMC_pairEnergyCallback& pairEnergyCallback, const VMMC_interactionsCallback& interactionsCallback,
+    const VMMC_energyCallback& energyCallback, const VMMC_pairEnergyCallback&
+    pairEnergyCallback, const VMMC_interactionsCallback& interactionsCallback,
     const VMMC_postMoveCallback& postMoveCallback);
 ```
 `nParticles` = The number of particles in the simulation box.
