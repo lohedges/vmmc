@@ -179,9 +179,9 @@ constructor:
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
-    double boxSize[], bool isRepulsive, const VMMC_energyCallback& energyCallback,
-    const VMMC_pairEnergyCallback& pairEnergyCallback, const VMMC_interactionsCallback&
-    interactionsCallback, const VMMC_postMoveCallback& postMoveCallback);
+    double boxSize[], bool isRepulsive, bool isIsotropic,
+    const VMMC_energyCallback& energyCallback, const VMMC_pairEnergyCallback& pairEnergyCallback, const VMMC_interactionsCallback& interactionsCallback,
+    const VMMC_postMoveCallback& postMoveCallback);
 ```
 `nParticles` = The number of particles in the simulation box.
 
@@ -218,6 +218,9 @@ interactions, or by estimating the average number of neighbours within the
 interaction volume around a particle.
 
 `boxSize` = The base length of the simulation box in each dimension.
+
+`isIsotropic` = Whether the potential is isotropic. The handling of rotational
+moves is slightly different for isotropic potentials.
 
 `isRepulsive` = Whether the potential has finite energy repulsions.
 
@@ -303,10 +306,6 @@ updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
 for implementation details.
 
 ## Limitations
-* For spherical particles bearing isotropic interactions, e.g. the square-well
-fluid, single particle rotations will always be accepted. While not a problem
-from a thermodynamic perspective, this may cause issues if the user wishes to
-enforce a strict Stokes scaling of translational and rotational diffusion.
 * The calculation of the hydrodynamic damping factor assumes a spherical cluster,
 which is only approximate in two dimensions. In general, it is likely that
 particles on a flat surface may diffuse in a system specific way, so there may
