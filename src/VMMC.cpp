@@ -39,6 +39,7 @@ VMMC::VMMC(unsigned int nParticles_,
            double referenceRadius_,
            unsigned int maxInteractions_,
            double boxSize_[],
+           bool isIsotropic_,
            bool isRepusive_,
            const VMMC_energyCallback& energyCallback_,
            const VMMC_pairEnergyCallback& pairEnergyCallback_,
@@ -52,6 +53,7 @@ VMMC::VMMC(unsigned int nParticles_,
            probTranslate(probTranslate_),
            referenceRadius(referenceRadius_),
            maxInteractions(maxInteractions_),
+           isIsotropic(isIsotropic_),
            isRepusive(isRepusive_),
            energyCallback(energyCallback_),
            pairEnergyCallback(pairEnergyCallback_),
@@ -257,6 +259,9 @@ void VMMC::proposeMove()
     for (unsigned int i=0;i<dimension;i++)
         moveParams.trialVector[i] /= norm;
 
+    // Neigbour index (for isotropic rotations).
+    unsigned int neighbour;
+
     // Choose the move type.
     if (rng() < probTranslate)
     {
@@ -272,17 +277,49 @@ void VMMC::proposeMove()
         // Rotation.
         moveParams.isRotation = true;
         moveParams.stepSize = maxTrialRotation*(2.0*rng()-1.0);
+
+        // Check that there is a neighbour to rotate about the seed.
+        if (isIsotropic)
+        {
+            // Cluster size cut-off (minimum size is two).
+            cutOff = int(2.0/r);
+
+            unsigned int pairInteractions[maxInteractions];
+
+            // Get a list of pair interactions.
+            unsigned int nPairs = interactionsCallback(moveParams.seed, &particles[moveParams.seed].preMovePosition[0],
+                    &particles[moveParams.seed].preMoveOrientation[0], pairInteractions);
+
+            // Abort move if there are no neighbours, else choose one at random.
+            if (nPairs == 0) isEarlyExit = true;
+            else neighbour = pairInteractions[rng.integer(0, nPairs-1)];
+        }
     }
 
-    // Initialise the seed particle.
-    particles[moveParams.seed].pseudoPosition = particles[moveParams.seed].preMovePosition;
-    initiateParticle(moveParams.seed, particles[moveParams.seed]);
+    if (!isEarlyExit)
+    {
+        // Initialise the seed particle.
+        particles[moveParams.seed].pseudoPosition = particles[moveParams.seed].preMovePosition;
+        initiateParticle(moveParams.seed, particles[moveParams.seed]);
 
-    // Recursively recruit neighbours to the cluster.
-    recursiveMoveAssignment(moveParams.seed);
+        if (isIsotropic && moveParams.isRotation)
+        {
+            // Initialise neighbouring particle.
+            particles[neighbour].pseudoPosition = particles[neighbour].preMovePosition;
+            initiateParticle(neighbour, particles[moveParams.seed]);
 
-    // Check whether the cluster is too large.
-    if (nMoving > cutOff) isEarlyExit = true;
+            // Recursively recruit neighbours to the cluster.
+            recursiveMoveAssignment(neighbour);
+        }
+        else
+        {
+            // Recursively recruit neighbours to the cluster.
+            recursiveMoveAssignment(moveParams.seed);
+        }
+
+        // Check whether the cluster is too large.
+        if (nMoving > cutOff) isEarlyExit = true;
+    }
 }
 
 bool VMMC::accept()
@@ -476,10 +513,9 @@ double VMMC::computeHydrodynamicRadius() const
 
 void VMMC::computeCoords(unsigned int particle, VMMC_Particle& postMoveParticle)
 {
-    // Initialise post-move position, orientation, and psuedo-position.
+    // Initialise post-move position and orientation.
     postMoveParticle.postMovePosition = particles[particle].preMovePosition;
     postMoveParticle.postMoveOrientation = particles[particle].preMoveOrientation;
-    postMoveParticle.pseudoPosition = particles[particle].pseudoPosition;
 
     if (!moveParams.isRotation) // Translation.
     {
