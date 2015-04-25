@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 
     // Initalise VMMC object.
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-            &boxSize[0], true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+            &boxSize[0], true, true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
