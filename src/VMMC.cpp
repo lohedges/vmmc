@@ -103,8 +103,11 @@ VMMC::VMMC(unsigned int nParticles_,
     // Allocate memory for pair interaction matrix (finite repulsions only).
     if (isRepusive)
     {
-        interactions.resize(nParticles);
-        for (unsigned int i=0;i<nParticles;i++)
+        // Maximum number of pair interactions.
+        unsigned int nPairs = (nParticles*maxInteractions)/2;
+
+        interactions.resize(nPairs);
+        for (unsigned int i=0;i<nPairs;i++)
             interactions[i].resize(2);
 
         // Construct a triangular matrix to save memory.
@@ -305,7 +308,6 @@ void VMMC::proposeMove()
         if (isIsotropic && moveParams.isRotation)
         {
             // Initialise neighbouring particle.
-            particles[neighbour].pseudoPosition = particles[neighbour].preMovePosition;
             initiateParticle(neighbour, particles[moveParams.seed]);
 
             // Recursively recruit neighbours to the cluster.
@@ -383,10 +385,10 @@ bool VMMC::accept()
                     interactions[nInteractions][0] = x;
                     interactions[nInteractions][1] = y;
                     nInteractions++;
-                }
 
-                // Store pair energy.
-                pairEnergyMatrix[x][y] = energy;
+                    // Store pair energy.
+                    pairEnergyMatrix[x][y] = energy;
+                }
             }
         }
     }
