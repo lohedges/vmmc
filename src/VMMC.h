@@ -19,8 +19,8 @@
 #define _VMMC_H
 
 #include <cstdlib>
-#include <iostream>
 #include <functional>
+#include <iostream>
 #include <vector>
 
 #include "MersenneTwister.h"
