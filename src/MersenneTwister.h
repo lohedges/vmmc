@@ -49,7 +49,7 @@ public:
     /*! \param min
             The minium of the range.
 
-        \pram max
+        \param max
             The maxium of the range.
 
         \return
