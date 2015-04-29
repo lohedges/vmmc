@@ -520,7 +520,7 @@ double VMMC::computeHydrodynamicRadius() const
     return scaleFactor;
 }
 
-void VMMC::computeCoords(unsigned int particle, VMMC_Particle& postMoveParticle)
+void VMMC::computePostMoveParticle(unsigned int particle, VMMC_Particle& postMoveParticle)
 {
     // Initialise post-move position and orientation.
     postMoveParticle.postMovePosition = particles[particle].preMovePosition;
@@ -587,8 +587,8 @@ void VMMC::initiateParticle(unsigned int particle, VMMC_Particle& linker)
         particles[frustratedLinks[nFrustrated]].posFrustated = particles[particle].posFrustated;
     }
 
-    // Calculate final coordinates.
-    computeCoords(particle, particles[particle]);
+    // Calculate updated position and orientation.
+    computePostMoveParticle(particle, particles[particle]);
 }
 
 void VMMC::recursiveMoveAssignment(unsigned int particle)
@@ -600,7 +600,7 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
 
         // Calculate coordinates under reverse trial move.
         moveParams.stepSize = -moveParams.stepSize;
-        computeCoords(particle, reverseMoveParticle);
+        computePostMoveParticle(particle, reverseMoveParticle);
         moveParams.stepSize = -moveParams.stepSize;
 
         unsigned int pairInteractions[maxInteractions];

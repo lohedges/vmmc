@@ -310,14 +310,14 @@ private:
     //! Compute the hydrodynamic radius of the pseudo-cluster.
     double computeHydrodynamicRadius() const;
 
-    //! Compute coordinates for the trial move.
+    //! Compute particle's position and orientation following the trial move.
     /*! \param particle
             Index of the particle.
 
         \param postMoveParticle
             The particle data structure.
      */
-    void computeCoords(unsigned int, VMMC_Particle&);
+    void computePostMoveParticle(unsigned int, VMMC_Particle&);
 
     //! Initiate a particle ready for the virtual move.
     /*! \param particle
