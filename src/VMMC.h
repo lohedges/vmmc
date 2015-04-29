@@ -178,7 +178,7 @@ public:
         \param boxSize_
             The size of the periodic simulation box in each dimension.
 
-        \param isIsotropic
+        \param isIsotropic_
             Whether the potential is isotropic.
 
         \param isRepusive_
