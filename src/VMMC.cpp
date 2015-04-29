@@ -538,7 +538,7 @@ void VMMC::computeCoords(unsigned int particle, VMMC_Particle& postMoveParticle)
 
         // Calculate coordinates relative to the global rotation point.
         for (unsigned int i=0;i<dimension;i++)
-            v1[i] = postMoveParticle.pseudoPosition[i] - particles[moveParams.seed].pseudoPosition[i];
+            v1[i] = particles[particle].pseudoPosition[i] - particles[moveParams.seed].pseudoPosition[i];
 
         // Calculate position rotation vector.
         if (is3D) rotate3D(v1, moveParams.trialVector, v2, moveParams.stepSize);
