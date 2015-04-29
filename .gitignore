@@ -5,6 +5,7 @@ demos/lib/
 demos/obj/
 demos/square_wellium
 demos/lennard_jonesium
+demos/src/Demo.h
 .compiler_flags
 trajectory.xyz
 vmd.tcl
