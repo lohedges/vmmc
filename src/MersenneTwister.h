@@ -29,6 +29,14 @@
 class MersenneTwister
 {
 public:
+    //! Constructor.
+    MersenneTwister()
+    {
+        // Get a hardware random number and seed the generator.
+        seed = std::random_device{}();
+        generator.seed(seed);
+    }
+
     //! Overloaded () operator.
     /*! \return A uniform random double in range [0-1].
      */
@@ -77,24 +85,37 @@ public:
         return std::normal_distribution<double>{mean, stdDev}(generator);
     }
 
+    //! Get the random number generator seed.
+    /*! \return seed
+            The generator seed.
+     */
+    unsigned int getSeed()
+    {
+        return seed;
+    }
+
     //! Seed the random number generator.
-    /*! \param seed
+    /*! \param seed_
             The new seed.
      */
-    void seed(unsigned int seed)
+    void setSeed(unsigned int seed_)
     {
+        seed = seed_;
         generator.seed(seed);
     }
 
 private:
     /// The Mersenne-Twister generator.
-    std::mt19937 generator{std::random_device{}()};
+    std::mt19937 generator;
 
     /// Default uniform_real distribution [0-1].
     std::uniform_real_distribution<double> default_uniform_real_distribution{0.0, 1.0};
 
     /// Default normal distribution with zero mean and unit standard deviation.
     std::normal_distribution<double> default_normal_distribution{0.0, 1.0};
+
+    /// The random number seed.
+    unsigned int seed;
 };
 
 #endif  /* _MERSENNETWISTER_H */
