@@ -431,7 +431,8 @@ bool VMMC::accept()
                     y = moveList[i];
                 }
 
-                if (energy > 0)             // Repulsive interaction.
+                // Repulsive interaction.
+                if (energy > 0)
                 {
                     // Check that particles didn't previously interact.
                     if (pairEnergyMatrix[x][y] == 0)
@@ -439,12 +440,18 @@ bool VMMC::accept()
                 }
                 else
                 {
-                    if (energy == 0)       // Particles no longer interact.
+                    // Neigbour isn't part of the pseudo-cluster.
+                    if (!particles[pairInteractions[j]].isMoving)
                     {
-                        pairEnergy = pairEnergyMatrix[x][y];
+                        // Particles no longer interact.
+                        if (energy == 0)
+                        {
+                            pairEnergy = pairEnergyMatrix[x][y];
 
-                        // Particles previously felt a repulsive interaction.
-                        if (pairEnergy > 0) excessEnergy -= pairEnergy;
+                            // Particles previously felt a repulsive interaction.
+                            if (pairEnergy > 0)
+                                excessEnergy -= pairEnergy;
+                        }
                     }
                 }
             }
@@ -542,8 +549,8 @@ void VMMC::computeCoords(unsigned int particle, VMMC_Particle& postMoveParticle)
             postMoveParticle.postMovePosition[i] += v2[i];
 
         // Calculate orientation rotation vector.
-        if (is3D) rotate3D(postMoveParticle.preMoveOrientation, moveParams.trialVector, v2, moveParams.stepSize);
-        else rotate2D(postMoveParticle.preMoveOrientation, v2, moveParams.stepSize);
+        if (is3D) rotate3D(postMoveParticle.postMoveOrientation, moveParams.trialVector, v2, moveParams.stepSize);
+        else rotate2D(postMoveParticle.postMoveOrientation, v2, moveParams.stepSize);
 
         // Update orientation.
         for (unsigned int i=0;i<dimension;i++)
@@ -678,7 +685,7 @@ void VMMC::rotate3D(std::vector <double>& v1, std::vector <double>& v2, std::vec
     double c = cos(angle);
     double s = sin(angle);
 
-    double v1Dotv2 = v1[0]*v2[0] + v1[1]*v2[1] *v1[2]*v2[2];
+    double v1Dotv2 = v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
 
     v3[0] = ((v1[0] - v2[0]*v1Dotv2))*(c - 1) + (v2[2]*v1[1] - v2[1]*v1[2])*s;
     v3[1] = ((v1[1] - v2[1]*v1Dotv2))*(c - 1) + (v2[0]*v1[2] - v2[2]*v1[0])*s;
