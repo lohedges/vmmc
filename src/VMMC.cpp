@@ -116,9 +116,11 @@ VMMC::VMMC(unsigned int nParticles_,
             pairEnergyMatrix[i].resize(i);
     }
 
+    std::cout << "Initialised VMMC.\n";
+    std::cout << "seed\t" <<  rng.getSeed() << '\n';
     // Print version info.
 #ifdef COMMIT
-    std::cout << "Initialised VMMC: commit " <<  COMMIT << '\n';
+    std::cout << "commit\t" <<  COMMIT << '\n';
 #endif
 }
 
