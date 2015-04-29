@@ -444,7 +444,7 @@ bool VMMC::accept()
                         pairEnergy = pairEnergyMatrix[x][y];
 
                         // Particles previously felt a repulsive interaction.
-                        if (pairEnergy > 0) excessEnergy -= energy;
+                        if (pairEnergy > 0) excessEnergy -= pairEnergy;
                     }
                 }
             }
