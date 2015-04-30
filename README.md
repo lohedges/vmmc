@@ -224,7 +224,9 @@ interaction volume around a particle.
 `isIsotropic` = Whether the potential is isotropic. The handling of rotational
 moves is slightly different for isotropic potentials.
 
-`isRepulsive` = Whether the potential has finite energy repulsions.
+`isRepulsive` = Whether the potential has finite energy repulsions. This should
+also be set to `true` when particle interactions contain a mixture of hard core
+overlaps and finite repulsions.
 
 `energyCallback` = The callback function to calculate the total pair interaction
 for a particle.
@@ -321,7 +323,7 @@ footprint for a simulation of 1000 particles is around 2.5MB for hard particles.
 This is roughly doubled if the potential has finite energy repulsions.
 * At present there is no way to handle multi particle systems with a mixture of
 isotropic and anisotropic potentials. In this case it is best to pass
-`isIsotropic = true` to the VMMC constructor, the only limitation being that
+`isIsotropic = false` to the VMMC constructor, the only limitation being that
 clusters comprised (or seeded from) isotropic particles cannot rotate. In
 future it would be desirable for the VMMC object to know more details about
 each particle so that individual rotational moves can be tuned accordingly.
