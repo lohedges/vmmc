@@ -319,6 +319,12 @@ overflow if the cluster contains many particles. Typically, thousands, or tens
 of thousands of particles should be perfectly manageable. The typical memory
 footprint for a simulation of 1000 particles is around 2.5MB for hard particles.
 This is roughly doubled if the potential has finite energy repulsions.
+* At present there is no way to handle multi particle systems with a mixture of
+isotropic and anisotropic potentials. In this case it is best to pass
+`isIsotropic = true` to the VMMC constructor, the only limitation being that
+clusters comprised (or seeded from) isotropic particles cannot rotate. In
+future it would be desirable for the VMMC object to know more details about
+each particle so that individual rotational moves can be tuned accordingly.
 
 ## Efficiency
 In aid of generality there are several sources of redundancy that impact the
