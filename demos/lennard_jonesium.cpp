@@ -44,7 +44,7 @@ double density = 0.05;                  // particle density
 double squaredCutOffDistance;           // squared interaction cut-off distance
 double potentialShift;                  // shift factor to zero potential at cut-off
 double baseLength;                      // base length of simulation box
-unsigned int maxInteractions = 80;      // maximum number of interactions per particle
+unsigned int maxInteractions = 100;     // maximum number of interactions per particle
 double INF = std::numeric_limits<double>::infinity();
 
 // MAIN FUNCTION
