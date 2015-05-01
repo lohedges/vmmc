@@ -204,9 +204,13 @@ isotropic and anisotropic potentials.
 `maxTrialTranslation` = The maximum trial translation, in units of the particle
 diameter (or typical particle size).
 
-`maxTrialTranslation` = The maximum trial rotation in radians.
+`maxTrialRotation` = The maximum trial rotation in radians.
 
 `probTranslate` = The probability of attempting a translation move (relative to rotations).
+Along with `maxTrialTranslation` and `maxTrialRotation`, `probTranslate` can be tuned to
+enforce an approximate Stokes drag. An excellent and detailed explanation of how this may
+be applied in practice can be found
+[here](http://nanotheory.lbl.gov/people/design_rules_paper/methods.pdf).
 
 `referenceRadius` = A reference radius for computing the approximate hydrodynamic
 damping factor, e.g. the radius of a typical particle in the system.
@@ -324,7 +328,7 @@ This is roughly doubled if the potential has finite energy repulsions.
 * At present there is no way to handle multi particle systems with a mixture of
 isotropic and anisotropic potentials. In this case it is best to pass
 `isIsotropic = false` to the VMMC constructor, the only limitation being that
-clusters comprised (or seeded from) isotropic particles cannot rotate. In
+clusters comprised of (or seeded from) isotropic particles cannot rotate. In
 future it would be desirable for the VMMC object to know more details about
 each particle so that individual rotational moves can be tuned accordingly.
 
