@@ -51,7 +51,7 @@ public:
         \param interactionRange_
             The square well interaction range (in units of the particle diameter).
      */
-	LennardJonesium(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
+    LennardJonesium(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
 
     //! Calculate the total interaction energy felt by a particle.
     /*! \param index

@@ -50,7 +50,7 @@ public:
         \param interactionRange_
             The square well interaction range (in units of the particle diameter).
      */
-	Potential(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
+    Potential(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
 
     //! Calculate the total interaction energy felt by a particle.
     /*! \param index
