@@ -21,6 +21,14 @@ Box::Box(const std::vector <double>& boxSize_) :
     boxSize(boxSize_)
 {
     dimension = boxSize.size();
+
+    // Check dimensionality is valid.
+    if (dimension != 2 && dimension != 3)
+    {
+        std::cerr << "[ERROR] Box: Invalid dimensionality!\n";
+        exit(EXIT_FAILURE);
+    }
+
     posMinImage.resize(dimension);
     negMinImage.resize(dimension);
 

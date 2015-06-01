@@ -73,7 +73,7 @@ void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box&
             // Check trial limit isn't exceeded.
             if (nTrials == MAX_TRIALS)
             {
-                std::cerr << "[ERROR]: Maximum number of trial insertions reached.\n";
+                std::cerr << "[ERROR] Initialise: Maximum number of trial insertions reached.\n";
                 exit(EXIT_FAILURE);
             }
         }

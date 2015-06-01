@@ -36,13 +36,13 @@ Model::Model(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
 
 double Model::computeEnergy(unsigned int, double[], double[])
 {
-    std::cerr << "[ERROR]: Virtual function Model::computeEnergy() must be defined.\n";
+    std::cerr << "[ERROR] Model: Virtual function Model::computeEnergy() must be defined.\n";
     exit(EXIT_FAILURE);
 }
 
 double Model::computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[])
 {
-    std::cerr << "[ERROR]: Virtual function Model::computePairEnergy() must be defined.\n";
+    std::cerr << "[ERROR] Model: Virtual function Model::computePairEnergy() must be defined.\n";
     exit(EXIT_FAILURE);
 }
 
@@ -89,7 +89,7 @@ unsigned int Model::computeInteractions(unsigned int particle,
 
                     if (nInteractions == maxInteractions)
                     {
-                        std::cerr << "[ERROR]: Maximum number of interactions exceeded!\n";
+                        std::cerr << "[ERROR] Model: Maximum number of interactions exceeded!\n";
                         exit(EXIT_FAILURE);
                     }
                 }

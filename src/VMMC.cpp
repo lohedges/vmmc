@@ -65,7 +65,7 @@ VMMC::VMMC(unsigned int nParticles_,
     else if (dimension == 2) is3D = false;
     else
     {
-        std::cerr << "[ERROR]: Invalid dimensionality!\n";
+        std::cerr << "[ERROR] VMMC: Invalid dimensionality!\n";
         exit(EXIT_FAILURE);
     }
 

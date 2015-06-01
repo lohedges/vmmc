@@ -78,7 +78,7 @@ void CellList::initialise(const std::vector <double>& boxSize, double range)
         // check that number of cells per axis is large enough
         if (cellsPerAxis[i] < 3)
         {
-            std::cerr << "[ERROR]: Simulation box is too small (min cells per axis is 3)\n";
+            std::cerr << "[ERROR] CellList: Simulation box is too small (min cells per axis is 3)\n";
             exit(EXIT_FAILURE);
         }
     }
@@ -228,7 +228,7 @@ void CellList::initCell(int newCell, Particle& particle)
 
     if (at(newCell).tally == maxParticles)
     {
-        std::cerr << "[ERROR]: Maximum number of particles per cell exceeded!\n";
+        std::cerr << "[ERROR] CellList: Maximum number of particles per cell exceeded!\n";
         exit(EXIT_FAILURE);
     }
 }
@@ -256,7 +256,7 @@ void CellList::updateCell(int newCell, Particle& particle, std::vector <Particle
 
     if (at(newCell).tally == maxParticles)
     {
-        std::cerr << "[ERROR]: Maximum number of particles per cell exceeded!\n";
+        std::cerr << "[ERROR] CellList: Maximum number of particles per cell exceeded!\n";
         exit(EXIT_FAILURE);
     }
 }
