@@ -96,7 +96,7 @@ int main(int argc, char** argv)
         }
     }
 
-    // Initialise VMMC callback functions...
+    // Initialise the VMMC callback functions...
 
     // Bind model specific member functions for potential callbacks.
     using namespace std::placeholders;
@@ -120,7 +120,7 @@ int main(int argc, char** argv)
         // Increment simulation by 1000 Monte Carlo Sweeps.
         vmmc += 1000*nParticles;
 
-        // Append particle coordinates to a xyz trajectory.
+        // Append particle coordinates to an xyz trajectory.
         if (i == 0) io.appendXyzTrajectory(dimension, particles, true);
         else io.appendXyzTrajectory(dimension, particles, false);
 

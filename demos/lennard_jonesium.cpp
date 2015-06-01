@@ -110,7 +110,7 @@ int main(int argc, char** argv)
     // Wrap a free function for applying the post-move updates.
     VMMC_postMoveCallback postMoveCallback = applyPostMoveUpdates;
 
-    // Initalise VMMC object.
+    // Initalise the VMMC object.
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
             &boxSize[0], true, true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
 
@@ -120,7 +120,7 @@ int main(int argc, char** argv)
         // Increment simulation by 1000 Monte Carlo Sweeps.
         vmmc += 1000*nParticles;
 
-        // Append particle coordinates to a xyz trajectory.
+        // Append particle coordinates to an xyz trajectory.
         if (i == 0) io.appendXyzTrajectory(dimension, particles, true);
         else io.appendXyzTrajectory(dimension, particles, false);
 
