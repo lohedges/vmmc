@@ -23,13 +23,13 @@
 
 #include "Box.h"
 #include "CellList.h"
-#include "Potential.h"
+#include "Model.h"
 
 /*! \file LennardJonesium.h
 */
 
 //! Class defining the square-well potential.
-class LennardJonesium : public Potential
+class LennardJonesium : public Model
 {
 public:
     //! Constructor.

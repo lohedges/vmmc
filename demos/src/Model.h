@@ -15,8 +15,8 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _POTENTIAL_H
-#define _POTENTIAL_H
+#ifndef _MODEL_H
+#define _MODEL_H
 
 #include <cstdlib>
 #include <vector>
@@ -24,11 +24,11 @@
 #include "Box.h"
 #include "CellList.h"
 
-/*! \file Potential.h
+/*! \file Model.h
 */
 
 //! Base class defining virtual interfaces to model specific potentials.
-class Potential
+class Model
 {
 public:
     //! Constructor.
@@ -50,7 +50,7 @@ public:
         \param interactionRange_
             The square well interaction range (in units of the particle diameter).
      */
-    Potential(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
+    Model(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
 
     //! Calculate the total interaction energy felt by a particle.
     /*! \param index
@@ -117,4 +117,4 @@ protected:
     double squaredCutOffDistance;       //!> the squared cut-off distance
 };
 
-#endif	/* _POTENTIAL_H */
+#endif	/* _MODEL_H */

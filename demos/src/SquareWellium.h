@@ -23,13 +23,13 @@
 
 #include "Box.h"
 #include "CellList.h"
-#include "Potential.h"
+#include "Model.h"
 
 /*! \file SquareWellium.h
 */
 
 //! Class defining the square-well potential.
-class SquareWellium : public Potential
+class SquareWellium : public Model
 {
 public:
     //! Constructor.

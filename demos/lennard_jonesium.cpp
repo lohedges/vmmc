@@ -69,7 +69,7 @@ int main(int argc, char** argv)
     cells.setDimension(dimension);
     cells.initialise(box.boxSize, 1 + interactionRange);
 
-    // Initialise Lennard-Jones potential object.
+    // Initialise the Lennard-Jones potential model.
     LennardJonesium lennardJonesium(box, particles, cells,
             maxInteractions, interactionEnergy, interactionRange);
 

@@ -15,9 +15,9 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Potential.h"
+#include "Model.h"
 
-Potential::Potential(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
+Model::Model(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
         unsigned int maxInteractions_, double interactionEnergy_, double interactionRange_) :
     box(box_),
     particles(particles_),
@@ -32,19 +32,19 @@ Potential::Potential(Box& box_, std::vector <Particle>& particles_, CellList& ce
     squaredCutOffDistance = cutOffDistance * cutOffDistance;
 }
 
-double Potential::computeEnergy(unsigned int, double[], double[])
+double Model::computeEnergy(unsigned int, double[], double[])
 {
-    std::cerr << "[ERROR]: Virtual function Potential::computeEnergy() must be defined.\n";
+    std::cerr << "[ERROR]: Virtual function Model::computeEnergy() must be defined.\n";
     exit(EXIT_FAILURE);
 }
 
-double Potential::computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[])
+double Model::computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[])
 {
-    std::cerr << "[ERROR]: Virtual function Potential::computePairEnergy() must be defined.\n";
+    std::cerr << "[ERROR]: Virtual function Model::computePairEnergy() must be defined.\n";
     exit(EXIT_FAILURE);
 }
 
-unsigned int Potential::computeInteractions(unsigned int particle,
+unsigned int Model::computeInteractions(unsigned int particle,
         double position[], double orientation[], unsigned int interactions[])
 {
     unsigned int cell;              // cell index

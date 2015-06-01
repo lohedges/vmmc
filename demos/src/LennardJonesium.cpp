@@ -23,7 +23,7 @@ LennardJonesium::LennardJonesium(Box& box_,
                              unsigned int maxInteractions_,
                              double interactionEnergy_,
                              double interactionRange_) :
-    Potential(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
+    Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
 {
     double cutOffDistance = 1.0 + interactionRange;
 
