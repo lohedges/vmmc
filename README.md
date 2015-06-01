@@ -362,6 +362,8 @@ rotate a cluster on top of itself. This can occur in a dense system when one
 axis of a cluster is longer than the box size, e.g. the cluster lies diagonally
 in a square box. In this case, a rotation across the periodic boundary can cause
 the cluster to overlap.
+* Due to the overhead of binding member functions it is marginally faster to use
+free functions as callbacks.
 
 ## Tips
 * LibVMMC currently assumes that the simulation box is periodic in all dimensions.
