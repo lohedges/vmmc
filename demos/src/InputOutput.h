@@ -45,7 +45,6 @@ public:
      */
     void appendXyzTrajectory(unsigned int, const std::vector <Particle>&, bool);
 
-
     //! Create a VMD TcL script to set the particle view and draw a bounding box.
     /*! \param boxSize
             The size of the simulation box in each dimension.
