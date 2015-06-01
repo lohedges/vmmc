@@ -19,7 +19,6 @@
 #define _SQUAREWELLIUM_H
 
 #include <cstdlib>
-#include <limits>
 
 #include "Box.h"
 #include "CellList.h"
@@ -88,9 +87,6 @@ public:
             The pair energy between particles 1 and 2.
      */
     double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
-
-private:
-    double INF = std::numeric_limits<double>::infinity();
 };
 
 #endif	/* _SQUAREWELLIUM_H */
