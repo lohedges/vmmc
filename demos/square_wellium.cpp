@@ -15,41 +15,36 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits>
-
 #include "Demo.h"
 #include "VMMC.h"
 
 // CALLBACK PROTOTYPES
 
-double computeEnergy(unsigned int, double[], double[]);
-double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
-unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
 void applyPostMoveUpdates(unsigned int, double[], double[]);
 
 // FUNCTION PROTOTYPES
 
-double getEnergy();
-void minimumImage(std::vector <double>&);
+double getEnergy(SquareWellium&);
 
 // GLOBALS
 
-std::vector <Particle> particles;       // particle container
-CellList cells;                         // cell list
 unsigned int dimension = 3;             // dimension of simulation box
 unsigned int nParticles = 1000;         // number of particles
-double interactionEnergy = 2.6;         // pair interaction energy scale (in units of kBT)
-double interactionRange = 0.1;          // size of interaction range (in units of particle diameter)
-double density = 0.05;                  // particle density
-double squaredCutOffDistance;           // squared interaction cut-off distance
-double baseLength;                      // base length of simulation box
-unsigned int maxInteractions = 15;      // maximum number of interactions per particle
-double INF = std::numeric_limits<double>::infinity();
+std::vector <Particle> particles;       // particle container
+CellList cells;                         // cell list
 
 // MAIN FUNCTION
 
 int main(int argc, char** argv)
 {
+    // Simulation parameters...
+
+    double interactionEnergy = 2.6;         // pair interaction energy scale (in units of kBT)
+    double interactionRange = 0.1;          // size of interaction range (in units of particle diameter)
+    double density = 0.05;                  // particle density
+    double baseLength;                      // base length of simulation box
+    unsigned int maxInteractions = 15;      // maximum number of interactions per particle
+
     // Resize particle container.
     particles.resize(nParticles);
 
@@ -70,15 +65,13 @@ int main(int argc, char** argv)
     // Create VMD script.
     io.vmdScript(boxSize);
 
-    // Work out cut-off distance.
-    double cutOffDistance = 1 + interactionRange;
-
     // Initialise cell list.
     cells.setDimension(dimension);
-    cells.initialise(box.boxSize, cutOffDistance);
+    cells.initialise(box.boxSize, 1 + interactionRange);
 
-    // Squared cut-off distance.
-    squaredCutOffDistance = cutOffDistance*cutOffDistance;
+    // Initialise square well potential object.
+    SquareWellium squareWellium(box, particles, cells,
+            maxInteractions, interactionEnergy, interactionRange);
 
     // Initialise random number generator.
     MersenneTwister rng;
@@ -103,10 +96,18 @@ int main(int argc, char** argv)
         }
     }
 
-    // Initialise VMMC callback functions.
-    VMMC_energyCallback energyCallback = computeEnergy;
-    VMMC_pairEnergyCallback pairEnergyCallback = computePairEnergy;
-    VMMC_interactionsCallback interactionsCallback = computeInteractions;
+    // Initialise VMMC callback functions...
+
+    // Bind model specific member functions for potential callbacks.
+    using namespace std::placeholders;
+    VMMC_energyCallback energyCallback =
+        std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2, _3);
+    VMMC_pairEnergyCallback pairEnergyCallback =
+        std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4, _5, _6);
+    VMMC_interactionsCallback interactionsCallback =
+        std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3, _4);
+
+    // Wrap a free function for applying the post-move updates.
     VMMC_postMoveCallback postMoveCallback = applyPostMoveUpdates;
 
     // Initalise VMMC object.
@@ -124,7 +125,7 @@ int main(int argc, char** argv)
         else io.appendXyzTrajectory(dimension, particles, false);
 
         // Report.
-        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy());
+        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy(squareWellium));
     }
 
     std::cout << "\nComplete!\n";
@@ -134,127 +135,6 @@ int main(int argc, char** argv)
 }
 
 // CALLBACK DEFINITIONS
-
-double computeEnergy(unsigned int particle, double position[], double orientation[])
-{
-    unsigned int cell;      // cell index
-    unsigned int neighbour; // index of neighbouring particle
-    double energy = 0;      // energy counter
-
-    // Check all neighbouring cells including same cell.
-    for (unsigned int i=0;i<cells.getNeighbours();i++)
-    {
-        cell = cells[particles[particle].cell].neighbours[i];
-
-        // Check all particles within cell.
-        for (unsigned int j=0;j<cells[cell].tally;j++)
-        {
-            neighbour = cells[cell].particles[j];
-
-            // Make sure the particles are different.
-            if (neighbour != particle)
-            {
-                std::vector <double> sep(dimension);
-
-                // Calculate separation.
-                for (unsigned int k=0;k<dimension;k++)
-                    sep[k] = position[k] - particles[neighbour].position[k];
-
-                // Enforce minimum image.
-                minimumImage(sep);
-
-                double normSqd = 0;
-
-                // Calculate squared norm of vector.
-                for (unsigned int k=0;k<dimension;k++)
-                    normSqd += sep[k]*sep[k];
-
-                if (normSqd < 1) return INF;
-                if (normSqd < squaredCutOffDistance) energy -= interactionEnergy;
-            }
-        }
-    }
-
-    return energy;
-}
-
-double computePairEnergy(unsigned int particle1, double position1[],
-        double orientation1[], unsigned int particle2, double position2[], double orientation2[])
-{
-    // Separation vector.
-    std::vector <double> sep(dimension);
-
-    // Calculate separation.
-    for (unsigned int i=0;i<dimension;i++)
-        sep[i] = position1[i] - position2[i];
-
-    // Enforce minimum image.
-    minimumImage(sep);
-
-    double normSqd = 0;
-
-    // Calculate squared norm of vector.
-    for (unsigned int i=0;i<dimension;i++)
-        normSqd += sep[i]*sep[i];
-
-    if (normSqd < 1) return INF;
-    if (normSqd < squaredCutOffDistance) return -interactionEnergy;
-    return 0;
-}
-
-unsigned int computeInteractions(unsigned int particle,
-        double position[], double orientation[], unsigned int interactions[])
-{
-    unsigned int cell;              // cell index
-    unsigned int neighbour;         // index of neighbouring particle
-    unsigned int nInteractions = 0; // interaction counter
-
-    // Check all neighbouring cells including same cell.
-    for (unsigned int i=0;i<cells.getNeighbours();i++)
-    {
-        cell = cells[particles[particle].cell].neighbours[i];
-
-        // Check all particles within cell.
-        for (unsigned int j=0;j<cells[cell].tally;j++)
-        {
-            neighbour = cells[cell].particles[j];
-
-            // Make sure the particles are different.
-            if (neighbour != particle)
-            {
-                std::vector <double> sep(dimension);
-
-                // Compute separation.
-                for (unsigned int k=0;k<dimension;k++)
-                    sep[k] = position[k] - particles[neighbour].position[k];
-
-                // Enforce minimum image.
-                minimumImage(sep);
-
-                double normSqd = 0;
-
-                // Calculate squared norm of vector.
-                for (unsigned int k=0;k<dimension;k++)
-                    normSqd += sep[k]*sep[k];
-
-                // Particles interact.
-                if (normSqd < squaredCutOffDistance)
-                {
-                    interactions[nInteractions] = neighbour;
-                    nInteractions++;
-
-                    if (nInteractions == maxInteractions)
-                    {
-                        std::cerr << "[ERROR]: Maximum number of interactions exceeded!\n";
-                        exit(EXIT_FAILURE);
-                    }
-                }
-            }
-        }
-    }
-
-    return nInteractions;
-}
 
 void applyPostMoveUpdates(unsigned int particle, double position[], double orientation[])
 {
@@ -275,30 +155,12 @@ void applyPostMoveUpdates(unsigned int particle, double position[], double orien
 
 // FUNCTION DEFINITIONS
 
-double getEnergy()
+double getEnergy(SquareWellium& squareWellium)
 {
     double energy = 0;
 
     for (unsigned int i=0;i<nParticles;i++)
-        energy += computeEnergy(i, &particles[i].position[0], &particles[i].orientation[0]);
+        energy += squareWellium.computeEnergy(i, &particles[i].position[0], &particles[i].orientation[0]);
 
     return energy/(2*nParticles);
-}
-
-void minimumImage(std::vector <double>& separation)
-{
-    for (unsigned int i=0;i<dimension;i++)
-    {
-        if (separation[i] < -0.5*baseLength)
-        {
-            separation[i] += baseLength;
-        }
-        else
-        {
-            if (separation[i] >= 0.5*baseLength)
-            {
-                separation[i] -= baseLength;
-            }
-        }
-    }
 }
