@@ -1,0 +1,99 @@
+/*
+  Copyright (c) 2015 Lester Hedges <lester.hedges+vmmc@gmail.com>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include "Potential.h"
+
+Potential::Potential(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
+        unsigned int maxInteractions_, double interactionEnergy_, double interactionRange_) :
+    box(box_),
+    particles(particles_),
+    cells(cells_),
+    maxInteractions(maxInteractions_),
+    interactionEnergy(interactionEnergy_),
+    interactionRange(interactionRange_)
+{
+    double cutOffDistance = 1.0 + interactionRange;
+
+    // Work out squared cut-off distance.
+    squaredCutOffDistance = cutOffDistance * cutOffDistance;
+}
+
+double Potential::computeEnergy(unsigned int, double[], double[])
+{
+    std::cerr << "[ERROR]: Virtual function Potential::computeEnergy() must be defined.\n";
+    exit(EXIT_FAILURE);
+}
+
+double Potential::computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[])
+{
+    std::cerr << "[ERROR]: Virtual function Potential::computePairEnergy() must be defined.\n";
+    exit(EXIT_FAILURE);
+}
+
+unsigned int Potential::computeInteractions(unsigned int particle,
+        double position[], double orientation[], unsigned int interactions[])
+{
+    unsigned int cell;              // cell index
+    unsigned int neighbour;         // index of neighbouring particle
+    unsigned int nInteractions = 0; // interaction counter
+
+    // Check all neighbouring cells including same cell.
+    for (unsigned int i=0;i<cells.getNeighbours();i++)
+    {
+        cell = cells[particles[particle].cell].neighbours[i];
+
+        // Check all particles within cell.
+        for (unsigned int j=0;j<cells[cell].tally;j++)
+        {
+            neighbour = cells[cell].particles[j];
+
+            // Make sure the particles are different.
+            if (neighbour != particle)
+            {
+                std::vector <double> sep(box.dimension);
+
+                // Compute separation.
+                for (unsigned int k=0;k<box.dimension;k++)
+                    sep[k] = position[k] - particles[neighbour].position[k];
+
+                // Enforce minimum image.
+                box.minimumImage(sep);
+
+                double normSqd = 0;
+
+                // Calculate squared norm of vector.
+                for (unsigned int k=0;k<box.dimension;k++)
+                    normSqd += sep[k]*sep[k];
+
+                // Particles interact.
+                if (normSqd < squaredCutOffDistance)
+                {
+                    interactions[nInteractions] = neighbour;
+                    nInteractions++;
+
+                    if (nInteractions == maxInteractions)
+                    {
+                        std::cerr << "[ERROR]: Maximum number of interactions exceeded!\n";
+                        exit(EXIT_FAILURE);
+                    }
+                }
+            }
+        }
+    }
+
+    return nInteractions;
+}
