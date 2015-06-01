@@ -28,10 +28,10 @@ double getEnergy(SquareWellium&);
 
 // GLOBALS
 
-unsigned int dimension = 3;             // dimension of simulation box
-unsigned int nParticles = 1000;         // number of particles
-std::vector <Particle> particles;       // particle container
-CellList cells;                         // cell list
+unsigned int dimension = 3;                 // dimension of simulation box
+unsigned int nParticles = 1000;             // number of particles
+std::vector <Particle> particles;           // particle container
+CellList cells;                             // cell list
 
 // MAIN FUNCTION
 
