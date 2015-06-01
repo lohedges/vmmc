@@ -17,6 +17,8 @@
 
 #include "Model.h"
 
+double INF = std::numeric_limits<double>::infinity();
+
 Model::Model(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
         unsigned int maxInteractions_, double interactionEnergy_, double interactionRange_) :
     box(box_),

@@ -19,6 +19,7 @@
 #define _MODEL_H
 
 #include <cstdlib>
+#include <limits>
 #include <vector>
 
 #include "Box.h"
@@ -26,6 +27,9 @@
 
 /*! \file Model.h
 */
+
+// Global infinity constant for hard-core repulsions.
+extern double INF;
 
 //! Base class defining virtual interfaces to model specific potentials.
 class Model
@@ -106,11 +110,11 @@ public:
      */
     virtual unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
 
-protected:
     Box& box;                           //!> a reference to the simulation box
     std::vector <Particle>& particles;  //!> a reference to the particle list
     CellList& cells;                    //!> a reference to the cell list
 
+protected:
     unsigned int maxInteractions;       //!> the maximum number of interactions per particle
     double interactionEnergy;           //!> interaction energy scale (in units of kBT)
     double interactionRange;            //!> size of interaction range (in units of particle diameter)
