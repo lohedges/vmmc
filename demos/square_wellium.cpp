@@ -24,7 +24,7 @@ void applyPostMoveUpdates(unsigned int, double[], double[]);
 
 // FUNCTION PROTOTYPES
 
-double getEnergy(SquareWellium&);
+double getEnergy(Model*);
 
 // GLOBALS
 
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
         else io.appendXyzTrajectory(dimension, particles, false);
 
         // Report.
-        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy(squareWellium));
+        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy(&squareWellium));
     }
 
     std::cout << "\nComplete!\n";
@@ -155,12 +155,12 @@ void applyPostMoveUpdates(unsigned int particle, double position[], double orien
 
 // FUNCTION DEFINITIONS
 
-double getEnergy(SquareWellium& squareWellium)
+double getEnergy(Model* model)
 {
     double energy = 0;
 
     for (unsigned int i=0;i<nParticles;i++)
-        energy += squareWellium.computeEnergy(i, &particles[i].position[0], &particles[i].orientation[0]);
+        energy += model->computeEnergy(i, &particles[i].position[0], &particles[i].orientation[0]);
 
     return energy/(2*nParticles);
 }
