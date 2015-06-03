@@ -18,8 +18,6 @@
 #ifndef _SINGLEPARTICLEMOVE_H
 #define _SINGLEPARTICLEMOVE_H
 
-#include <vector>
-
 #include "MersenneTwister.h"
 #include "Model.h"
 #include "Particle.h"

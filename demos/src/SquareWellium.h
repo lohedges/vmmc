@@ -18,8 +18,6 @@
 #ifndef _SQUAREWELLIUM_H
 #define _SQUAREWELLIUM_H
 
-#include <cstdlib>
-
 #include "Box.h"
 #include "CellList.h"
 #include "Model.h"

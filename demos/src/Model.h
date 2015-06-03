@@ -18,9 +18,7 @@
 #ifndef _MODEL_H
 #define _MODEL_H
 
-#include <cstdlib>
 #include <limits>
-#include <vector>
 
 #include "Box.h"
 #include "CellList.h"

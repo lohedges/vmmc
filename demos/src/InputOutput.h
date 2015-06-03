@@ -21,7 +21,6 @@
 #include <cstdio>
 #include <fstream>
 #include <string>
-#include <vector>
 
 #include "Box.h"
 #include "CellList.h"

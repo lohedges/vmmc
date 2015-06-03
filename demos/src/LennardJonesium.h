@@ -18,9 +18,6 @@
 #ifndef _LENNARDJONESIUM_H
 #define _LENNARDJONESIUM_H
 
-#include <cstdlib>
-#include <limits>
-
 #include "Box.h"
 #include "CellList.h"
 #include "Model.h"
