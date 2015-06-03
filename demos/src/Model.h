@@ -110,6 +110,18 @@ public:
      */
     virtual unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
 
+    //! Apply any post-move updates for a given particle.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle following the virtual move.
+
+        \param orientation
+            The orientation of the particle following the virtual move.
+    */
+    void applyPostMoveUpdates(unsigned int, double[], double[]);
+
     Box& box;                           //!> a reference to the simulation box
     std::vector <Particle>& particles;  //!> a reference to the particle list
     CellList& cells;                    //!> a reference to the cell list

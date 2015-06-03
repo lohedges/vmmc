@@ -99,3 +99,20 @@ unsigned int Model::computeInteractions(unsigned int particle,
 
     return nInteractions;
 }
+
+void Model::applyPostMoveUpdates(unsigned int particle, double position[], double orientation[])
+{
+    // Copy coordinates/orientations.
+    for (unsigned int i=0;i<box.dimension;i++)
+    {
+        particles[particle].position[i] = position[i];
+        particles[particle].orientation[i] = orientation[i];
+    }
+
+    // Calculate the particle's cell index.
+    unsigned int newCell = cells.getCell(particles[particle]);
+
+    // Update cell lists if necessary.
+    if (particles[particle].cell != newCell)
+        cells.updateCell(newCell, particles[particle], particles);
+}
