@@ -53,21 +53,6 @@ public:
      */
     LennardJonesium(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
 
-    //! Calculate the total interaction energy felt by a particle.
-    /*! \param index
-            The particle index.
-
-        \param position
-            The position vector of the particle.
-
-        \param orientation
-            The orientation vector of the first particle.
-
-        \return
-            The total interaction energy.
-     */
-    double computeEnergy(unsigned int, double[], double[]);
-
     //! Calculate the pair energy between two particles.
     /*! \param particle1
             The index of the first particle.

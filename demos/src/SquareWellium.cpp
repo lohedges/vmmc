@@ -29,49 +29,6 @@ SquareWellium::SquareWellium(Box& box_,
     squaredCutOffDistance = (1.0 + interactionRange) * (1.0 + interactionRange);
 }
 
-double SquareWellium::computeEnergy(unsigned int particle, double position[], double orientation[])
-{
-    unsigned int cell;      // cell index
-    unsigned int neighbour; // index of neighbouring particle
-    double energy = 0;      // energy counter
-
-    // Check all neighbouring cells including same cell.
-    for (unsigned int i=0;i<cells.getNeighbours();i++)
-    {
-        cell = cells[particles[particle].cell].neighbours[i];
-
-        // Check all particles within cell.
-        for (unsigned int j=0;j<cells[cell].tally;j++)
-        {
-            neighbour = cells[cell].particles[j];
-
-            // Make sure the particles are different.
-            if (neighbour != particle)
-            {
-                std::vector <double> sep(box.dimension);
-
-                // Calculate separation.
-                for (unsigned int k=0;k<box.dimension;k++)
-                    sep[k] = position[k] - particles[neighbour].position[k];
-
-                // Enforce minimum image.
-                box.minimumImage(sep);
-
-                double normSqd = 0;
-
-                // Calculate squared norm of vector.
-                for (unsigned int k=0;k<box.dimension;k++)
-                    normSqd += sep[k]*sep[k];
-
-                if (normSqd < 1) return INF;
-                if (normSqd < squaredCutOffDistance) energy -= interactionEnergy;
-            }
-        }
-    }
-
-    return energy;
-}
-
 double SquareWellium::computePairEnergy(unsigned int particle1, double position1[],
     double orientation1[], unsigned int particle2, double position2[], double orientation2[])
 {
