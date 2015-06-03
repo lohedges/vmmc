@@ -73,7 +73,7 @@ double SquareWellium::computeEnergy(unsigned int particle, double position[], do
 }
 
 double SquareWellium::computePairEnergy(unsigned int particle1, double position1[],
-        double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
 {
     // Separation vector.
     std::vector <double> sep(box.dimension);

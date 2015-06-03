@@ -65,7 +65,7 @@ int main(int argc, char** argv)
 
     // Initialise the Lennard-Jones potential model.
     LennardJonesium lennardJonesium(box, particles, cells,
-            maxInteractions, interactionEnergy, interactionRange);
+        maxInteractions, interactionEnergy, interactionRange);
 
     // Initialise random number generator.
     MersenneTwister rng;
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
     double coordinates[dimension*nParticles];
     double orientations[dimension*nParticles];
 
-    // Copy particle coordinates/orientations into C-style arrays.
+    // Copy particle coordinates and orientations into C-style arrays.
     for (unsigned int i=0;i<nParticles;i++)
     {
         for (unsigned int j=0;j<dimension;j++)
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
 
     // Initalise the VMMC object.
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-            &boxSize[0], true, true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+        &boxSize[0], true, true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)

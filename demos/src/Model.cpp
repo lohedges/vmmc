@@ -20,13 +20,13 @@
 double INF = std::numeric_limits<double>::infinity();
 
 Model::Model(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
-        unsigned int maxInteractions_, double interactionEnergy_, double interactionRange_) :
-    box(box_),
-    particles(particles_),
-    cells(cells_),
-    maxInteractions(maxInteractions_),
-    interactionEnergy(interactionEnergy_),
-    interactionRange(interactionRange_)
+    unsigned int maxInteractions_, double interactionEnergy_, double interactionRange_) :
+        box(box_),
+        particles(particles_),
+        cells(cells_),
+        maxInteractions(maxInteractions_),
+        interactionEnergy(interactionEnergy_),
+        interactionRange(interactionRange_)
 {
     double cutOffDistance = 1.0 + interactionRange;
 
@@ -47,7 +47,7 @@ double Model::computePairEnergy(unsigned int, double[], double[], unsigned int, 
 }
 
 unsigned int Model::computeInteractions(unsigned int particle,
-        double position[], double orientation[], unsigned int interactions[])
+    double position[], double orientation[], unsigned int interactions[])
 {
     unsigned int cell;              // cell index
     unsigned int neighbour;         // index of neighbouring particle
