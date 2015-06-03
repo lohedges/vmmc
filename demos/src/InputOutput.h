@@ -18,9 +18,13 @@
 #ifndef _INPUTOUTPUT_H
 #define _INPUTOUTPUT_H
 
-#include <stdio.h>
+#include <cstdio>
+#include <fstream>
+#include <string>
 #include <vector>
 
+#include "Box.h"
+#include "CellList.h"
 #include "Particle.h"
 
 /*! \file InputOutput.h
@@ -33,10 +37,28 @@ public:
     //! Default constructor.
     InputOutput();
 
+    //! Load a restart configuration from a plain text file.
+    /*! \param fileName
+            The path to the restart file.
+
+        \param box
+            A reference to the simulation box object.
+
+        \param particles
+            A reference to the particle container.
+
+        \param cells
+            A refence to the cell list.
+
+        \param isIsotropic
+            Whether the potential is isotropic (no orientation data).
+     */
+    void loadConfiguration(std::string, Box&, std::vector <Particle>&, CellList&, bool);
+
     //! Append a particle configuration to an existing xyz trajectory.
     /*! \param dimension
             The dimension of the simulation box.
-            
+
         \param particles
             A vector of particles.
 

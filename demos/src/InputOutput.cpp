@@ -19,6 +19,66 @@
 
 InputOutput::InputOutput() {}
 
+void InputOutput::loadConfiguration(std::string fileName, Box& box,
+    std::vector <Particle>& particles, CellList& cells, bool isIsotropic)
+{
+    std::ifstream dataFile;
+
+    // Reset cell list.
+    cells.reset();
+
+    // Attempt to read data file.
+    dataFile.open(fileName.c_str());
+
+    // Check that the file is valid.
+    if (dataFile.good())
+    {
+        for (unsigned int i=0;i<particles.size();i++)
+        {
+            // Set particle index.
+            particles[i].index = i;
+
+            // Resize position and orientation vectors.
+            particles[i].position.resize(box.dimension);
+            particles[i].orientation.resize(box.dimension);
+
+            // Load position.
+            for (unsigned int j=0;j<box.dimension;j++)
+                dataFile >> particles[i].position[j];
+
+            if (!isIsotropic)
+            {
+                // Load orientation.
+                for (unsigned int j=0;j<box.dimension;j++)
+                    dataFile >> particles[i].orientation[j];
+            }
+            else
+            {
+                // Assign dummy orientation.
+                for (unsigned int j=0;j<box.dimension;j++)
+                    particles[i].orientation[j] = 1.0/sqrt(box.dimension);
+            }
+
+            // Enforce periodic boundary conditions.
+            box.periodicBoundaries(particles[i].position);
+
+            // Calculate the particle's cell index.
+            particles[i].cell = cells.getCell(particles[i]);
+
+            // Update cell list.
+            cells.initCell(particles[i].cell, particles[i]);
+        }
+    }
+    else
+    {
+        std::cerr << "[ERROR] InputOutput: Invalid restart file!\n";
+        exit(EXIT_FAILURE);
+    }
+
+    // Close file stream.
+    dataFile.close();
+}
+
 void InputOutput::appendXyzTrajectory(unsigned int dimension, const std::vector <Particle>& particles, bool clearFile)
 {
     FILE* pFile;
