@@ -18,8 +18,6 @@
 #ifndef _LENNARDJONESIUM_H
 #define _LENNARDJONESIUM_H
 
-#include "Box.h"
-#include "CellList.h"
 #include "Model.h"
 
 /*! \file LennardJonesium.h

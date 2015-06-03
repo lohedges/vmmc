@@ -22,9 +22,7 @@
 #include <fstream>
 #include <string>
 
-#include "Box.h"
 #include "CellList.h"
-#include "Particle.h"
 
 /*! \file InputOutput.h
     \brief A class for reading/writing data.

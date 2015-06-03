@@ -20,7 +20,6 @@
 
 #include "MersenneTwister.h"
 #include "Model.h"
-#include "Particle.h"
 
 /*! \file SingleParticleMove.h
     \brief A class for executing single particle Move Monte Carlo moves (translations and rotations).

@@ -20,7 +20,6 @@
 
 #include <limits>
 
-#include "Box.h"
 #include "CellList.h"
 
 /*! \file Model.h

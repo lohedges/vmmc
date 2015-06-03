@@ -23,7 +23,6 @@
 
 #include "CellList.h"
 #include "MersenneTwister.h"
-#include "Particle.h"
 
 /*! \file Initialise.h
 */
