@@ -18,32 +18,26 @@
 #include "Demo.h"
 #include "VMMC.h"
 
-// CALLBACK PROTOTYPES
-
-void applyPostMoveUpdates(unsigned int, double[], double[]);
-
 // FUNCTION PROTOTYPES
 
 double getEnergy(Model*);
-
-// GLOBALS
-
-unsigned int dimension = 3;                 // dimension of simulation box
-unsigned int nParticles = 1000;             // number of particles
-std::vector <Particle> particles;           // particle container
-CellList cells;                             // cell list
 
 // MAIN FUNCTION
 
 int main(int argc, char** argv)
 {
-    // Simulation parameters...
-
+    // Simulation parameters.
+    unsigned int dimension = 3;             // dimension of simulation box
+    unsigned int nParticles = 1000;         // number of particles
     double interactionEnergy = 2.6;         // pair interaction energy scale (in units of kBT)
     double interactionRange = 0.1;          // size of interaction range (in units of particle diameter)
     double density = 0.05;                  // particle density
     double baseLength;                      // base length of simulation box
     unsigned int maxInteractions = 15;      // maximum number of interactions per particle
+
+    // Data structures.
+    std::vector <Particle> particles;       // particle container
+    CellList cells;                          // cell list
 
     // Resize particle container.
     particles.resize(nParticles);
@@ -96,9 +90,7 @@ int main(int argc, char** argv)
         }
     }
 
-    // Initialise the VMMC callback functions...
-
-    // Bind model specific member functions for potential callbacks.
+    // Initialise the VMMC callback functions.
     using namespace std::placeholders;
     VMMC_energyCallback energyCallback =
         std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2, _3);
@@ -106,9 +98,8 @@ int main(int argc, char** argv)
         std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4, _5, _6);
     VMMC_interactionsCallback interactionsCallback =
         std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3, _4);
-
-    // Wrap a free function for applying the post-move updates.
-    VMMC_postMoveCallback postMoveCallback = applyPostMoveUpdates;
+    VMMC_postMoveCallback postMoveCallback =
+        std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2, _3);
 
     // Initalise VMMC object.
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
@@ -134,33 +125,14 @@ int main(int argc, char** argv)
     return (EXIT_SUCCESS);
 }
 
-// CALLBACK DEFINITIONS
-
-void applyPostMoveUpdates(unsigned int particle, double position[], double orientation[])
-{
-    // Copy coordinates/orientations.
-    for (unsigned int i=0;i<dimension;i++)
-    {
-        particles[particle].position[i] = position[i];
-        particles[particle].orientation[i] = orientation[i];
-    }
-
-    // Calculate the particle's cell index.
-    unsigned int newCell = cells.getCell(particles[particle]);
-
-    // Update cell lists if necessary.
-    if (particles[particle].cell != newCell)
-        cells.updateCell(newCell, particles[particle], particles);
-}
-
 // FUNCTION DEFINITIONS
 
 double getEnergy(Model* model)
 {
     double energy = 0;
 
-    for (unsigned int i=0;i<nParticles;i++)
-        energy += model->computeEnergy(i, &particles[i].position[0], &particles[i].orientation[0]);
+    for (unsigned int i=0;i<model->particles.size();i++)
+        energy += model->computeEnergy(i, &model->particles[i].position[0], &model->particles[i].orientation[0]);
 
-    return energy/(2*nParticles);
+    return energy/(2*model->particles.size());
 }
