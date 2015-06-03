@@ -31,7 +31,8 @@
 // Global infinity constant for hard-core repulsions.
 extern double INF;
 
-//! Base class defining virtual interfaces to model specific potentials.
+//! Base class defining general access functions for the model potential
+//! and a virtual interface for model specific pair energies.
 class Model
 {
 public:
@@ -69,7 +70,7 @@ public:
         \return
             The total interaction energy.
      */
-    virtual double computeEnergy(unsigned int, double[], double[]);
+    double computeEnergy(unsigned int, double[], double[]);
 
     //! Calculate the pair energy between two particles.
     /*! \param particle1
@@ -108,7 +109,7 @@ public:
         \return
             The number of interactions.
      */
-    virtual unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
+    unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
 
     //! Apply any post-move updates for a given particle.
     /*! \param index

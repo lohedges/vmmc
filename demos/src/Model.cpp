@@ -34,10 +34,38 @@ Model::Model(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
     squaredCutOffDistance = cutOffDistance * cutOffDistance;
 }
 
-double Model::computeEnergy(unsigned int, double[], double[])
+double Model::computeEnergy(unsigned int particle, double position[], double orientation[])
 {
-    std::cerr << "[ERROR] Model: Virtual function Model::computeEnergy() must be defined.\n";
-    exit(EXIT_FAILURE);
+    // N.B. This method is somewhat redundant since the same functionality
+    // could be achieved by using a combination of the computeInteractions
+    // and model specific computePairEnergy methods.
+
+    unsigned int cell;      // cell index
+    unsigned int neighbour; // index of neighbouring particle
+    double energy = 0;      // energy counter
+
+    // Check all neighbouring cells including same cell.
+    for (unsigned int i=0;i<cells.getNeighbours();i++)
+    {
+        cell = cells[particles[particle].cell].neighbours[i];
+
+        // Check all particles within cell.
+        for (unsigned int j=0;j<cells[cell].tally;j++)
+        {
+            neighbour = cells[cell].particles[j];
+
+            // Make sure the particles are different.
+            if (neighbour != particle)
+            {
+                // Calculate model specific pair energy.
+                energy += computePairEnergy(particle, position, orientation,
+                          neighbour, &particles[neighbour].position[0],
+                          &particles[neighbour].orientation[0]);
+            }
+        }
+    }
+
+    return energy;
 }
 
 double Model::computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[])
