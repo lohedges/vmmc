@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
     // Data structures.
     std::vector <Particle> particles;       // particle container
-    CellList cells;                          // cell list
+    CellList cells;                         // cell list
 
     // Resize particle container.
     particles.resize(nParticles);
