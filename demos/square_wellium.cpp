@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 
     // Initialise cell list.
     cells.setDimension(dimension);
-    cells.initialise(box.boxSize, 1 + interactionRange);
+    cells.initialise(box.boxSize, interactionRange);
 
     // Initialise the square well potential model.
     SquareWellium squareWellium(box, particles, cells,
