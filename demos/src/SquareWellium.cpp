@@ -25,8 +25,6 @@ SquareWellium::SquareWellium(Box& box_,
                              double interactionRange_) :
     Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
 {
-    // Work out squared cut-off distance.
-    squaredCutOffDistance = (1.0 + interactionRange) * (1.0 + interactionRange);
 }
 
 double SquareWellium::computePairEnergy(unsigned int particle1, double position1[],
