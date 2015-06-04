@@ -25,10 +25,8 @@ LennardJonesium::LennardJonesium(Box& box_,
                              double interactionRange_) :
     Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
 {
-    double cutOffDistance = 1.0 + interactionRange;
-
     // Work out the potential shift.
-    potentialShift = std::pow(1.0/cutOffDistance, 12) - std::pow(1/cutOffDistance, 6);
+    potentialShift = std::pow(1.0/interactionRange, 12) - std::pow(1/interactionRange, 6);
 }
 
 double LennardJonesium::computePairEnergy(unsigned int particle1, double position1[],
