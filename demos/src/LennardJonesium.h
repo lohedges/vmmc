@@ -23,7 +23,7 @@
 /*! \file LennardJonesium.h
 */
 
-//! Class defining the square-well potential.
+//! Class defining the Lennard-Jones potential.
 class LennardJonesium : public Model
 {
 public:
@@ -41,10 +41,10 @@ public:
             The maximum number of interactions per particle.
 
         \param interactionEnergy_
-            The square well interaction energy (in units of kBT).
+            The potential energy scale (in units of kBT).
 
         \param interactionRange_
-            The square well interaction range (in units of the particle diameter).
+            The potential cut-off distance.
      */
     LennardJonesium(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
 
@@ -70,7 +70,7 @@ public:
     double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
 
 private:
-    double potentialShift;  //!> shift factor to zero potential at cut-off
+    double potentialShift;  //!> shift factor to zero potential at cut-off.
 };
 
 #endif	/* _LENNARDJONESIUM_H */
