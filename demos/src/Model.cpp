@@ -28,10 +28,8 @@ Model::Model(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
         interactionEnergy(interactionEnergy_),
         interactionRange(interactionRange_)
 {
-    double cutOffDistance = 1.0 + interactionRange;
-
     // Work out squared cut-off distance.
-    squaredCutOffDistance = cutOffDistance * cutOffDistance;
+    squaredCutOffDistance = interactionRange_ * interactionRange;
 }
 
 double Model::computeEnergy(unsigned int particle, double position[], double orientation[])
