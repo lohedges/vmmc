@@ -293,7 +293,7 @@ void VMMC::proposeMove()
 
             // Get a list of pair interactions.
             unsigned int nPairs = interactionsCallback(moveParams.seed, &particles[moveParams.seed].preMovePosition[0],
-                    &particles[moveParams.seed].preMoveOrientation[0], pairInteractions);
+                &particles[moveParams.seed].preMoveOrientation[0], pairInteractions);
 
             // Abort move if there are no neighbours, else choose one at random.
             if (nPairs == 0) isEarlyExit = true;
@@ -361,15 +361,15 @@ bool VMMC::accept()
         {
             // Get a list of pair interactions.
             nPairs = interactionsCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
-                    &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
+                &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
 
             // Test all pair interactions.
             for (unsigned int j=0;j<nPairs;j++)
             {
                 energy = pairEnergyCallback(moveList[i],
-                        &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0],
-                        pairInteractions[j], &particles[pairInteractions[j]].preMovePosition[0],
-                        &particles[pairInteractions[j]].preMoveOrientation[0]);
+                    &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0],
+                    pairInteractions[j], &particles[pairInteractions[j]].preMovePosition[0],
+                    &particles[pairInteractions[j]].preMoveOrientation[0]);
 
                 x = moveList[i];
                 y = pairInteractions[j];
@@ -404,7 +404,7 @@ bool VMMC::accept()
         if (!isRepusive)
         {
             energy = energyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
-                    &particles[moveList[i]].preMoveOrientation[0]);
+                &particles[moveList[i]].preMoveOrientation[0]);
 
             // Overlap.
             if (energy > 1e6) return false;
@@ -416,13 +416,13 @@ bool VMMC::accept()
             unsigned int pairInteractions[maxInteractions];
 
             unsigned int nPairs = interactionsCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
-                    &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
+                &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
 
             for (unsigned int j=0;j<nPairs;j++)
             {
                 energy = pairEnergyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
-                        &particles[moveList[i]].preMoveOrientation[0], pairInteractions[j],
-                        &particles[pairInteractions[j]].preMovePosition[0], &particles[pairInteractions[j]].preMoveOrientation[0]);
+                    &particles[moveList[i]].preMoveOrientation[0], pairInteractions[j],
+                    &particles[pairInteractions[j]].preMovePosition[0], &particles[pairInteractions[j]].preMoveOrientation[0]);
 
                 x = moveList[i];
                 y = pairInteractions[j];
@@ -609,7 +609,7 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
 
         // Get list of interactions.
         unsigned int nPairs = interactionsCallback(particle, &particles[particle].preMovePosition[0],
-                &particles[particle].preMoveOrientation[0], pairInteractions);
+            &particles[particle].preMoveOrientation[0], pairInteractions);
 
         // Loop over all interactions.
         for (unsigned int i=0;i<nPairs;i++)
@@ -621,18 +621,18 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
             {
                 // Pre-move pair energy.
                 double initialEnergy = pairEnergyCallback(particle,
-                        &particles[particle].preMovePosition[0], &particles[particle].preMoveOrientation[0],
-                        neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+                    &particles[particle].preMovePosition[0], &particles[particle].preMoveOrientation[0],
+                    neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
 
                 // Post-move pair energy.
                 double finalEnergy = pairEnergyCallback(particle,
-                        &particles[particle].postMovePosition[0], &particles[particle].postMovePosition[0],
-                        neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+                    &particles[particle].postMovePosition[0], &particles[particle].postMovePosition[0],
+                    neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
 
                 // Pair energy following the reverse virtual move.
                 double reverseMoveEnergy = pairEnergyCallback(particle,
-                        &reverseMoveParticle.postMovePosition[0], &reverseMoveParticle.postMoveOrientation[0],
-                        neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+                    &reverseMoveParticle.postMovePosition[0], &reverseMoveParticle.postMoveOrientation[0],
+                    neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
 
                 // Forward link weight.
                 double linkWeight = std::max(1.0-exp(initialEnergy-finalEnergy),0.0);

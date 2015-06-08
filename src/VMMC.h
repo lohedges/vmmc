@@ -197,7 +197,7 @@ public:
             Apply any post-move updates following the virtual particle move.
      */
     VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool, bool,
-            const VMMC_energyCallback&, const VMMC_pairEnergyCallback&, const VMMC_interactionsCallback&, const VMMC_postMoveCallback&);
+        const VMMC_energyCallback&, const VMMC_pairEnergyCallback&, const VMMC_interactionsCallback&, const VMMC_postMoveCallback&);
 
     //! Overloaded ++ operator. Perform a single VMMC step.
     void operator ++ (const int);
