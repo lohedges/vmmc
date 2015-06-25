@@ -19,7 +19,7 @@
 
 double INF = std::numeric_limits<double>::infinity();
 
-Model::Model(Box& box_, std::vector <Particle>& particles_, CellList& cells_,
+Model::Model(Box& box_, std::vector<Particle>& particles_, CellList& cells_,
     unsigned int maxInteractions_, double interactionEnergy_, double interactionRange_) :
         box(box_),
         particles(particles_),
@@ -92,7 +92,7 @@ unsigned int Model::computeInteractions(unsigned int particle,
             // Make sure the particles are different.
             if (neighbour != particle)
             {
-                std::vector <double> sep(box.dimension);
+                std::vector<double> sep(box.dimension);
 
                 // Compute separation.
                 for (unsigned int k=0;k<box.dimension;k++)

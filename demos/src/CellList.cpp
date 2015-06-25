@@ -21,7 +21,7 @@ CellList::CellList() : dimension(3)
 {
 }
 
-CellList::CellList(unsigned int dimension_, const std::vector <double>& boxSize, double range) : dimension(dimension_)
+CellList::CellList(unsigned int dimension_, const std::vector<double>& boxSize, double range) : dimension(dimension_)
 {
     this->initialise(boxSize, range);
 }
@@ -40,7 +40,7 @@ CellList& CellList::operator = (const CellList& cells)
     return *this;
 }
 
-CellList& CellList::operator = (const std::vector <Cell>& cells)
+CellList& CellList::operator = (const std::vector<Cell>& cells)
 {
     // resize cell list
     (*this).resize(cells.size());
@@ -54,7 +54,7 @@ CellList& CellList::operator = (const std::vector <Cell>& cells)
     return *this;
 }
 
-void CellList::initialise(const std::vector <double>& boxSize, double range)
+void CellList::initialise(const std::vector<double>& boxSize, double range)
 {
     unsigned int i,j,k,m;
     unsigned int a,b,c;
@@ -233,7 +233,7 @@ void CellList::initCell(int newCell, Particle& particle)
     }
 }
 
-void CellList::initCellList(std::vector <Particle>& particles)
+void CellList::initCellList(std::vector<Particle>& particles)
 {
     for (unsigned int i=0;i<particles.size();i++)
     {
@@ -241,7 +241,7 @@ void CellList::initCellList(std::vector <Particle>& particles)
     }
 }
 
-void CellList::updateCell(int newCell, Particle& particle, std::vector <Particle>& particles)
+void CellList::updateCell(int newCell, Particle& particle, std::vector<Particle>& particles)
 {
     // Remove from old list
     at(particle.cell).tally--;

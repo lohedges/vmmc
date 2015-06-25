@@ -18,7 +18,7 @@
 #include "LennardJonesium.h"
 
 LennardJonesium::LennardJonesium(Box& box_,
-                             std::vector <Particle>& particles_,
+                             std::vector<Particle>& particles_,
                              CellList& cells_,
                              unsigned int maxInteractions_,
                              double interactionEnergy_,
@@ -33,7 +33,7 @@ double LennardJonesium::computePairEnergy(unsigned int particle1, double positio
     double orientation1[], unsigned int particle2, double position2[], double orientation2[])
 {
     // Separation vector.
-    std::vector <double> sep(box.dimension);
+    std::vector<double> sep(box.dimension);
 
     // Calculate separation.
     for (unsigned int i=0;i<box.dimension;i++)

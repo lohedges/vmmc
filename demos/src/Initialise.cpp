@@ -21,7 +21,7 @@ Initialise::Initialise()
 {
 }
 
-void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box& box, MersenneTwister& rng)
+void Initialise::random(std::vector<Particle>& particles, CellList& cells, Box& box, MersenneTwister& rng)
 {
     for (unsigned i=0;i<particles.size();i++)
     {
@@ -32,7 +32,7 @@ void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box&
         bool isOverlap = true;
 
         // Temporary vector.
-        std::vector <double> vec(box.dimension);
+        std::vector<double> vec(box.dimension);
 
         // Set particle index.
         particles[i].index = i;
@@ -83,7 +83,7 @@ void Initialise::random(std::vector <Particle>& particles, CellList& cells, Box&
     }
 }
 
-bool Initialise::checkOverlap(Particle& particle, std::vector <Particle>& particles, CellList& cells, Box& box)
+bool Initialise::checkOverlap(Particle& particle, std::vector<Particle>& particles, CellList& cells, Box& box)
 {
     unsigned int cell, neighbour;
 
@@ -101,7 +101,7 @@ bool Initialise::checkOverlap(Particle& particle, std::vector <Particle>& partic
             if (neighbour != particle.index)
             {
                 // Particle separtion vector.
-                std::vector <double> sep(box.dimension);
+                std::vector<double> sep(box.dimension);
 
                 // Compute separation.
                 for (unsigned int k=0;k<box.dimension;k++)

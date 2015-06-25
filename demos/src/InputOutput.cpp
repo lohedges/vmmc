@@ -20,7 +20,7 @@
 InputOutput::InputOutput() {}
 
 void InputOutput::loadConfiguration(std::string fileName, Box& box,
-    std::vector <Particle>& particles, CellList& cells, bool isIsotropic)
+    std::vector<Particle>& particles, CellList& cells, bool isIsotropic)
 {
     std::ifstream dataFile;
 
@@ -79,7 +79,34 @@ void InputOutput::loadConfiguration(std::string fileName, Box& box,
     dataFile.close();
 }
 
-void InputOutput::appendXyzTrajectory(unsigned int dimension, const std::vector <Particle>& particles, bool clearFile)
+void InputOutput::saveConfiguration(std::string fileName, Box& box,
+    std::vector<Particle>& particles, bool isIsotropic)
+{
+    // Create file pointer.
+    FILE *pFile = fopen(fileName.c_str(), "w");
+
+    for (unsigned int i=0;i<particles.size();i++)
+    {
+        // Write particle position.
+        fprintf(pFile, "%5.4f %5.4f", particles[i].position[0], particles[i].position[1]);
+        if (box.dimension == 3) fprintf(pFile, " %5.4f", particles[i].position[2]);
+
+        // Write particle orientation.
+        if (!isIsotropic)
+        {
+            fprintf(pFile, " %5.4f %5.4f", particles[i].orientation[0], particles[i].orientation[1]);
+            if (box.dimension == 3) fprintf(pFile, " %5.4f", particles[i].orientation[2]);
+        }
+
+        // Terminate line.
+        fprintf(pFile, "\n");
+    }
+
+    // Close file pointer.
+    fclose(pFile);
+}
+
+void InputOutput::appendXyzTrajectory(unsigned int dimension, const std::vector<Particle>& particles, bool clearFile)
 {
     FILE* pFile;
 
@@ -102,7 +129,7 @@ void InputOutput::appendXyzTrajectory(unsigned int dimension, const std::vector 
     fclose(pFile);
 }
 
-void InputOutput::vmdScript(const std::vector <double>& boxSize)
+void InputOutput::vmdScript(const std::vector<double>& boxSize)
 {
     FILE *pFile;
 

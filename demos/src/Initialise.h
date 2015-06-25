@@ -47,7 +47,7 @@ public:
         \param rng
             A reference to the random number generator.
      */
-    void random(std::vector <Particle>&, CellList&, Box&, MersenneTwister&);
+    void random(std::vector<Particle>&, CellList&, Box&, MersenneTwister&);
 
 private:
     //! Helper function for testing particle insertions.
@@ -63,7 +63,7 @@ private:
         \param box
             A reference to the simulation box.
      */
-    bool checkOverlap(Particle&, std::vector <Particle>&, CellList&, Box&);
+    bool checkOverlap(Particle&, std::vector<Particle>&, CellList&, Box&);
 
     //!< maximum number of trial particle insertions (per particle)
     static const unsigned int MAX_TRIALS = 100000000;

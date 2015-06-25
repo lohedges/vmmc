@@ -52,7 +52,7 @@ public:
         \param interactionRange_
             The square well interaction range (in units of the particle diameter).
      */
-    Model(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
+    Model(Box&, std::vector<Particle>&, CellList&, unsigned int, double, double);
 
     //! Calculate the total interaction energy felt by a particle.
     /*! \param index
@@ -121,7 +121,7 @@ public:
     void applyPostMoveUpdates(unsigned int, double[], double[]);
 
     Box& box;                           //!> a reference to the simulation box
-    std::vector <Particle>& particles;  //!> a reference to the particle list
+    std::vector<Particle>& particles;   //!> a reference to the particle list
     CellList& cells;                    //!> a reference to the cell list
 
 protected:

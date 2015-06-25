@@ -35,13 +35,13 @@ struct Cell
 {
     unsigned int index;                     //!< cell index
     unsigned int tally;                     //!< number of particles in the cell
-    std::vector <unsigned int> particles;   //!< indices of particles in the cell
-    std::vector <unsigned int> neighbours;  //!< indices of nearest neighbour cells
+    std::vector<unsigned int> particles;    //!< indices of particles in the cell
+    std::vector<unsigned int> neighbours;   //!< indices of nearest neighbour cells
 };
 
 //! Container class for storing a list of cells.
 //! This class contains the main cell list that is manipulated by the simulation.
-class CellList : public std::vector <Cell>
+class CellList : public std::vector<Cell>
 {
 public:
     //! Default constructor.
@@ -57,13 +57,13 @@ public:
         \param range
             Maximum interaction range.
      */
-    CellList(unsigned int, const std::vector <double>&, double);
+    CellList(unsigned int, const std::vector<double>&, double);
 
     //! Copy constructor. \param cells A reference to an existing CellList object.
     CellList& operator = (const CellList&);
 
     //! Copy constructor. \param cells A vector of existing Cell data structures.
-    CellList& operator = (const std::vector <Cell>&);
+    CellList& operator = (const std::vector<Cell>&);
 
     //! Initialise cell lists.
     /*! \param boxSize
@@ -72,7 +72,7 @@ public:
         \param range
             Maximum interaction range.
      */
-    void initialise(const std::vector <double>&, double);
+    void initialise(const std::vector<double>&, double);
 
     //! Reset cell lists (zero cell tallys).
     void reset();
@@ -98,7 +98,7 @@ public:
     //! Initialise cell list for all particles.
     /*! \param particles Reference to a vector of particles.
      */
-    void initCellList(std::vector <Particle>&);
+    void initCellList(std::vector<Particle>&);
 
     //! Update cell list for an individual particle.
     /*! \param newCell
@@ -110,7 +110,7 @@ public:
         \param particles
             Reference to a vector of particles.
      */
-    void updateCell(int, Particle&, std::vector <Particle>&);
+    void updateCell(int, Particle&, std::vector<Particle>&);
 
     //! Set the dimensionality of the cell list.
     /*! \param dimension_
@@ -126,8 +126,8 @@ private:
     unsigned int nCells;                        //!< total number of cells
     unsigned int nNeighbours;                   //!< number of neighbours per cell
     unsigned int maxParticles;                  //!< maximum number of particles per cell
-    std::vector <unsigned int> cellsPerAxis;    //!< number of cells per axis
-    std::vector <double> cellSpacing;           //!< spacing between cells
+    std::vector<unsigned int> cellsPerAxis;     //!< number of cells per axis
+    std::vector<double> cellSpacing;            //!< spacing between cells
 };
 
 #endif  /* _CELLLIST_H */

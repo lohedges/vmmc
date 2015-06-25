@@ -36,26 +36,26 @@ public:
     /*! \param boxSize_
             Vector containing x,y,z size of box.
      */
-    Box(const std::vector <double>&);
+    Box(const std::vector<double>&);
 
     //! Apply periodic boundary conditions.
     /* \param coord
             x,y,z coordinate vector.
      */
-    void periodicBoundaries(std::vector <double>&);
+    void periodicBoundaries(std::vector<double>&);
 
     //! Compute minimum image separation.
     /*! \param separation
             x,y,z separation vector.
      */
-    void minimumImage(std::vector <double>&);
+    void minimumImage(std::vector<double>&);
 
-    std::vector <double> boxSize;       //!< size of the box in x,y,z directions
+    std::vector<double> boxSize;        //!< size of the box in x,y,z directions
     unsigned int dimension;             //!< dimensionality of the simulation box
 
 private:
-    std::vector <double> posMinImage;   //!< minimum image condition in each dimension
-    std::vector <double> negMinImage;   //!< negative minimum image condition in each dimension
+    std::vector<double> posMinImage;    //!< minimum image condition in each dimension
+    std::vector<double> negMinImage;    //!< negative minimum image condition in each dimension
 };
 
 #endif  /* _BOX_H */

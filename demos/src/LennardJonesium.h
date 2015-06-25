@@ -46,7 +46,7 @@ public:
         \param interactionRange_
             The potential cut-off distance.
      */
-    LennardJonesium(Box&, std::vector <Particle>&, CellList&, unsigned int, double, double);
+    LennardJonesium(Box&, std::vector<Particle>&, CellList&, unsigned int, double, double);
 
     //! Calculate the pair energy between two particles.
     /*! \param particle1

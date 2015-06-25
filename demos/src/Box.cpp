@@ -17,7 +17,7 @@
 
 #include "Box.h"
 
-Box::Box(const std::vector <double>& boxSize_) :
+Box::Box(const std::vector<double>& boxSize_) :
     boxSize(boxSize_)
 {
     dimension = boxSize.size();
@@ -39,7 +39,7 @@ Box::Box(const std::vector <double>& boxSize_) :
     }
 }
 
-void Box::periodicBoundaries(std::vector <double>& coord)
+void Box::periodicBoundaries(std::vector<double>& coord)
 {
     for (unsigned int i=0;i<dimension;i++)
     {
@@ -57,7 +57,7 @@ void Box::periodicBoundaries(std::vector <double>& coord)
     }
 }
 
-void Box::minimumImage(std::vector <double>& separation)
+void Box::minimumImage(std::vector<double>& separation)
 {
     for (unsigned int i=0;i<dimension;i++)
     {

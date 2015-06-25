@@ -36,8 +36,8 @@ public:
     Particle(unsigned int);
 
     unsigned int index;                 //!< particle index
-    std::vector <double> position;      //!< x,y,z coordinates of particle
-    std::vector <double> orientation;   //!< orientation of particle (unit vector)
+    std::vector<double> position;      //!< x,y,z coordinates of particle
+    std::vector<double> orientation;   //!< orientation of particle (unit vector)
 
     unsigned int cell;                  //!< index of the cell in which the particle is located
     unsigned int posCell;               //!< position of particle in the corresponding cell list

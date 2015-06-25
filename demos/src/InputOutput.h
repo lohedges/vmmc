@@ -50,7 +50,22 @@ public:
         \param isIsotropic
             Whether the potential is isotropic (no orientation data).
      */
-    void loadConfiguration(std::string, Box&, std::vector <Particle>&, CellList&, bool);
+    void loadConfiguration(std::string, Box&, std::vector<Particle>&, CellList&, bool);
+
+    //! Save a restart configuration to a plain text file.
+    /*! \param fileName
+            The path to the restart file.
+
+        \param box
+            A reference to the simulation box object.
+
+        \param particles
+            A reference to the particle container.
+
+        \param isIsotropic
+            Whether the potential is isotropic (no orientation data).
+     */
+    void saveConfiguration(std::string, Box&, std::vector<Particle>&, bool);
 
     //! Append a particle configuration to an existing xyz trajectory.
     /*! \param dimension
@@ -62,13 +77,13 @@ public:
         \param clearFile
             Whether to clear the trajectory file before writing.
      */
-    void appendXyzTrajectory(unsigned int, const std::vector <Particle>&, bool);
+    void appendXyzTrajectory(unsigned int, const std::vector<Particle>&, bool);
 
     //! Create a VMD TcL script to set the particle view and draw a bounding box.
     /*! \param boxSize
             The size of the simulation box in each dimension.
      */
-    void vmdScript(const std::vector <double>&);
+    void vmdScript(const std::vector<double>&);
 };
 
 #endif  /* _INPUTOUTPUT_H */

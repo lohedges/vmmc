@@ -31,7 +31,7 @@ struct MoveParams
     unsigned int seed;                          //!> index of the seed particle
     bool isRotation;                            //!> whether the move is a rotation
     double stepSize;                            //!> the magnitude of the trial move
-    std::vector <double> trialVector;           //!> vector for trial move
+    std::vector<double> trialVector;            //!> vector for trial move
     Particle preMoveParticle;                   //!> particle state before the trial move
 };
 
@@ -127,7 +127,7 @@ private:
         \param angle
             Trial rotation angle.
      */
-    void rotate3D(std::vector <double>&, std::vector <double>&, std::vector <double>&, double);
+    void rotate3D(std::vector<double>&, std::vector<double>&, std::vector<double>&, double);
 
     //! Calculate a simple in plane rotatation vector.
     /*! \param v1
@@ -139,7 +139,7 @@ private:
         \param angle
             Trial rotation angle.
      */
-    void rotate2D(std::vector <double>&, std::vector <double>&, double);
+    void rotate2D(std::vector<double>&, std::vector<double>&, double);
 
     //! Compute the norm of a vector.
     /*! \param vec
@@ -148,7 +148,7 @@ private:
         \return
             The norm of the vector.
      */
-    double computeNorm(std::vector <double>&);
+    double computeNorm(std::vector<double>&);
 };
 
 #endif  /* _SINGLEPARTICLEMOVE_H */

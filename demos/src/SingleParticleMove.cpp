@@ -167,7 +167,7 @@ void SingleParticleMove::proposeMove()
     }
     else                        // Rotation.
     {
-        std::vector <double> vec(model->box.dimension);
+        std::vector<double> vec(model->box.dimension);
 
         // Calculate orientation rotation vector.
         if (is3D) rotate3D(model->particles[moveParams.seed].orientation, moveParams.trialVector, vec, moveParams.stepSize);
@@ -194,7 +194,7 @@ bool SingleParticleMove::accept()
     else return false;
 }
 
-void SingleParticleMove::rotate3D(std::vector <double>& v1, std::vector <double>& v2, std::vector <double>& v3, double angle)
+void SingleParticleMove::rotate3D(std::vector<double>& v1, std::vector<double>& v2, std::vector<double>& v3, double angle)
 {
     double c = cos(angle);
     double s = sin(angle);
@@ -206,7 +206,7 @@ void SingleParticleMove::rotate3D(std::vector <double>& v1, std::vector <double>
     v3[2] = ((v1[2] - v2[2]*v1Dotv2))*(c - 1) + (v2[1]*v1[0] - v2[0]*v1[1])*s;
 }
 
-void SingleParticleMove::rotate2D(std::vector <double>& v1, std::vector <double>& v2, double angle)
+void SingleParticleMove::rotate2D(std::vector<double>& v1, std::vector<double>& v2, double angle)
 {
     double c = cos(angle);
     double s = sin(angle);
@@ -215,7 +215,7 @@ void SingleParticleMove::rotate2D(std::vector <double>& v1, std::vector <double>
     v2[1] = v1[1] - (v1[0]*s + v1[1]*c);
 }
 
-double SingleParticleMove::computeNorm(std::vector <double>& vec)
+double SingleParticleMove::computeNorm(std::vector<double>& vec)
 {
     double normSquared = 0;
 
