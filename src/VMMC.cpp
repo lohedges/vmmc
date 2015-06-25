@@ -218,7 +218,7 @@ void VMMC::getClusterTranslations(unsigned long long clusterStatistics[]) const
         clusterStatistics[i] = clusterTranslations[i];
 }
 
-const std::vector <unsigned long long>& VMMC::getClusterTranslations() const
+const std::vector<unsigned long long>& VMMC::getClusterTranslations() const
 {
     return clusterTranslations;
 }
@@ -229,7 +229,7 @@ void VMMC::getClusterRotations(unsigned long long clusterStatistics[]) const
         clusterStatistics[i] = clusterRotations[i];
 }
 
-const std::vector <unsigned long long>& VMMC::getClusterRotations() const
+const std::vector<unsigned long long>& VMMC::getClusterRotations() const
 {
     return clusterRotations;
 }
@@ -471,8 +471,8 @@ bool VMMC::accept()
 
 double VMMC::computeHydrodynamicRadius() const
 {
-    std::vector <double> centerOfMass(dimension);
-    std::vector <double> delta(dimension);
+    std::vector<double> centerOfMass(dimension);
+    std::vector<double> delta(dimension);
 
     double hydroRadius;
 
@@ -535,8 +535,8 @@ void VMMC::computePostMoveParticle(unsigned int particle, VMMC_Particle& postMov
     }
     else                        // Rotation.
     {
-        std::vector <double> v1(dimension);
-        std::vector <double> v2(dimension);
+        std::vector<double> v1(dimension);
+        std::vector<double> v2(dimension);
 
         // Calculate coordinates relative to the global rotation point.
         for (unsigned int i=0;i<dimension;i++)
@@ -565,7 +565,7 @@ void VMMC::computePostMoveParticle(unsigned int particle, VMMC_Particle& postMov
 
 void VMMC::initiateParticle(unsigned int particle, VMMC_Particle& linker)
 {
-    std::vector <double> delta(dimension);
+    std::vector<double> delta(dimension);
 
     // Calculate minumum image separation.
     computeSeparation(linker.pseudoPosition, particles[particle].preMovePosition, delta);
@@ -682,7 +682,7 @@ void VMMC::swapMoveStatus()
         postMoveCallback(moveList[i], &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0]);
 }
 
-void VMMC::rotate3D(std::vector <double>& v1, std::vector <double>& v2, std::vector <double>& v3, double angle)
+void VMMC::rotate3D(std::vector<double>& v1, std::vector<double>& v2, std::vector<double>& v3, double angle)
 {
     double c = cos(angle);
     double s = sin(angle);
@@ -694,7 +694,7 @@ void VMMC::rotate3D(std::vector <double>& v1, std::vector <double>& v2, std::vec
     v3[2] = ((v1[2] - v2[2]*v1Dotv2))*(c - 1) + (v2[1]*v1[0] - v2[0]*v1[1])*s;
 }
 
-void VMMC::rotate2D(std::vector <double>& v1, std::vector <double>& v2, double angle)
+void VMMC::rotate2D(std::vector<double>& v1, std::vector<double>& v2, double angle)
 {
     double c = cos(angle);
     double s = sin(angle);
@@ -703,7 +703,7 @@ void VMMC::rotate2D(std::vector <double>& v1, std::vector <double>& v2, double a
     v2[1] = v1[1] - (v1[0]*s + v1[1]*c);
 }
 
-void VMMC::computeSeparation(std::vector <double>& v1, std::vector <double>& v2, std::vector <double>& sep)
+void VMMC::computeSeparation(std::vector<double>& v1, std::vector<double>& v2, std::vector<double>& sep)
 {
     for (unsigned int i=0;i<dimension;i++)
     {
@@ -723,7 +723,7 @@ void VMMC::computeSeparation(std::vector <double>& v1, std::vector <double>& v2,
     }
 }
 
-void VMMC::applyPeriodicBoundaryConditions(std::vector <double>& vec)
+void VMMC::applyPeriodicBoundaryConditions(std::vector<double>& vec)
 {
     for (unsigned int i=0;i<vec.size();i++)
     {
@@ -741,7 +741,7 @@ void VMMC::applyPeriodicBoundaryConditions(std::vector <double>& vec)
     }
 }
 
-double VMMC::computeNorm(std::vector <double>& vec)
+double VMMC::computeNorm(std::vector<double>& vec)
 {
     double normSquared = 0;
 

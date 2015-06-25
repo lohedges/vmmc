@@ -116,7 +116,7 @@ struct VMMC_Params
     unsigned int seed;                          //!> index of the seed particle
     bool isRotation;                            //!> whether the move is a rotation
     double stepSize;                            //!> the magnitude of the trial move
-    std::vector <double> trialVector;           //!> vector for trial move
+    std::vector<double> trialVector;            //!> vector for trial move
 };
 
 //! Container for storing particle attributes during the virtual move.
@@ -136,11 +136,11 @@ public:
     bool isMoving;                              //!> whether the particle is part of the virtual move
     bool isFrustrated;                          //!> whether the particle is involved in a frustrated link
     unsigned int posFrustated;                  //!> index in the frustrated links array
-    std::vector <double> preMovePosition;       //!> particle position before the virtual move
-    std::vector <double> preMoveOrientation;    //!> particle orientation before the virtual move
-    std::vector <double> postMovePosition;      //!> particle position following the virtual move
-    std::vector <double> postMoveOrientation;   //!> particle orientation following the virtual move
-    std::vector <double> pseudoPosition;        //!> position of the particle in the pseudo-cluster
+    std::vector<double> preMovePosition;        //!> particle position before the virtual move
+    std::vector<double> preMoveOrientation;     //!> particle orientation before the virtual move
+    std::vector<double> postMovePosition;       //!> particle position following the virtual move
+    std::vector<double> postMoveOrientation;    //!> particle orientation following the virtual move
+    std::vector<double> pseudoPosition;         //!> position of the particle in the pseudo-cluster
 };
 
 //! Main VMMC class.
@@ -242,7 +242,7 @@ public:
     /*! \return
             A const reference to the cluster statistics vector.
      */
-    const std::vector <unsigned long long>& getClusterTranslations() const;
+    const std::vector<unsigned long long>& getClusterTranslations() const;
 
     //! Get the number of accepted rotation moves for each cluster size.
     /*! \param clusterStatistics
@@ -254,7 +254,7 @@ public:
     /*! \return
             A const reference to the cluster statistics vector.
      */
-    const std::vector <unsigned long long>& getClusterRotations() const;
+    const std::vector<unsigned long long>& getClusterRotations() const;
 
     //! Reset statistics.
     void reset();
@@ -274,7 +274,7 @@ private:
     double probTranslate;                       //!< the relative probability of translational moves (vs rotations)
     double referenceRadius;                     //!< reference particle radius (for Stoke's scaling)
     unsigned int maxInteractions;               //!< maximum number of interactions per particle
-    std::vector <double> boxSize;               //!< the size of the simulation box in each dimension
+    std::vector<double> boxSize;                //!< the size of the simulation box in each dimension
     bool is3D;                                  //!< whether the simulation is three-dimensional
     bool isIsotropic;                           //!< whether the potential is isotropic
     bool isRepusive;                            //!< whether there are finite repulsive interactions
@@ -284,19 +284,19 @@ private:
     VMMC_interactionsCallback interactionsCallback;     //!< callback function to determine particle interactions
     VMMC_postMoveCallback postMoveCallback;             //!< callback function to apply any post-move updates
 
-    std::vector <VMMC_Particle> particles;      //!< vector of particles
+    std::vector<VMMC_Particle> particles;       //!< vector of particles
 
     unsigned int nMoving;                                   //!< the number of particles in the cluster
-    std::vector <unsigned int> moveList;                    //!< the indices of particles in the cluster
-    std::vector <unsigned long long> clusterTranslations;   //!< array for storing the number of translations for each cluster size
-    std::vector <unsigned long long> clusterRotations;      //!< array for storing the number of rotations for each cluster size
+    std::vector<unsigned int> moveList;                     //!< the indices of particles in the cluster
+    std::vector<unsigned long long> clusterTranslations;    //!< array for storing the number of translations for each cluster size
+    std::vector<unsigned long long> clusterRotations;       //!< array for storing the number of rotations for each cluster size
 
     unsigned int nFrustrated;                               //!< the number of frustrated links
-    std::vector <unsigned int> frustratedLinks;             //!< array of particles involved in frustrated links
+    std::vector<unsigned int> frustratedLinks;              //!< array of particles involved in frustrated links
 
     unsigned int nInteractions;                             //!< the number of pair interactions for particles in the cluster
-    std::vector <std::vector <unsigned int> > interactions; //!< indices of particle pairs that interact in the cluster
-    std::vector <std::vector <double> > pairEnergyMatrix;   //!< pair energies for particle interactions in the cluster
+    std::vector<std::vector<unsigned int> > interactions;  //!< indices of particle pairs that interact in the cluster
+    std::vector<std::vector<double> > pairEnergyMatrix;    //!< pair energies for particle interactions in the cluster
 
     unsigned int cutOff;                        //!< the cut-off cluster size for the trial move
     bool isEarlyExit;                           //!< whether trial move aborted early
@@ -350,7 +350,7 @@ private:
         \param angle
             Trial rotation angle.
      */
-    void rotate3D(std::vector <double>&, std::vector <double>&, std::vector <double>&, double);
+    void rotate3D(std::vector<double>&, std::vector<double>&, std::vector<double>&, double);
 
     //! Calculate a simple in plane rotatation vector.
     /*! \param v1
@@ -362,7 +362,7 @@ private:
         \param angle
             Trial rotation angle.
      */
-    void rotate2D(std::vector <double>&, std::vector <double>&, double);
+    void rotate2D(std::vector<double>&, std::vector<double>&, double);
 
     //! Calculate the minimum image separation between two coordinates (from v1 to v2).
     /*! \param v1
@@ -374,13 +374,13 @@ private:
         \param sep
             The minimum image separation vector.
      */
-    void computeSeparation(std::vector <double>&, std::vector <double>&, std::vector <double>&);
+    void computeSeparation(std::vector<double>&, std::vector<double>&, std::vector<double>&);
 
     //! Enforce periodic boundary conditions.
     /*! \param vec
             The coordinate vector.
      */
-    void applyPeriodicBoundaryConditions(std::vector <double>&);
+    void applyPeriodicBoundaryConditions(std::vector<double>&);
 
     //! Compute the norm of a vector.
     /*! \param vec
@@ -389,7 +389,7 @@ private:
         \return
             The norm of the vector.
      */
-    double computeNorm(std::vector <double>&);
+    double computeNorm(std::vector<double>&);
 };
 
 #endif  /* _VMMC_H */
