@@ -295,8 +295,8 @@ private:
     std::vector<unsigned int> frustratedLinks;              //!< array of particles involved in frustrated links
 
     unsigned int nInteractions;                             //!< the number of pair interactions for particles in the cluster
-    std::vector<std::vector<unsigned int> > interactions;  //!< indices of particle pairs that interact in the cluster
-    std::vector<std::vector<double> > pairEnergyMatrix;    //!< pair energies for particle interactions in the cluster
+    std::vector<std::vector<unsigned int> > interactions;   //!< indices of particle pairs that interact in the cluster
+    std::vector<std::vector<double> > pairEnergyMatrix;     //!< pair energies for particle interactions in the cluster
 
     unsigned int cutOff;                        //!< the cut-off cluster size for the trial move
     bool isEarlyExit;                           //!< whether trial move aborted early
