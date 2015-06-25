@@ -28,6 +28,19 @@
 #endif
 
 /*! \file CellList.h
+    \brief An efficient, dynamically updated cell list implementation for
+    calculating finite ranged pair interactions.
+
+    For efficiency, the CellList class makes use of fixed size std::vector
+    data structures that are contiguous in memory, rather than the (potentially)
+    more flexible C++ std::list and std::undordered_set containers. Simple
+    bookkeeping tricks ensure that cell insertions and deletions are
+    O(1) complexity.
+
+    Since the vector containers are of fixed size it is important that they
+    are large enough to store enough particles. The typical cell occupancy is
+    estimated from the range of the pair interaction and overflows are checked
+    for at run time.
 */
 
 //! Structure containing attributes for an individual cell.
