@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     unsigned int maxInteractions = 100;     // maximum number of interactions per particle
 
     // Data structures.
-    std::vector <Particle> particles;       // particle container
+    std::vector<Particle> particles;        // particle container
     CellList cells;                         // cell list
 
     // Resize particle container.
@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     if (dimension == 2) baseLength = std::pow((nParticles*M_PI)/(2.0*density), 1.0/2.0);
     else baseLength = std::pow((nParticles*M_PI)/(6.0*density), 1.0/3.0);
 
-    std::vector <double> boxSize;
+    std::vector<double> boxSize;
     for (unsigned int i=0;i<dimension;i++)
         boxSize.push_back(baseLength);
 
