@@ -269,7 +269,7 @@ double c_arr[10];
 foo(c_arr);
 
 // C++ style
-std::vector <double> cpp_arr(10);
+std::vector<double> cpp_arr(10);
 foo(&cpp_arr[0]);
 ```
 Internally, LibVMMC uses `std::vector` containers for its data structures, with
