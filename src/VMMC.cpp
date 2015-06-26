@@ -699,8 +699,8 @@ void VMMC::rotate2D(std::vector<double>& v1, std::vector<double>& v2, double ang
     double c = cos(angle);
     double s = sin(angle);
 
-    v2[0] = v1[0] - (v1[0]*c - v1[1]*s);
-    v2[1] = v1[1] - (v1[0]*s + v1[1]*c);
+    v2[0] = (v1[0]*c - v1[1]*s) - v1[0];
+    v2[1] = (v1[0]*s + v1[1]*c) - v1[1];
 }
 
 void VMMC::computeSeparation(std::vector<double>& v1, std::vector<double>& v2, std::vector<double>& sep)

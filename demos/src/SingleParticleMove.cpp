@@ -211,8 +211,8 @@ void SingleParticleMove::rotate2D(std::vector<double>& v1, std::vector<double>& 
     double c = cos(angle);
     double s = sin(angle);
 
-    v2[0] = v1[0] - (v1[0]*c - v1[1]*s);
-    v2[1] = v1[1] - (v1[0]*s + v1[1]*c);
+    v2[0] = (v1[0]*c - v1[1]*s) - v1[0];
+    v2[1] = (v1[0]*s + v1[1]*c) - v1[1];
 }
 
 double SingleParticleMove::computeNorm(std::vector<double>& vec)
