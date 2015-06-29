@@ -47,7 +47,7 @@ single-particle Monte Carlo (SPMC) and the VMMC algorithm for a periodic
 two-dimensional [square-well fluid](http://www.sklogwiki.org/SklogWiki/index.php/Square_well_model).
 The model system consists of particles interacting via strong, short-ranged
 isotropic interactions. Due to the suppression of collective particle
-rearrangements, SPMC results in the slow [Ostwald Ripening](https://en.wikipedia.org/wiki/Ostwald_ripening)
+rearrangements, SPMC results in the slow [Ostwald ripening](https://en.wikipedia.org/wiki/Ostwald_ripening)
 of large isolated clusters. In contrast, VMMC facilitates the diffusion and
 coalescence of particle clusters, resulting in a long-time dynamics that
 is dominated by the motion of a single large cluster. Both trajectories
