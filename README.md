@@ -22,6 +22,8 @@ Our primary goal is to make VMMC accessible to a wider audience, for whom the
 time required to code the algorithm poses a significant barrier to using the
 method. This allows the user to focus on model development.
 
+![Comparison of the single particle and virtual-move Monte Carlo algorithms](https://github.com/lohedges/assets/blob/master/vmmc/animations/comparison.gif)
+
 ## Installation
 A `Makefile` is included for building and installing LibVMMC.
 
