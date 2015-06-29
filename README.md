@@ -347,6 +347,18 @@ The demo code also illustrates how to implement efficient, dynamically
 updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
 for implementation details.
 
+## Defining a model
+The demo code illustrates a simple way of defining and handling different model
+potentials. A base class, `Model`, is used to declare common functionality and
+callbacks. Derived classes, such as `LennardJonesium` and `SquareWellium`, are
+used to implement the specific pair potential, which is declared as a virtual
+method in the base class.
+
+Declaring a new user-defined model should be as easy as creating a `UserModel`
+class with public inheritance from the `Model` base class, then overriding
+the virtual `computePairEnergy` method. The `LennardJonesium` and
+`SquareWellium` classes will serve as useful templates.
+
 ## Limitations
 * The calculation of the hydrodynamic damping factor assumes a spherical cluster,
 which is only approximate in two dimensions. In general, it is likely that
