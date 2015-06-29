@@ -51,7 +51,7 @@ rearrangements, SPMC results in the slow [Ostwald ripening](https://en.wikipedia
 of large isolated clusters. In contrast, VMMC facilitates the diffusion and
 coalescence of particle clusters, resulting in a long-time dynamics that
 is dominated by the motion of a single large cluster. Both trajectories
-represent 10^9 trial moves of the respective algorithms, with the system
+represent one billion trial moves of the respective algorithms, with the system
 initialised with a random, non-overlapping, particle configuration in each case.
 
 ![Comparison of the single particle and virtual-move Monte Carlo algorithms](https://github.com/lohedges/assets/blob/master/vmmc/animations/comparison.gif)
