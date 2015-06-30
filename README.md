@@ -48,13 +48,13 @@ two-dimensional [square-well fluid](http://www.sklogwiki.org/SklogWiki/index.php
 The model system consists of particles interacting via strong, short-ranged
 isotropic interactions. Due to the suppression of collective particle
 rearrangements, SPMC results in the slow [Ostwald ripening](https://en.wikipedia.org/wiki/Ostwald_ripening)
-of large isolated clusters. In contrast, VMMC facilitates the diffusion and
+of isolated clusters. In contrast, VMMC facilitates the diffusion and
 coalescence of particle clusters, resulting in a long-time dynamics that
 is dominated by the motion of a single large cluster. Both trajectories
 represent one billion trial moves of the respective algorithms, with the system
 initialised with a random, non-overlapping, particle configuration in each case.
 
-![Comparison of the single particle and virtual-move Monte Carlo algorithms](https://github.com/lohedges/assets/blob/master/vmmc/animations/comparison.gif)
+![Comparison of the single particle and virtual-move Monte Carlo algorithms.](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/comparison.gif)
 
 ## Installation
 A `Makefile` is included for building and installing LibVMMC.
