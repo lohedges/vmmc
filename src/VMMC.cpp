@@ -46,6 +46,9 @@ VMMC::VMMC(unsigned int nParticles_,
            const VMMC_interactionsCallback& interactionsCallback_,
            const VMMC_postMoveCallback& postMoveCallback_) :
 
+           nAttempts(0),
+           nAccepts(0),
+           nRotations(0),
            nParticles(nParticles_),
            dimension(dimension_),
            maxTrialTranslation(maxTrialTranslation_),
