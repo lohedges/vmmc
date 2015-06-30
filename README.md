@@ -63,7 +63,7 @@ are recruited and moved in concert. This process is iterated recursively for
 each new recruit until no further particles show a tendency to move.
 
 The animations below illustrate example VMMC translation and rotation moves
-taken from a real simulation. Red indicate the most recent recruit to the
+taken from a real simulation. Red indicates the most recent recruit to the
 cluster, orange indicates the nearest neigbour to which link formation is
 currently being tested, and green indicates those particles that have been
 accepted as part of the cluster move. The animations show how a recursive
