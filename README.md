@@ -56,6 +56,24 @@ initialised with a random, non-overlapping, particle configuration in each case.
 
 ![Comparison of the single particle and virtual-move Monte Carlo algorithms.](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/comparison.gif)
 
+The VMMC algorithm works by proposing the move of a single, randomly chosen,
+"seed" particle. If, following the move, the change in the energy of interaction
+between the particle and its neighbours is unfavourable, then those neighbours
+are recruited and moved in concert. This process is iterated recursively for
+each new recruit until no further particles show a tendency to move.
+
+The animations below illustrate example VMMC translation and rotation moves
+taken from a real simulation. Red indicate the most recent recruit to the
+cluster, orange indicates the nearest neigbour to which link formation is
+currently being tested, and green indicates those particles that have been
+accepted as part of the cluster move. The animations show how a recursive
+depth-first search is used to iteratively link particles to the cluster.
+Particles are linked according to probabilities based on the pair interaction
+energy differences following the forward and reverse virtual move of each
+recruit. Computation of the reverse move is required to enforce superdetailed
+balance, thus ensuring that the probability of a given particle pushing or
+pulling on the cluster is the same.
+
 <section>
     <img width="360" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/translation.gif">
     <img width="360" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/rotation.gif">
