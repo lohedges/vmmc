@@ -629,7 +629,7 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
 
                 // Post-move pair energy.
                 double finalEnergy = pairEnergyCallback(particle,
-                    &particles[particle].postMovePosition[0], &particles[particle].postMovePosition[0],
+                    &particles[particle].postMovePosition[0], &particles[particle].postMoveOrientation[0],
                     neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
 
                 // Pair energy following the reverse virtual move.
