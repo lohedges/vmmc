@@ -56,6 +56,11 @@ initialised with a random, non-overlapping, particle configuration in each case.
 
 ![Comparison of the single particle and virtual-move Monte Carlo algorithms.](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/comparison.gif)
 
+<section>
+    <img width="300" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/translation.gif">
+    <img width="300" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/rotation.gif">
+</section>
+
 ## Installation
 A `Makefile` is included for building and installing LibVMMC.
 
