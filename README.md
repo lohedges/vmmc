@@ -299,8 +299,8 @@ between two particles.
 which a particle interacts.
 
 `postMoveCallback` = The callback function to perform any required updates
-following the move. Here you should copy the updated particle position and
-orientation back into your own data structures and implement any additional
+following the move. Here you should copy the updated particle positions and
+orientations back into your own data structures and implement any additional
 updates, e.g. cell lists.
 
 ## C-style arrays
