@@ -427,6 +427,10 @@ bool VMMC::accept()
                     &particles[moveList[i]].preMoveOrientation[0], pairInteractions[j],
                     &particles[pairInteractions[j]].preMovePosition[0], &particles[pairInteractions[j]].preMoveOrientation[0]);
 
+                // Early exit test for hard core overlaps and large finite energy repulsions.
+                if (energy > 1e6)
+                    return false;
+
                 x = moveList[i];
                 y = pairInteractions[j];
 
