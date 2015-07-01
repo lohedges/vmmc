@@ -332,7 +332,7 @@ foo(&cpp_arr[0]);
 Internally, LibVMMC uses `std::vector` containers for its data structures, with
 data passed to the callback functions in the manner described above.
 
-## Executing a virtual-move
+## Executing a virtual move
 Once an instance of the VMMC object is created, e.g.
 ```cpp
 VMMC(...) vmmc;
@@ -404,10 +404,10 @@ and `PatchyDisc` classes will serve as useful templates.
 ## Limitations
 * The calculation of the hydrodynamic damping factor assumes a spherical cluster,
 which is only approximate in two dimensions. In general, it is likely that
-particles on a flat surface may diffuse in a system specific way, so there may
+particles on a flat surface may diffuse in a system-specific way, so there may
 be no good general approximation of Stokes scaling in two dimensions. In future
 versions we intend to provide an additional callback function so that the user can
-enforce a model specific damping factor.
+enforce a model-specific damping factor.
 * The recursive manner in which the trial cluster is built can lead to a stack
 overflow if the cluster contains many particles. Typically, thousands, or tens
 of thousands of particles should be perfectly manageable. The typical memory
