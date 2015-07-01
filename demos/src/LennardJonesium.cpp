@@ -18,11 +18,11 @@
 #include "LennardJonesium.h"
 
 LennardJonesium::LennardJonesium(Box& box_,
-                             std::vector<Particle>& particles_,
-                             CellList& cells_,
-                             unsigned int maxInteractions_,
-                             double interactionEnergy_,
-                             double interactionRange_) :
+                                 std::vector<Particle>& particles_,
+                                 CellList& cells_,
+                                 unsigned int maxInteractions_,
+                                 double interactionEnergy_,
+                                 double interactionRange_) :
     Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
 {
     // Work out the potential shift.
