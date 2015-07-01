@@ -437,11 +437,13 @@ redundant, i.e. knowing that two particles interact is enough to know the
 pair energy.
 * If using cell lists, the typical size of a trial displacement will be small
 enough such that a particle stays within the same neighbourhood of cells
-following the trial move. As such, there is often no need to update cell lists
-until confirming that the post-move configuration is valid, e.g. no overlaps.
-At present the same `postMoveCallback` function is called twice: once in order
-to apply the move; again if the move is subsequently rejected. This means that
-the cell lists will be updated twice if a move is rejected.
+following the trial move. (This isn't necessarily true for rotation moves,
+where the displacement of particles far from the rotation axis can be large.)
+As such, there is often no need to update cell lists until confirming that
+the post-move configuration is valid, e.g. no overlaps. At present the same
+`postMoveCallback` function is called twice: once in order to apply the move;
+again if the move is subsequently rejected. This means that the cell lists
+will be updated twice if a move is rejected.
 * When testing for particle overlaps following a virtual move it is normally
 not necessary to test pairs within the moving cluster. As written, all links
 are tested, not just those external to the cluster. Note that *all* internal
