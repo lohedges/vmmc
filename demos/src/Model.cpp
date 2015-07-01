@@ -110,14 +110,14 @@ unsigned int Model::computeInteractions(unsigned int particle,
                 // Particles interact.
                 if (normSqd < squaredCutOffDistance)
                 {
-                    interactions[nInteractions] = neighbour;
-                    nInteractions++;
-
                     if (nInteractions == maxInteractions)
                     {
                         std::cerr << "[ERROR] Model: Maximum number of interactions exceeded!\n";
                         exit(EXIT_FAILURE);
                     }
+
+                    interactions[nInteractions] = neighbour;
+                    nInteractions++;
                 }
             }
         }
