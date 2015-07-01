@@ -67,7 +67,7 @@ public:
         \return
             The total interaction energy.
      */
-    double computeEnergy(unsigned int, double[], double[]);
+    virtual double computeEnergy(unsigned int, double[], double[]);
 
     //! Calculate the pair energy between two particles.
     /*! \param particle1
@@ -106,7 +106,7 @@ public:
         \return
             The number of interactions.
      */
-    unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
+    virtual unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
 
     //! Apply any post-move updates for a given particle.
     /*! \param index
@@ -118,7 +118,7 @@ public:
         \param orientation
             The orientation of the particle following the virtual move.
     */
-    void applyPostMoveUpdates(unsigned int, double[], double[]);
+    virtual void applyPostMoveUpdates(unsigned int, double[], double[]);
 
     Box& box;                           //!> a reference to the simulation box
     std::vector<Particle>& particles;   //!> a reference to the particle list
