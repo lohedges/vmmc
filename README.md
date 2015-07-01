@@ -352,12 +352,13 @@ i.e. `vmmc++` for a single step, and `vmmc += 1000` for 1000 steps.
 The following example codes showing how to interface with LibVMMC are included
 in the `demos` directory.
 
-* `lennard_jonesium.cpp`: A simulation of a Lennard-Jones fluid in two- or three-dimensions.
 * `square_wellium.cpp`: A simulation of a square-well fluid in two- or three-dimensions.
+* `lennard_jonesium.cpp`: A simulation of a Lennard-Jones fluid in two- or three-dimensions.
+* `patchy_disc.cpp`: A simulation of a two dimensional patchy disc model.
 
-Both demo codes output a trajectory file, `trajectory.xyz`, and a TcL script,
-`vmd.tcl`, that can be used to set camera and particle attributes and to draw the
-periodic simulation box when visualising the trajectory with
+When run, each of the demos output a trajectory file, `trajectory.xyz`, and a
+TcL script, `vmd.tcl`, that can be used to set camera and particle attributes
+and to draw the periodic simulation box when visualising the trajectory with
 [VMD](http://www.ks.uiuc.edu/Research/vmd/). To generate and view a trajectory,
 run, e.g.
 
@@ -390,15 +391,15 @@ phase, the square-well fluid is sampled in the crystal (FCC/HCP) phase).
 
 ## Defining a model
 The demo code illustrates a simple way of defining and handling different model
-potentials. A base class, `Model`, is used to declare common functionality and
-callbacks. Derived classes, such as `LennardJonesium` and `SquareWellium`, are
-used to implement the specific pair potential, which is declared as a virtual
-method in the base class.
+potentials. A base class, `Model`, is used to declare default functionality and
+callbacks. Derived classes, such as `LennardJonesium`, are used to implement the
+model specific pair potential, which is declared as a virtual method in the base
+class.
 
 Declaring a new user-defined model should be as easy as creating a `UserModel`
 class with public inheritance from the `Model` base class, then overriding
-the virtual `computePairEnergy` method. The `LennardJonesium` and
-`SquareWellium` classes will serve as useful templates.
+the virtual `computePairEnergy` method. The `LennardJonesium`, `SquareWellium`,
+and `PatchyDisc` classes will serve as useful templates.
 
 ## Limitations
 * The calculation of the hydrodynamic damping factor assumes a spherical cluster,
