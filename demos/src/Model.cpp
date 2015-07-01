@@ -59,6 +59,9 @@ double Model::computeEnergy(unsigned int particle, double position[], double ori
                 energy += computePairEnergy(particle, position, orientation,
                           neighbour, &particles[neighbour].position[0],
                           &particles[neighbour].orientation[0]);
+
+                // Early exit test for hard core overlaps and large finite energy repulsions.
+                if (energy > 1e6) return INF;
             }
         }
     }
