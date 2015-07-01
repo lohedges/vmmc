@@ -25,7 +25,7 @@
 /*! \file Model.h
 */
 
-// Global infinity constant for hard-core repulsions.
+// Global infinity constant for hard core repulsions.
 extern double INF;
 
 //! Base class defining general access functions for the model potential
