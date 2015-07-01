@@ -470,3 +470,12 @@ order to distinguish different species.
 (rather than only using free functions, as with C-style function pointers). See
 [here](http://en.cppreference.com/w/cpp/utility/functional/function) for details
 on how to bind member functions, or function objects.
+
+## Disclaimer
+Please be aware that this a working repository so the code should be used at
+your own risk. At present the code is being tested so expect that it will be
+updated fairly frequently with additional features and performance enhancements.
+
+It would be great to hear from you if this code was of use in your research.
+
+Email bugs, comments, and suggestions to lester.hedges+vmmc@gmail.com.
