@@ -27,17 +27,18 @@ double getEnergy(Model*);
 int main(int argc, char** argv)
 {
     // Simulation parameters.
-    unsigned int dimension = 2;             // dimension of simulation box
-    unsigned int nParticles = 1000;         // number of particles
-    double interactionEnergy = 7.5;         // pair interaction energy scale (in units of kBT)
-    double interactionRange = 0.1;          // diameter of patch (in units of particle diameter)
-    double density = 0.2;                   // particle density
-    double baseLength;                      // base length of simulation box
-    unsigned int maxInteractions = 3;       // maximum number of interactions per particle (number of patches)
+    unsigned int dimension = 2;                     // dimension of simulation box
+    unsigned int nParticles = 1000;                 // number of particles
+    double interactionEnergy = 7.5;                 // pair interaction energy scale (in units of kBT)
+    double interactionRange = 0.1;                  // diameter of patch (in units of particle diameter)
+    double density = 0.2;                           // particle density
+    double baseLength;                              // base length of simulation box
+    unsigned int maxInteractions = 3;               // maximum number of interactions per particle (number of patches)
 
     // Data structures.
-    std::vector<Particle> particles;        // particle container
-    CellList cells;                         // cell list
+    std::vector<Particle> particles(nParticles);    // particle container
+    CellList cells;                                 // cell list
+    bool isIsotropic[nParticles];                   // whether the potential of each particle is isotropic
 
     // Resize particle container.
     particles.resize(nParticles);
@@ -88,6 +89,9 @@ int main(int argc, char** argv)
             coordinates[dimension*i + j] = particles[i].position[j];
             orientations[dimension*i + j] = particles[i].orientation[j];
         }
+
+        // Set all particles as anisotropic.
+        isIsotropic[i] = false;
     }
 
     // Initialise the VMMC callback functions.
@@ -103,7 +107,7 @@ int main(int argc, char** argv)
 
     // Initalise VMMC object.
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], false, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+        &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
