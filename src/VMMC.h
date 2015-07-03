@@ -170,7 +170,7 @@ public:
             The probability of performing a translation move (versus a rotation).
 
         \param referenceRadius_
-            Reference particle radius (for Stoke's scaling).
+            Reference particle radius (for Stokes scaling).
 
         \param maxInteractions_
             Maximum number of interactions per particle.
@@ -272,7 +272,7 @@ private:
     double maxTrialTranslation;                 //!< the maximum trial translation (in units of the reference diameter)
     double maxTrialRotation;                    //!< the maximum trial rotation
     double probTranslate;                       //!< the relative probability of translational moves (vs rotations)
-    double referenceRadius;                     //!< reference particle radius (for Stoke's scaling)
+    double referenceRadius;                     //!< reference particle radius (for Stokes scaling)
     unsigned int maxInteractions;               //!< maximum number of interactions per particle
     std::vector<double> boxSize;                //!< the size of the simulation box in each dimension
     std::vector<bool> isIsotropic;              //!< whether the potential of each particle is isotropic.

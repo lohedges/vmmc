@@ -289,7 +289,7 @@ void VMMC::proposeMove()
         moveParams.isRotation = true;
         moveParams.stepSize = maxTrialRotation*(2.0*rng()-1.0);
 
-        // Check that there is a neighbour to rotate about the seed.
+        // Check whether seed particle is isotropic.
         if (isIsotropic[moveParams.seed])
         {
             // Cluster size cut-off (minimum size is two).
@@ -341,10 +341,10 @@ bool VMMC::accept()
         return false;
     }
 
-    // Calculate the approximate Stoke's scaling factor.
+    // Calculate the approximate Stokes scaling factor.
     double scaleFactor = (nMoving > 1) ? computeHydrodynamicRadius() : 1.0;
 
-    // Stoke's drag rejection.
+    // Stokes drag rejection.
     if (rng() > scaleFactor)
     {
         isEarlyExit = true;
