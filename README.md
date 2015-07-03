@@ -237,7 +237,7 @@ constructor:
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
-    double boxSize[], bool isRepulsive, bool isIsotropic,
+    double boxSize[], bool isIsotropic[], bool isRepulsive,
     const VMMC_energyCallback& energyCallback, const VMMC_pairEnergyCallback&
     pairEnergyCallback, const VMMC_interactionsCallback& interactionsCallback,
     const VMMC_postMoveCallback& postMoveCallback);
@@ -282,8 +282,11 @@ interaction volume around a particle.
 
 `boxSize` = The base length of the simulation box in each dimension.
 
-`isIsotropic` = Whether the potential is isotropic. The handling of rotational
-moves is slightly different for isotropic potentials.
+`isIsotropic` = Whether the potential of each particle is isotropic. The
+handling of rotational moves is slightly different for moves seeded from
+isotropic particles, e.g. spheres, since the rotation of the seed causes
+no change in energy. This boolean array allows LibVMMC to handle
+mixed-potential systems.
 
 `isRepulsive` = Whether the potential has finite energy repulsions. This should
 also be set to `true` when particle interactions contain a mixture of hard core
@@ -413,12 +416,6 @@ overflow if the cluster contains many particles. Typically, thousands, or tens
 of thousands of particles should be perfectly manageable. The typical memory
 footprint for a simulation of 1000 particles is around 2.5MB for hard particles.
 This is roughly doubled if the potential has finite energy repulsions.
-* At present there is no way to handle multi particle systems with a mixture of
-isotropic and anisotropic potentials. In this case it is best to pass
-`isIsotropic = false` to the VMMC constructor, the only limitation being that
-clusters comprised of (or seeded from) isotropic particles cannot rotate. In
-future it would be desirable for the VMMC object to know more details about
-each particle so that individual rotational moves can be tuned accordingly.
 
 ## Efficiency
 In aid of generality there are several sources of redundancy that impact the
