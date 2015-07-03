@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     // Simulation parameters.
     unsigned int dimension = 2;                     // dimension of simulation box
     unsigned int nParticles = 1000;                 // number of particles
-    double interactionEnergy = 7.5;                 // pair interaction energy scale (in units of kBT)
+    double interactionEnergy = 8.0;                 // pair interaction energy scale (in units of kBT)
     double interactionRange = 0.1;                  // diameter of patch (in units of particle diameter)
     double density = 0.2;                           // particle density
     double baseLength;                              // base length of simulation box
