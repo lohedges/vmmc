@@ -179,7 +179,7 @@ public:
             The size of the periodic simulation box in each dimension.
 
         \param isIsotropic_
-            Whether the potential is isotropic.
+            Whether the potential of each particle is isotropic.
 
         \param isRepusive_
             Whether there are finite repulsive interactions.
@@ -196,7 +196,7 @@ public:
         \param postMoveCallback_
             Apply any post-move updates following the virtual particle move.
      */
-    VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool, bool,
+    VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool[], bool,
         const VMMC_energyCallback&, const VMMC_pairEnergyCallback&, const VMMC_interactionsCallback&, const VMMC_postMoveCallback&);
 
     //! Overloaded ++ operator. Perform a single VMMC step.
@@ -275,9 +275,9 @@ private:
     double referenceRadius;                     //!< reference particle radius (for Stoke's scaling)
     unsigned int maxInteractions;               //!< maximum number of interactions per particle
     std::vector<double> boxSize;                //!< the size of the simulation box in each dimension
-    bool is3D;                                  //!< whether the simulation is three-dimensional
-    bool isIsotropic;                           //!< whether the potential is isotropic
+    std::vector<bool> isIsotropic;              //!< whether the potential of each particle is isotropic.
     bool isRepusive;                            //!< whether there are finite repulsive interactions
+    bool is3D;                                  //!< whether the simulation is three-dimensional
 
     VMMC_energyCallback energyCallback;                 //!< callback function to calculate particle energies
     VMMC_pairEnergyCallback pairEnergyCallback;         //!< callback function to calculate pair energies

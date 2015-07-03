@@ -39,7 +39,7 @@ VMMC::VMMC(unsigned int nParticles_,
            double referenceRadius_,
            unsigned int maxInteractions_,
            double boxSize_[],
-           bool isIsotropic_,
+           bool isIsotropic_[],
            bool isRepusive_,
            const VMMC_energyCallback& energyCallback_,
            const VMMC_pairEnergyCallback& pairEnergyCallback_,
@@ -56,7 +56,6 @@ VMMC::VMMC(unsigned int nParticles_,
            probTranslate(probTranslate_),
            referenceRadius(referenceRadius_),
            maxInteractions(maxInteractions_),
-           isIsotropic(isIsotropic_),
            isRepusive(isRepusive_),
            energyCallback(energyCallback_),
            pairEnergyCallback(pairEnergyCallback_),
@@ -84,6 +83,7 @@ VMMC::VMMC(unsigned int nParticles_,
     clusterTranslations.resize(nParticles);
     clusterRotations.resize(nParticles);
     frustratedLinks.resize(nParticles);
+    isIsotropic.resize(nParticles);
 
     // Create particle container.
     for (unsigned int i=0;i<nParticles;i++)
@@ -101,6 +101,9 @@ VMMC::VMMC(unsigned int nParticles_,
             particles[i].preMovePosition[j] = coordinates[dimension*i + j];
             particles[i].preMoveOrientation[j] = orientations[dimension*i + j];
         }
+
+        // Store particle potential style.
+        isIsotropic[i] = isIsotropic_[i];
     }
 
     // Allocate memory for pair interaction matrix (finite repulsions only).
@@ -287,7 +290,7 @@ void VMMC::proposeMove()
         moveParams.stepSize = maxTrialRotation*(2.0*rng()-1.0);
 
         // Check that there is a neighbour to rotate about the seed.
-        if (isIsotropic)
+        if (isIsotropic[moveParams.seed])
         {
             // Cluster size cut-off (minimum size is two).
             cutOff = int(2.0/r);
@@ -310,7 +313,7 @@ void VMMC::proposeMove()
         particles[moveParams.seed].pseudoPosition = particles[moveParams.seed].preMovePosition;
         initiateParticle(moveParams.seed, particles[moveParams.seed]);
 
-        if (isIsotropic && moveParams.isRotation)
+        if (isIsotropic[moveParams.seed] && moveParams.isRotation)
         {
             // Initialise neighbouring particle.
             initiateParticle(neighbour, particles[moveParams.seed]);
