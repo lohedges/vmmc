@@ -315,10 +315,7 @@ For example, if we have some function called `foo` that accepts a C-style
 double array as an argument,
 
 ```cpp
-void foo(double arr[])
-{
-    ...
-}
+void foo(double arr[]);
 ```
 
 then both of the following are valid function calls
