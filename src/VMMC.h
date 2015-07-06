@@ -46,10 +46,8 @@
     \param position
         The position of the particle.
 
-#ifndef ISOTROPIC
     \param orientation
         The orientation of the particle.
-#endif
 
     \return
         The total interaction energy felt by the particle.
@@ -67,10 +65,8 @@ typedef std::function<double (unsigned int, double[])> VMMC_energyCallback;
     \param position1
         The position of the first particle.
 
-#ifndef ISOTROPIC
     \param orientation1
         The orientation of the first particle.
-#endif
 
     \param particle2
         The index of the second particle.
@@ -78,10 +74,8 @@ typedef std::function<double (unsigned int, double[])> VMMC_energyCallback;
     \param position2
         The position of the second particle.
 
-#ifndef ISOTROPIC
     \param orientation2
         The orientation of the second particle.
-#endif
 
     \return
         The pair interaction energy between particles 1 and 2.
@@ -99,10 +93,8 @@ typedef std::function<double (unsigned int, double[], unsigned int, double[])> V
     \param position
         The position of the particle.
 
-#ifndef ISOTROPIC
     \param orientation
         The orientation of the particle.
-#endif
 
     \param interactions
         An array to store the indices of neighbours with which the particle interacts.
@@ -123,10 +115,8 @@ typedef std::function<unsigned int (unsigned int, double[], unsigned int[])> VMM
     \param position
         The position of the particle following the virtual move.
 
-#ifndef ISOTROPIC
     \param orientation
         The orientation of the particle following the virtual move.
-#endif
  */
 #ifndef ISOTROPIC
 typedef std::function<void (unsigned int, double[], double[])> VMMC_postMoveCallback;
@@ -185,10 +175,8 @@ public:
         \param coordinates
             The coordinates of all particles in the system.
 
-#ifndef ISOTROPIC
         \param orientations
             The orientations of all particle in the system.
-#endif
 
         \param maxTrialTranslation_
             The maximum trial translation (in units of the reference particle diameter).
@@ -208,10 +196,8 @@ public:
         \param boxSize_
             The size of the periodic simulation box in each dimension.
 
-#ifndef ISOTROPIC
         \param isIsotropic_
             Whether the potential of each particle is isotropic.
-#endif
 
         \param isRepusive_
             Whether there are finite repulsive interactions.

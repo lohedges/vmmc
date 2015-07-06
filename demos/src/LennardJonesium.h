@@ -55,18 +55,14 @@ public:
         \param position1
             The position vector of the first particle.
 
-#ifndef ISOTROPIC
         \param orientation1
             The orientation vector of the first particle.
-#endif
 
         \param position2
             The position vector of the second particle.
 
-#ifndef ISOTROPIC
         \param orientation2
             The orientation vector of the second particle.
-#endif
 
         \return
             The pair energy between particles 1 and 2.
