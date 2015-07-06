@@ -46,13 +46,19 @@
     \param position
         The position of the particle.
 
+#ifndef ISOTROPIC
     \param orientation
         The orientation of the particle.
+#endif
 
     \return
         The total interaction energy felt by the particle.
  */
+#ifndef ISOTROPIC
 typedef std::function<double (unsigned int, double[], double[])> VMMC_energyCallback;
+#else
+typedef std::function<double (unsigned int, double[])> VMMC_energyCallback;
+#endif
 
 //! Calculate the pair energy between two particles.
 /*! \param particle1
@@ -61,8 +67,10 @@ typedef std::function<double (unsigned int, double[], double[])> VMMC_energyCall
     \param position1
         The position of the first particle.
 
+#ifndef ISOTROPIC
     \param orientation1
         The orientation of the first particle.
+#endif
 
     \param particle2
         The index of the second particle.
@@ -70,13 +78,19 @@ typedef std::function<double (unsigned int, double[], double[])> VMMC_energyCall
     \param position2
         The position of the second particle.
 
+#ifndef ISOTROPIC
     \param orientation2
         The orientation of the second particle.
+#endif
 
     \return
         The pair interaction energy between particles 1 and 2.
  */
+#ifndef ISOTROPIC
 typedef std::function<double (unsigned int, double[], double[], unsigned int, double[], double[])> VMMC_pairEnergyCallback;
+#else
+typedef std::function<double (unsigned int, double[], unsigned int, double[])> VMMC_pairEnergyCallback;
+#endif
 
 //! Determine the interactions for a particle.
 /*! \param index
@@ -85,8 +99,10 @@ typedef std::function<double (unsigned int, double[], double[], unsigned int, do
     \param position
         The position of the particle.
 
+#ifndef ISOTROPIC
     \param orientation
         The orientation of the particle.
+#endif
 
     \param interactions
         An array to store the indices of neighbours with which the particle interacts.
@@ -94,7 +110,11 @@ typedef std::function<double (unsigned int, double[], double[], unsigned int, do
     \return
         The number of interactions.
  */
+#ifndef ISOTROPIC
 typedef std::function<unsigned int (unsigned int, double[], double[], unsigned int[])> VMMC_interactionsCallback;
+#else
+typedef std::function<unsigned int (unsigned int, double[], unsigned int[])> VMMC_interactionsCallback;
+#endif
 
 //! Apply any post-move updates for a given particle.
 /*! \param index
@@ -103,10 +123,16 @@ typedef std::function<unsigned int (unsigned int, double[], double[], unsigned i
     \param position
         The position of the particle following the virtual move.
 
+#ifndef ISOTROPIC
     \param orientation
         The orientation of the particle following the virtual move.
+#endif
  */
+#ifndef ISOTROPIC
 typedef std::function<void (unsigned int, double[], double[])> VMMC_postMoveCallback;
+#else
+typedef std::function<void (unsigned int, double[])> VMMC_postMoveCallback;
+#endif
 
 // DATA TYPES
 
@@ -157,8 +183,10 @@ public:
         \param coordinates
             The coordinates of all particles in the system.
 
+#ifndef ISOTROPIC
         \param orientations
             The orientations of all particle in the system.
+#endif
 
         \param maxTrialTranslation_
             The maximum trial translation (in units of the reference particle diameter).
@@ -178,8 +206,10 @@ public:
         \param boxSize_
             The size of the periodic simulation box in each dimension.
 
+#ifndef ISOTROPIC
         \param isIsotropic_
             Whether the potential of each particle is isotropic.
+#endif
 
         \param isRepusive_
             Whether there are finite repulsive interactions.
@@ -196,7 +226,11 @@ public:
         \param postMoveCallback_
             Apply any post-move updates following the virtual particle move.
      */
+#ifndef ISOTROPIC
     VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool[], bool,
+#else
+    VMMC(unsigned int, unsigned int, double[], double, double, double, double, unsigned int, double[], bool,
+#endif
         const VMMC_energyCallback&, const VMMC_pairEnergyCallback&, const VMMC_interactionsCallback&, const VMMC_postMoveCallback&);
 
     //! Overloaded ++ operator. Perform a single VMMC step.
@@ -275,7 +309,9 @@ private:
     double referenceRadius;                     //!< reference particle radius (for Stokes scaling)
     unsigned int maxInteractions;               //!< maximum number of interactions per particle
     std::vector<double> boxSize;                //!< the size of the simulation box in each dimension
+#ifndef ISOTROPIC
     std::vector<bool> isIsotropic;              //!< whether the potential of each particle is isotropic.
+#endif
     bool isRepusive;                            //!< whether there are finite repulsive interactions
     bool is3D;                                  //!< whether the simulation is three-dimensional
 

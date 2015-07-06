@@ -32,14 +32,18 @@ VMMC_Particle::VMMC_Particle(unsigned int dimension)
 VMMC::VMMC(unsigned int nParticles_,
            unsigned int dimension_,
            double coordinates[],
+#ifndef ISOTROPIC
            double orientations[],
+#endif
            double maxTrialTranslation_,
            double maxTrialRotation_,
            double probTranslate_,
            double referenceRadius_,
            unsigned int maxInteractions_,
            double boxSize_[],
+#ifndef ISOTROPIC
            bool isIsotropic_[],
+#endif
            bool isRepusive_,
            const VMMC_energyCallback& energyCallback_,
            const VMMC_pairEnergyCallback& pairEnergyCallback_,
@@ -83,7 +87,9 @@ VMMC::VMMC(unsigned int nParticles_,
     clusterTranslations.resize(nParticles);
     clusterRotations.resize(nParticles);
     frustratedLinks.resize(nParticles);
+#ifndef ISOTROPIC
     isIsotropic.resize(nParticles);
+#endif
 
     // Create particle container.
     for (unsigned int i=0;i<nParticles;i++)
@@ -99,11 +105,15 @@ VMMC::VMMC(unsigned int nParticles_,
         for (unsigned int j=0;j<dimension;j++)
         {
             particles[i].preMovePosition[j] = coordinates[dimension*i + j];
+#ifndef ISOTROPIC
             particles[i].preMoveOrientation[j] = orientations[dimension*i + j];
+#endif
         }
 
         // Store particle potential style.
+#ifndef ISOTROPIC
         isIsotropic[i] = isIsotropic_[i];
+#endif
     }
 
     // Allocate memory for pair interaction matrix (finite repulsions only).
@@ -122,8 +132,11 @@ VMMC::VMMC(unsigned int nParticles_,
             pairEnergyMatrix[i].resize(i);
     }
 
-    std::cout << "Initialised VMMC.\n";
-    std::cout << "seed\t" <<  rng.getSeed() << '\n';
+    std::cout << "Initialised VMMC";
+#ifdef ISOTROPIC
+    std::cout << " (isotropic)";
+#endif
+    std::cout << ".\nseed\t" <<  rng.getSeed() << '\n';
     // Print version info.
 #ifdef COMMIT
     std::cout << "commit\t" <<  COMMIT << '\n';
@@ -290,7 +303,9 @@ void VMMC::proposeMove()
         moveParams.stepSize = maxTrialRotation*(2.0*rng()-1.0);
 
         // Check whether seed particle is isotropic.
+#ifndef ISOTROPIC
         if (isIsotropic[moveParams.seed])
+#endif
         {
             // Cluster size cut-off (minimum size is two).
             cutOff = int(2.0/r);
@@ -298,8 +313,13 @@ void VMMC::proposeMove()
             unsigned int pairInteractions[maxInteractions];
 
             // Get a list of pair interactions.
+#ifndef ISOTROPIC
             unsigned int nPairs = interactionsCallback(moveParams.seed, &particles[moveParams.seed].preMovePosition[0],
                 &particles[moveParams.seed].preMoveOrientation[0], pairInteractions);
+#else
+            unsigned int nPairs = interactionsCallback(moveParams.seed,
+                &particles[moveParams.seed].preMovePosition[0], pairInteractions);
+#endif
 
             // Abort move if there are no neighbours, else choose one at random.
             if (nPairs == 0) isEarlyExit = true;
@@ -313,7 +333,11 @@ void VMMC::proposeMove()
         particles[moveParams.seed].pseudoPosition = particles[moveParams.seed].preMovePosition;
         initiateParticle(moveParams.seed, particles[moveParams.seed]);
 
+#ifndef ISOTROPIC
         if (isIsotropic[moveParams.seed] && moveParams.isRotation)
+#else
+        if (moveParams.isRotation)
+#endif
         {
             // Initialise neighbouring particle.
             initiateParticle(neighbour, particles[moveParams.seed]);
@@ -366,16 +390,26 @@ bool VMMC::accept()
         for (unsigned int i=0;i<nMoving;i++)
         {
             // Get a list of pair interactions.
+#ifndef ISOTROPIC
             nPairs = interactionsCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                 &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
+#else
+            nPairs = interactionsCallback(moveList[i],
+                &particles[moveList[i]].preMovePosition[0], pairInteractions);
+#endif
 
             // Test all pair interactions.
             for (unsigned int j=0;j<nPairs;j++)
             {
+#ifndef ISOTROPIC
                 energy = pairEnergyCallback(moveList[i],
                     &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0],
                     pairInteractions[j], &particles[pairInteractions[j]].preMovePosition[0],
                     &particles[pairInteractions[j]].preMoveOrientation[0]);
+#else
+                energy = pairEnergyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
+                    pairInteractions[j], &particles[pairInteractions[j]].preMovePosition[0]);
+#endif
 
                 x = moveList[i];
                 y = pairInteractions[j];
@@ -409,8 +443,12 @@ bool VMMC::accept()
     {
         if (!isRepusive)
         {
+#ifndef ISOTROPIC
             energy = energyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                 &particles[moveList[i]].preMoveOrientation[0]);
+#else
+            energy = energyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0]);
+#endif
 
             // Overlap.
             if (energy > 1e6) return false;
@@ -421,14 +459,24 @@ bool VMMC::accept()
             double pairEnergy;
             unsigned int pairInteractions[maxInteractions];
 
+#ifndef ISOTROPIC
             unsigned int nPairs = interactionsCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                 &particles[moveList[i]].preMoveOrientation[0], pairInteractions);
+#else
+            unsigned int nPairs = interactionsCallback(moveList[i],
+                &particles[moveList[i]].preMovePosition[0], pairInteractions);
+#endif
 
             for (unsigned int j=0;j<nPairs;j++)
             {
+#ifndef ISOTROPIC
                 energy = pairEnergyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                     &particles[moveList[i]].preMoveOrientation[0], pairInteractions[j],
                     &particles[pairInteractions[j]].preMovePosition[0], &particles[pairInteractions[j]].preMoveOrientation[0]);
+#else
+                energy = pairEnergyCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
+                    pairInteractions[j], &particles[pairInteractions[j]].preMovePosition[0]);
+#endif
 
                 // Early exit test for hard core overlaps and large finite energy repulsions.
                 if (energy > 1e6)
@@ -536,7 +584,9 @@ void VMMC::computePostMoveParticle(unsigned int particle, VMMC_Particle& postMov
 {
     // Initialise post-move position and orientation.
     postMoveParticle.postMovePosition = particles[particle].preMovePosition;
+#ifndef ISOTROPIC
     postMoveParticle.postMoveOrientation = particles[particle].preMoveOrientation;
+#endif
 
     if (!moveParams.isRotation) // Translation.
     {
@@ -560,6 +610,7 @@ void VMMC::computePostMoveParticle(unsigned int particle, VMMC_Particle& postMov
         for (unsigned int i=0;i<dimension;i++)
             postMoveParticle.postMovePosition[i] += v2[i];
 
+#ifndef ISOTROPIC
         // Calculate orientation rotation vector.
         if (is3D) rotate3D(postMoveParticle.postMoveOrientation, moveParams.trialVector, v2, moveParams.stepSize);
         else rotate2D(postMoveParticle.postMoveOrientation, v2, moveParams.stepSize);
@@ -567,6 +618,7 @@ void VMMC::computePostMoveParticle(unsigned int particle, VMMC_Particle& postMov
         // Update orientation.
         for (unsigned int i=0;i<dimension;i++)
             postMoveParticle.postMoveOrientation[i] += v2[i];
+#endif
     }
 
     // Apply periodic boundary conditions.
@@ -618,8 +670,13 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
         unsigned int pairInteractions[maxInteractions];
 
         // Get list of interactions.
+#ifndef ISOTROPIC
         unsigned int nPairs = interactionsCallback(particle, &particles[particle].preMovePosition[0],
             &particles[particle].preMoveOrientation[0], pairInteractions);
+#else
+        unsigned int nPairs = interactionsCallback(particle,
+            &particles[particle].preMovePosition[0], pairInteractions);
+#endif
 
         // Loop over all interactions.
         for (unsigned int i=0;i<nPairs;i++)
@@ -630,19 +687,34 @@ void VMMC::recursiveMoveAssignment(unsigned int particle)
             if (!particles[neighbour].isMoving)
             {
                 // Pre-move pair energy.
+#ifndef ISOTROPIC
                 double initialEnergy = pairEnergyCallback(particle,
                     &particles[particle].preMovePosition[0], &particles[particle].preMoveOrientation[0],
                     neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+#else
+                double initialEnergy = pairEnergyCallback(particle, &particles[particle].preMovePosition[0],
+                    neighbour, &particles[neighbour].preMovePosition[0]);
+#endif
 
                 // Post-move pair energy.
+#ifndef ISOTROPIC
                 double finalEnergy = pairEnergyCallback(particle,
                     &particles[particle].postMovePosition[0], &particles[particle].postMoveOrientation[0],
                     neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+#else
+                double finalEnergy = pairEnergyCallback(particle, &particles[particle].postMovePosition[0],
+                    neighbour, &particles[neighbour].preMovePosition[0]);
+#endif
 
                 // Pair energy following the reverse virtual move.
+#ifndef ISOTROPIC
                 double reverseMoveEnergy = pairEnergyCallback(particle,
                     &reverseMoveParticle.postMovePosition[0], &reverseMoveParticle.postMoveOrientation[0],
                     neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+#else
+                double reverseMoveEnergy = pairEnergyCallback(particle, &reverseMoveParticle.postMovePosition[0],
+                    neighbour, &particles[neighbour].preMovePosition[0]);
+#endif
 
                 // Forward link weight.
                 double linkWeight = std::max(1.0-exp(initialEnergy-finalEnergy),0.0);
@@ -684,12 +756,18 @@ void VMMC::swapMoveStatus()
     for (unsigned int i=0;i<nMoving;i++)
     {
         particles[moveList[i]].preMovePosition.swap(particles[moveList[i]].postMovePosition);
+#ifndef ISOTROPIC
         particles[moveList[i]].preMoveOrientation.swap(particles[moveList[i]].postMoveOrientation);
+#endif
     }
 
     // Apply any post-move updates.
     for (unsigned int i=0;i<nMoving;i++)
+#ifndef ISOTROPIC
         postMoveCallback(moveList[i], &particles[moveList[i]].preMovePosition[0], &particles[moveList[i]].preMoveOrientation[0]);
+#else
+        postMoveCallback(moveList[i], &particles[moveList[i]].preMovePosition[0]);
+#endif
 }
 
 void VMMC::rotate3D(std::vector<double>& v1, std::vector<double>& v2, std::vector<double>& v3, double angle)
