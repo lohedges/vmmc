@@ -236,7 +236,7 @@ $(demo_library): $(demo_objects)
 # Compile demonstration code.
 $(demos): %: %.cpp $(demo_library_header) $(library) $(demo_library) $(demo_objects)
 	$(call colorecho, 1, "--> Linking CXX executable $@")
-	$(CXX) $(CXXFLAGS) -Wfatal-errors -I$(demo_dir)/src $@.cpp $(library) $(demo_library) $(LIBS) $(LDFLAGS) -o $@
+	-$(CXX) $(CXXFLAGS) -Wfatal-errors -I$(demo_dir)/src $@.cpp $(library) $(demo_library) $(LIBS) $(LDFLAGS) -o $@
 
 # Build documentation using Doxygen.
 doc: $(headers) $(vmmc_headers) $(dox_files)
