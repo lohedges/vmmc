@@ -29,8 +29,13 @@ LennardJonesium::LennardJonesium(Box& box_,
     potentialShift = std::pow(1.0/interactionRange, 12) - std::pow(1/interactionRange, 6);
 }
 
+#ifndef ISOTROPIC
 double LennardJonesium::computePairEnergy(unsigned int particle1, double position1[],
     double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+#else
+double LennardJonesium::computePairEnergy(unsigned int particle1,
+    double position1[], unsigned int particle2, double position2[])
+#endif
 {
     // Separation vector.
     std::vector<double> sep(box.dimension);

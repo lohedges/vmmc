@@ -25,6 +25,11 @@ PatchyDisc::PatchyDisc(Box& box_,
                        double interactionRange_) :
     Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
 {
+#ifdef ISOTROPIC
+    std::cerr << "[ERROR] PatchyDisc: Cannot be used with isotropic VMMC library!\n";
+    exit(EXIT_FAILURE);
+#endif
+
     // Check dimensionality.
     if (box.dimension != 2)
     {

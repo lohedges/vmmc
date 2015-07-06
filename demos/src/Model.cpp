@@ -32,7 +32,11 @@ Model::Model(Box& box_, std::vector<Particle>& particles_, CellList& cells_,
     squaredCutOffDistance = interactionRange * interactionRange;
 }
 
+#ifndef ISOTROPIC
 double Model::computeEnergy(unsigned int particle, double position[], double orientation[])
+#else
+double Model::computeEnergy(unsigned int particle, double position[])
+#endif
 {
     // N.B. This method is somewhat redundant since the same functionality
     // could be achieved by using a combination of the computeInteractions
@@ -56,9 +60,14 @@ double Model::computeEnergy(unsigned int particle, double position[], double ori
             if (neighbour != particle)
             {
                 // Calculate model specific pair energy.
+#ifndef ISOTROPIC
                 energy += computePairEnergy(particle, position, orientation,
                           neighbour, &particles[neighbour].position[0],
                           &particles[neighbour].orientation[0]);
+#else
+                energy += computePairEnergy(particle, position,
+                          neighbour, &particles[neighbour].position[0]);
+#endif
 
                 // Early exit test for hard core overlaps and large finite energy repulsions.
                 if (energy > 1e6) return INF;
@@ -69,14 +78,23 @@ double Model::computeEnergy(unsigned int particle, double position[], double ori
     return energy;
 }
 
+#ifndef ISOTROPIC
 double Model::computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[])
+#else
+double Model::computePairEnergy(unsigned int, double[], unsigned int, double[])
+#endif
 {
     std::cerr << "[ERROR] Model: Virtual function Model::computePairEnergy() must be defined.\n";
     exit(EXIT_FAILURE);
 }
 
+#ifndef ISOTROPIC
 unsigned int Model::computeInteractions(unsigned int particle,
     double position[], double orientation[], unsigned int interactions[])
+#else
+unsigned int Model::computeInteractions(unsigned int particle,
+    double position[], unsigned int interactions[])
+#endif
 {
     unsigned int cell;              // cell index
     unsigned int neighbour;         // index of neighbouring particle
@@ -129,13 +147,19 @@ unsigned int Model::computeInteractions(unsigned int particle,
     return nInteractions;
 }
 
+#ifndef ISOTROPIC
 void Model::applyPostMoveUpdates(unsigned int particle, double position[], double orientation[])
+#else
+void Model::applyPostMoveUpdates(unsigned int particle, double position[])
+#endif
 {
     // Copy coordinates/orientations.
     for (unsigned int i=0;i<box.dimension;i++)
     {
         particles[particle].position[i] = position[i];
+#ifndef ISOTROPIC
         particles[particle].orientation[i] = orientation[i];
+#endif
     }
 
     // Calculate the particle's cell index.

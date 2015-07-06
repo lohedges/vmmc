@@ -61,13 +61,19 @@ public:
         \param position
             The position vector of the particle.
 
+#ifndef ISOTROPIC
         \param orientation
             The orientation vector of the first particle.
+#endif
 
         \return
             The total interaction energy.
      */
+#ifndef ISOTROPIC
     virtual double computeEnergy(unsigned int, double[], double[]);
+#else
+    virtual double computeEnergy(unsigned int, double[]);
+#endif
 
     //! Calculate the pair energy between two particles.
     /*! \param particle1
@@ -76,19 +82,27 @@ public:
         \param position1
             The position vector of the first particle.
 
+#ifndef ISOTROPIC
         \param orientation1
             The orientation vector of the first particle.
+#endif
 
         \param position2
             The position vector of the second particle.
 
+#ifndef ISOTROPIC
         \param orientation2
             The orientation vector of the second particle.
+#endif
 
         \return
             The pair energy between particles 1 and 2.
      */
+#ifndef ISOTROPIC
     virtual double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
+#else
+    virtual double computePairEnergy(unsigned int, double[], unsigned int, double[]);
+#endif
 
     //! Determine the interactions for a given particle.
     /*! \param index
@@ -97,8 +111,10 @@ public:
         \param position
             The position vector of the particle.
 
+#ifndef ISOTROPIC
         \param orientation
             The orientation vector of the particle.
+#endif
 
         \param interactions
             An array to store the indices of neighbours with which the particle interacts.
@@ -106,7 +122,11 @@ public:
         \return
             The number of interactions.
      */
+#ifndef ISOTROPIC
     virtual unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
+#else
+    virtual unsigned int computeInteractions(unsigned int, double[], unsigned int[]);
+#endif
 
     //! Apply any post-move updates for a given particle.
     /*! \param index
@@ -115,10 +135,16 @@ public:
         \param position
             The position of the particle following the virtual move.
 
+#ifndef ISOTROPIC
         \param orientation
             The orientation of the particle following the virtual move.
+#endif
     */
+#ifndef ISOTROPIC
     virtual void applyPostMoveUpdates(unsigned int, double[], double[]);
+#else
+    virtual void applyPostMoveUpdates(unsigned int, double[]);
+#endif
 
     Box& box;                           //!> a reference to the simulation box
     std::vector<Particle>& particles;   //!> a reference to the particle list

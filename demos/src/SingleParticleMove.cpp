@@ -146,9 +146,14 @@ void SingleParticleMove::proposeMove()
     }
 
     // Calculate pre-move energy.
+#ifndef ISOTROPIC
     double initialEnergy = model->computeEnergy(moveParams.seed,
-            &model->particles[moveParams.seed].position[0],
-            &model->particles[moveParams.seed].orientation[0]);
+        &model->particles[moveParams.seed].position[0],
+        &model->particles[moveParams.seed].orientation[0]);
+#else
+    double initialEnergy = model->computeEnergy(moveParams.seed,
+        &model->particles[moveParams.seed].position[0]);
+#endif
 
     // Store initial coordinates/orientation.
     moveParams.preMoveParticle = model->particles[moveParams.seed];
@@ -179,9 +184,14 @@ void SingleParticleMove::proposeMove()
     }
 
     // Calculate post-move energy.
+#ifndef ISOTROPIC
     double finalEnergy = model->computeEnergy(moveParams.seed,
-            &model->particles[moveParams.seed].position[0],
-            &model->particles[moveParams.seed].orientation[0]);
+        &model->particles[moveParams.seed].position[0],
+        &model->particles[moveParams.seed].orientation[0]);
+#else
+    double finalEnergy = model->computeEnergy(moveParams.seed,
+        &model->particles[moveParams.seed].position[0]);
+#endif
 
     energyChange = finalEnergy - initialEnergy;
 }
