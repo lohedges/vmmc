@@ -11,13 +11,14 @@ For details of the VMMC algorithm, see:
 - \ref references
 
 \section compiling_sec Using the Code
-For specific instructions regarding how to install LibTPS, see:
+For specific instructions regarding how to install LibVMMC, see:
 - \ref compiling
 
 To get a feel for the how to write a code using the library,
 see the demos:
 - demos/square_wellium.cpp
 - demos/lennard_jonesium.cpp
+- demos/patchy_disc.cpp
 
 \section References
 - \ref references
