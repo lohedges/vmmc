@@ -63,10 +63,8 @@ $ c++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 \section deps External dependencies
 
 LibVMMC uses the <a href="http://en.wikipedia.org/wiki/Mersenne_Twister">
-Mersenne Twister</a> psuedorandom number generator. A C++ implementation
+Mersenne Twister</a> psuedorandom number generator. A C++11 implementation
 is included as a bundled header file and is compiled into the libvmmc
-library. The included MersenneTwister.h is taken from
-<a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/VERSIONS/C-LANG/c-lang.html">
-here</a>.
+library.
 
 */
