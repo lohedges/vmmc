@@ -253,10 +253,9 @@ Coordinates should run from 0 to the box size in each dimension.
 `orientations` = An array containing orientations (unit vectors) for all of the
 particles in the system, i.e. `nx1, ny1, nz1, nx2, ny2, nz2, ... , nxN, nyN, nzN.`
 In the case of particles interacting via an isotropic potential, the particle
-orientations are simply dummy unit vectors that provide a means for LibVMMC
-to execute rotational moves, i.e. the orientation has no effect on the potential.
-This allows the use of a single set of callback functions for models with both
-isotropic and anisotropic potentials.
+orientations are entirely redundant, i.e. the orientation has no effect on the
+potential. This allows the use of a single set of callback functions for models
+with both isotropic and anisotropic potentials.
 
 `maxTrialTranslation` = The maximum trial translation, in units of the particle
 diameter (or typical particle size).
@@ -403,6 +402,63 @@ Declaring a new user-defined model should be as easy as creating a `UserModel`
 class with public inheritance from the `Model` base class, then overriding
 the virtual `computePairEnergy` method. The `LennardJonesium`, `SquareWellium`,
 and `PatchyDisc` classes will serve as useful templates.
+
+## Pure isotropic systems
+The default build of LibVMMC provides support for systems of isotropic and
+anisotropic particles, or mixtures of both. However, in the case of pure
+isotropic systems, e.g. spherical particles interacting via a spherically
+symmetric potential, such as the square-well fluid, particle orientations
+are entirely redundant since they have no bearing on the potential. This
+means that there is no need to pass orientations as arguments to callback
+functions, or to update particle orientations during VMMC trial moves.
+
+We provide preprocessor directives that allow LibVMMC to be compiled as an
+optimised library for pure isotropic systems. This can be achieved as follows:
+
+```bash
+$ OPTFLAGS=-DISOTROPIC make build
+```
+
+The isotropic version of LibVMMC provides a simplified set of callback
+functions that require no particle orientations. For example, the
+`VMMC_pairEnergyCallback` becomes
+
+```cpp
+typedef std::function<double (unsigned int index1, double position1[],
+    unsigned int index2, double position2[])> VMMC_pairEnergyCallback;
+```
+
+In addition, the VMMC object no longer needs the `orientations` or
+`isIsotropic` arrays to be passed to its constructor, which is simplified to
+
+```cpp
+VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
+    double maxTrialTranslation, double maxTrialRotation, double probTranslate,
+    double referenceRadius, unsigned int maxInteractions, double boxSize[],
+    bool isRepulsive, const VMMC_energyCallback& energyCallback,
+    const VMMC_pairEnergyCallback& pairEnergyCallback,
+    const VMMC_interactionsCallback& interactionsCallback,
+    const VMMC_postMoveCallback& postMoveCallback);
+```
+
+The demo code shows how preprocessor directives can be used to provide support
+for either version of the library, e.g. for the default `computeEnergy` callback
+defined in the `Model` class, we have
+
+```cpp
+#ifndef ISOTROPIC
+    virtual double computeEnergy(unsigned int, double[], double[]);
+#else
+    virtual double computeEnergy(unsigned int, double[]);
+#endif
+```
+
+The pure isotropic version of LibVMMC can provide a significant performance
+gain when executing rotations of large clusters in isotropic systems.
+
+Note that the demo `patchy_disc.cpp` will not compile against the isotropic
+version of the library since the model is anisotropic and requires that
+particle orientations are passed to its callback functions.
 
 ## Limitations
 * The calculation of the hydrodynamic damping factor assumes a spherical cluster,
