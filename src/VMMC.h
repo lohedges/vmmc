@@ -163,10 +163,12 @@ public:
     bool isFrustrated;                          //!> whether the particle is involved in a frustrated link
     unsigned int posFrustated;                  //!> index in the frustrated links array
     std::vector<double> preMovePosition;        //!> particle position before the virtual move
-    std::vector<double> preMoveOrientation;     //!> particle orientation before the virtual move
     std::vector<double> postMovePosition;       //!> particle position following the virtual move
-    std::vector<double> postMoveOrientation;    //!> particle orientation following the virtual move
     std::vector<double> pseudoPosition;         //!> position of the particle in the pseudo-cluster
+#ifndef ISOTROPIC
+    std::vector<double> preMoveOrientation;     //!> particle orientation before the virtual move
+    std::vector<double> postMoveOrientation;    //!> particle orientation following the virtual move
+#endif
 };
 
 //! Main VMMC class.

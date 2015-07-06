@@ -23,10 +23,12 @@ VMMC_Particle::VMMC_Particle(unsigned int dimension)
 {
     // Resize position/orientation vectors.
     preMovePosition.resize(dimension);
-    preMoveOrientation.resize(dimension);
     postMovePosition.resize(dimension);
-    postMoveOrientation.resize(dimension);
     pseudoPosition.resize(dimension);
+#ifndef ISOTROPIC
+    preMoveOrientation.resize(dimension);
+    postMoveOrientation.resize(dimension);
+#endif
 }
 
 VMMC::VMMC(unsigned int nParticles_,
@@ -96,10 +98,12 @@ VMMC::VMMC(unsigned int nParticles_,
     {
         // Resize vectors.
         particles[i].preMovePosition.resize(dimension);
-        particles[i].preMoveOrientation.resize(dimension);
         particles[i].postMovePosition.resize(dimension);
-        particles[i].postMoveOrientation.resize(dimension);
         particles[i].pseudoPosition.resize(dimension);
+#ifndef ISOTROPIC
+        particles[i].preMoveOrientation.resize(dimension);
+        particles[i].postMoveOrientation.resize(dimension);
+#endif
 
         // Copy particle coordinates and orientations.
         for (unsigned int j=0;j<dimension;j++)
