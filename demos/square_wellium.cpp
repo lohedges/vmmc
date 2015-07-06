@@ -27,18 +27,20 @@ double getEnergy(Model*);
 int main(int argc, char** argv)
 {
     // Simulation parameters.
-    unsigned int dimension = 3;                     // dimension of simulation box
+    unsigned int dimension = 2;                     // dimension of simulation box
     unsigned int nParticles = 1000;                 // number of particles
-    double interactionEnergy = 2.6;                 // pair interaction energy scale (in units of kBT)
+    double interactionEnergy = 3.0;                 // pair interaction energy scale (in units of kBT)
     double interactionRange = 1.1;                  // size of interaction range (in units of particle diameter)
-    double density = 0.05;                          // particle density
+    double density = 0.2;                           // particle density
     double baseLength;                              // base length of simulation box
     unsigned int maxInteractions = 15;              // maximum number of interactions per particle
 
     // Data structures.
     std::vector<Particle> particles(nParticles);    // particle container
     CellList cells;                                 // cell list
+#ifndef ISOTROPIC
     bool isIsotropic[nParticles];                   // whether the potential of each particle is isotropic
+#endif
 
     // Work out base length of simulation box (particle diameter is one).
     if (dimension == 2) baseLength = std::pow((nParticles*M_PI)/(2.0*density), 1.0/2.0);
@@ -76,7 +78,9 @@ int main(int argc, char** argv)
 
     // Initialise data structures needed by the VMMC class.
     double coordinates[dimension*nParticles];
+#ifndef ISOTROPIC
     double orientations[dimension*nParticles];
+#endif
 
     // Copy particle coordinates and orientations into C-style arrays.
     for (unsigned int i=0;i<nParticles;i++)
@@ -84,15 +88,20 @@ int main(int argc, char** argv)
         for (unsigned int j=0;j<dimension;j++)
         {
             coordinates[dimension*i + j] = particles[i].position[j];
+#ifndef ISOTROPIC
             orientations[dimension*i + j] = particles[i].orientation[j];
+#endif
         }
 
+#ifndef ISOTROPIC
         // Set all particles as isotropic.
         isIsotropic[i] = true;
+#endif
     }
 
     // Initialise the VMMC callback functions.
     using namespace std::placeholders;
+#ifndef ISOTROPIC
     VMMC_energyCallback energyCallback =
         std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2, _3);
     VMMC_pairEnergyCallback pairEnergyCallback =
@@ -101,10 +110,25 @@ int main(int argc, char** argv)
         std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3, _4);
     VMMC_postMoveCallback postMoveCallback =
         std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2, _3);
+#else
+    VMMC_energyCallback energyCallback =
+        std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2);
+    VMMC_pairEnergyCallback pairEnergyCallback =
+        std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4);
+    VMMC_interactionsCallback interactionsCallback =
+        std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3);
+    VMMC_postMoveCallback postMoveCallback =
+        std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2);
+#endif
 
     // Initalise VMMC object.
+#ifndef ISOTROPIC
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
         &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+#else
+    VMMC vmmc(nParticles, dimension, coordinates, 0.15, 0.2, 0.5, 0.5, maxInteractions,
+        &boxSize[0], false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+#endif
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
@@ -133,7 +157,11 @@ double getEnergy(Model* model)
     double energy = 0;
 
     for (unsigned int i=0;i<model->particles.size();i++)
+#ifndef ISOTROPIC
         energy += model->computeEnergy(i, &model->particles[i].position[0], &model->particles[i].orientation[0]);
+#else
+        energy += model->computeEnergy(i, &model->particles[i].position[0]);
+#endif
 
     return energy/(2*model->particles.size());
 }

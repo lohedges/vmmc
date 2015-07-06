@@ -38,7 +38,9 @@ int main(int argc, char** argv)
     // Data structures.
     std::vector<Particle> particles(nParticles);    // particle container
     CellList cells;                                 // cell list
+#ifndef ISOTROPIC
     bool isIsotropic[nParticles];                   // whether the potential of each particle is isotropic
+#endif
 
     // Resize particle container.
     particles.resize(nParticles);
@@ -79,7 +81,9 @@ int main(int argc, char** argv)
 
     // Initialise data structures needed by the VMMC class.
     double coordinates[dimension*nParticles];
+#ifndef ISOTROPIC
     double orientations[dimension*nParticles];
+#endif
 
     // Copy particle coordinates and orientations into C-style arrays.
     for (unsigned int i=0;i<nParticles;i++)
@@ -87,15 +91,20 @@ int main(int argc, char** argv)
         for (unsigned int j=0;j<dimension;j++)
         {
             coordinates[dimension*i + j] = particles[i].position[j];
+#ifndef ISOTROPIC
             orientations[dimension*i + j] = particles[i].orientation[j];
+#endif
         }
 
+#ifndef ISOTROPIC
         // Set all particles as isotropic.
         isIsotropic[i] = true;
+#endif
     }
 
     // Initialise VMMC callback functions.
     using namespace std::placeholders;
+#ifndef ISOTROPIC
     VMMC_energyCallback energyCallback =
         std::bind(&LennardJonesium::computeEnergy, lennardJonesium, _1, _2, _3);
     VMMC_pairEnergyCallback pairEnergyCallback =
@@ -104,10 +113,25 @@ int main(int argc, char** argv)
         std::bind(&LennardJonesium::computeInteractions, lennardJonesium, _1, _2, _3, _4);
     VMMC_postMoveCallback postMoveCallback =
         std::bind(&LennardJonesium::applyPostMoveUpdates, lennardJonesium, _1, _2, _3);
+#else
+    VMMC_energyCallback energyCallback =
+        std::bind(&LennardJonesium::computeEnergy, lennardJonesium, _1, _2);
+    VMMC_pairEnergyCallback pairEnergyCallback =
+        std::bind(&LennardJonesium::computePairEnergy, lennardJonesium, _1, _2, _3, _4);
+    VMMC_interactionsCallback interactionsCallback =
+        std::bind(&LennardJonesium::computeInteractions, lennardJonesium, _1, _2, _3);
+    VMMC_postMoveCallback postMoveCallback =
+        std::bind(&LennardJonesium::applyPostMoveUpdates, lennardJonesium, _1, _2);
+#endif
 
     // Initalise the VMMC object.
+#ifndef ISOTROPIC
     VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
         &boxSize[0], isIsotropic, true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+#else
+    VMMC vmmc(nParticles, dimension, coordinates, 0.15, 0.2, 0.5, 0.5, maxInteractions,
+        &boxSize[0], true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+#endif
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
@@ -136,7 +160,11 @@ double getEnergy(Model* model)
     double energy = 0;
 
     for (unsigned int i=0;i<model->particles.size();i++)
+#ifndef ISOTROPIC
         energy += model->computeEnergy(i, &model->particles[i].position[0], &model->particles[i].orientation[0]);
+#else
+        energy += model->computeEnergy(i, &model->particles[i].position[0]);
+#endif
 
     return energy/(2*model->particles.size());
 }

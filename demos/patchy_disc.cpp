@@ -15,6 +15,10 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef ISOTROPIC
+#error patchy_disc.cpp cannot be linked to isotropic VMMC library!
+#endif
+
 #include "Demo.h"
 #include "VMMC.h"
 
