@@ -27,9 +27,9 @@ double getEnergy(Model*);
 int main(int argc, char** argv)
 {
     // Simulation parameters.
-    unsigned int dimension = 2;                     // dimension of simulation box
+    unsigned int dimension = 3;                     // dimension of simulation box
     unsigned int nParticles = 1000;                 // number of particles
-    double interactionEnergy = 3.0;                 // pair interaction energy scale (in units of kBT)
+    double interactionEnergy = 2.6;                 // pair interaction energy scale (in units of kBT)
     double interactionRange = 1.1;                  // size of interaction range (in units of particle diameter)
     double density = 0.2;                           // particle density
     double baseLength;                              // base length of simulation box
