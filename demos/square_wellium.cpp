@@ -126,7 +126,7 @@ int main(int argc, char** argv)
     vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
         &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
 #else
-    VMMC vmmc(nParticles, dimension, coordinates, 0.15, 0.2, 0.5, 0.5, maxInteractions,
+    vmmc::VMMC vmmc(nParticles, dimension, coordinates, 0.15, 0.2, 0.5, 0.5, maxInteractions,
         &boxSize[0], false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
 #endif
 
