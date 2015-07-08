@@ -126,7 +126,7 @@ we specify an install location, we would use a command more like the following:
 $ g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 ```
 
-Note that the `-std=c++11` compiler flag is needed for `std::function`.
+Note that the `-std=c++11` compiler flag is needed for `std::random`.
 
 ## Dependencies
 LibVMMC uses the [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_Twister)
@@ -138,17 +138,9 @@ generate Doxygen documentation with `make doc` for details on how to use it.
 LibVMMC works via four user-defined callback functions that abstract model
 specific details, such as the pair potential. Callback functions are
 implemented using a pure abstract `Model` base class that provides and
-interface to user defined potentials.
-`std::function` to provide a general-purpose function wrapper, i.e.
-the callbacks can be free functions, member functions, etc. These callbacks
-allow LibVMMC to be blind to the implementation of the model, as well as
-the model to be blind to the details of the VMMC algorithm. The generic
-nature of the function wrapper provides great flexibility to the user, freeing
-them from a specific design choice for the model in hand. It is possible to
-glue together components written in different ways, or to use the callbacks
-themselves as C/C++ wrappers to external libraries.
-
-Details of the callback prototypes are given below:
+interface to user defined potentials. These callbacks allow LibVMMC to be
+blind to the implementation of the model, as well as the model to be blind to
+the details of the VMMC algorithm.
 
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
