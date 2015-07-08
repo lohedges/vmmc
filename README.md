@@ -146,6 +146,12 @@ them from a specific design choice for the model in hand. It is possible to
 glue together components written in different ways, or to use the callbacks
 themselves as C/C++ wrappers to external libraries.
 
+An alternative version of LibVMMC that shows how to achieve the same callback
+functionality using a pure abstract `Model` base class can be found in the
+`pure-abstract` branch. While this provides a cleaner interface, the additional
+flexibility provided by `std::function` more than offsets the minimal
+performance cost.
+
 Details of the callback prototypes are given below (where `typedef` has
 been used to simplify their declaration).
 
