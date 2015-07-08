@@ -115,7 +115,7 @@ int main(int argc, char** argv)
         std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2);
     vmmc::PairEnergyCallback pairEnergyCallback =
         std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4);
-    vmmc::interactionsCallback interactionsCallback =
+    vmmc::InteractionsCallback interactionsCallback =
         std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3);
     vmmc::PostMoveCallback postMoveCallback =
         std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2);
