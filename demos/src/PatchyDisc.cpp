@@ -15,15 +15,24 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef ISOTROPIC
 #include "PatchyDisc.h"
 
-PatchyDisc::PatchyDisc(Box& box_,
-                       std::vector<Particle>& particles_,
-                       CellList& cells_,
-                       unsigned int maxInteractions_,
-                       double interactionEnergy_,
-                       double interactionRange_) :
-    Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
+PatchyDisc::PatchyDisc(
+    Box& box_,
+    std::vector<Particle>& particles_,
+    CellList& cells_,
+    unsigned int maxInteractions_,
+    double interactionEnergy_,
+    double interactionRange_) :
+
+    box(box_),
+    particles(particles_),
+    cells(cells_),
+    maxInteractions(maxInteractions_),
+    interactionRange(interactionRange_),
+    interactionEnergy(interactionEnergy_),
+    squaredCutOffDistance(interactionRange*interactionRange)
 {
 #ifdef ISOTROPIC
     std::cerr << "[ERROR] PatchyDisc: Cannot be used with isotropic VMMC library!\n";
@@ -52,7 +61,44 @@ PatchyDisc::PatchyDisc(Box& box_,
     }
 }
 
-double PatchyDisc::computePairEnergy(unsigned int particle1, double position1[],
+double PatchyDisc::energyCallback(unsigned int particle, double position[], double orientation[])
+{
+    // N.B. This method is somewhat redundant since the same functionality
+    // could be achieved by using a combination of the interactionsCallback
+    // and model specific pairEnergyCallback methods.
+
+    unsigned int cell;      // cell index
+    unsigned int neighbour; // index of neighbouring particle
+    double energy = 0;      // energy counter
+
+    // Check all neighbouring cells including same cell.
+    for (unsigned int i=0;i<cells.getNeighbours();i++)
+    {
+        cell = cells[particles[particle].cell].neighbours[i];
+
+        // Check all particles within cell.
+        for (unsigned int j=0;j<cells[cell].tally;j++)
+        {
+            neighbour = cells[cell].particles[j];
+
+            // Make sure the particles are different.
+            if (neighbour != particle)
+            {
+                // Calculate model specific pair energy.
+                energy += pairEnergyCallback(particle, position, orientation,
+                          neighbour, &particles[neighbour].position[0],
+                          &particles[neighbour].orientation[0]);
+
+                // Early exit test for hard core overlaps and large finite energy repulsions.
+                if (energy > 1e6) return INF;
+            }
+        }
+    }
+
+    return energy;
+}
+
+double PatchyDisc::pairEnergyCallback(unsigned int particle1, double position1[],
     double orientation1[], unsigned int particle2, double position2[], double orientation2[])
 {
     // Separation vector.
@@ -114,7 +160,7 @@ double PatchyDisc::computePairEnergy(unsigned int particle1, double position1[],
     return energy;
 }
 
-unsigned int PatchyDisc::computeInteractions(unsigned int particle,
+unsigned int PatchyDisc::interactionsCallback(unsigned int particle,
     double position[], double orientation[], unsigned int interactions[])
 {
     unsigned int cell;              // cell index
@@ -135,7 +181,7 @@ unsigned int PatchyDisc::computeInteractions(unsigned int particle,
             if (neighbour != particle)
             {
                 // Calculate pair energy.
-                double energy = computePairEnergy(particle, position, orientation,
+                double energy = pairEnergyCallback(particle, position, orientation,
                                 neighbour, &particles[neighbour].position[0],
                                 &particles[neighbour].orientation[0]);
 
@@ -157,3 +203,32 @@ unsigned int PatchyDisc::computeInteractions(unsigned int particle,
 
     return nInteractions;
 }
+
+void PatchyDisc::postMoveCallback(unsigned int particle, double position[], double orientation[])
+{
+    // Copy coordinates/orientations.
+    for (unsigned int i=0;i<box.dimension;i++)
+    {
+        particles[particle].position[i] = position[i];
+        particles[particle].orientation[i] = orientation[i];
+    }
+
+    // Calculate the particle's cell index.
+    unsigned int newCell = cells.getCell(particles[particle]);
+
+    // Update cell lists if necessary.
+    if (particles[particle].cell != newCell)
+        cells.updateCell(newCell, particles[particle], particles);
+}
+
+double PatchyDisc::getEnergy()
+{
+    double energy = 0;
+
+    for (unsigned int i=0;i<particles.size();i++)
+        energy += energyCallback(i, &particles[i].position[0], &particles[i].orientation[0]);
+
+    return energy/(2*particles.size());
+}
+
+#endif

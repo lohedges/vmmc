@@ -18,12 +18,16 @@
 #ifndef _SINGLEPARTICLEMOVE_H
 #define _SINGLEPARTICLEMOVE_H
 
+#include "CellList.h"
 #include "MersenneTwister.h"
 #include "Model.h"
 
 /*! \file SingleParticleMove.h
     \brief A class for executing single particle Move Monte Carlo moves (translations and rotations).
 */
+
+// Global infinity constant for hard core repulsions.
+extern double INF;
 
 //! Container for storing move parameters.
 struct MoveParams
@@ -42,6 +46,15 @@ public:
     /*! \param model_
             A pointer to the model object.
 
+        \param box_
+            A reference to the simulation box object.
+
+        \param particles_
+            A reference to the particle list.
+
+        \param cells_
+            A reference to the cell list object.
+
         \param maxTrialTranslation_
             The maximum trial translation (in units of the reference particle diameter).
 
@@ -54,7 +67,7 @@ public:
         \param isIsotropic_
             Whether the potential is isotropic.
      */
-    SingleParticleMove(Model*, double, double, double, bool);
+    SingleParticleMove(vmmc::Model*, Box&, std::vector<Particle>&, CellList&, double, double, double, bool);
 
     //! Overloaded ++ operator. Perform a single step.
     void operator ++ (const int);
@@ -96,7 +109,11 @@ public:
 
 private:
     MoveParams moveParams;                      //!< parameters for the trial move
-    Model* model;                               //!< a pointer to the model object
+    vmmc::Model* model;                         //!< a pointer to the model object
+    Box& box;                                   //!> a reference to the simulation box
+    std::vector<Particle>& particles;           //!> a reference to the particle list
+    CellList& cells;                            //!> a reference to the cell list
+
     unsigned long long nAttempts;               //!< number of attempted moves
     unsigned long long nAccepts;                //!< number of accepted moves
     unsigned long long nRotations;              //!< number of accepted rotations

@@ -18,12 +18,6 @@
 #include "Demo.h"
 #include "VMMC.h"
 
-// FUNCTION PROTOTYPES
-
-double getEnergy(Model*);
-
-// MAIN FUNCTION
-
 int main(int argc, char** argv)
 {
     // Simulation parameters.
@@ -31,7 +25,7 @@ int main(int argc, char** argv)
     unsigned int nParticles = 1000;                 // number of particles
     double interactionEnergy = 2.6;                 // pair interaction energy scale (in units of kBT)
     double interactionRange = 1.1;                  // size of interaction range (in units of particle diameter)
-    double density = 0.2;                           // particle density
+    double density = 0.05;                          // particle density
     double baseLength;                              // base length of simulation box
     unsigned int maxInteractions = 15;              // maximum number of interactions per particle
 
@@ -63,10 +57,6 @@ int main(int argc, char** argv)
     cells.setDimension(dimension);
     cells.initialise(box.boxSize, interactionRange);
 
-    // Initialise the square well potential model.
-    SquareWellium squareWellium(box, particles, cells,
-        maxInteractions, interactionEnergy, interactionRange);
-
     // Initialise random number generator.
     MersenneTwister rng;
 
@@ -75,6 +65,10 @@ int main(int argc, char** argv)
 
     // Generate a random particle configuration.
     initialise.random(particles, cells, box, rng);
+
+    // Initialise the square well potential model.
+    SquareWellium squareWellium(box, particles, cells,
+        maxInteractions, interactionEnergy, interactionRange);
 
     // Initialise data structures needed by the VMMC class.
     double coordinates[dimension*nParticles];
@@ -99,35 +93,13 @@ int main(int argc, char** argv)
 #endif
     }
 
-    // Initialise the VMMC callback functions.
-    using namespace std::placeholders;
-#ifndef ISOTROPIC
-    VMMC_energyCallback energyCallback =
-        std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2, _3);
-    VMMC_pairEnergyCallback pairEnergyCallback =
-        std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4, _5, _6);
-    VMMC_interactionsCallback interactionsCallback =
-        std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3, _4);
-    VMMC_postMoveCallback postMoveCallback =
-        std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2, _3);
-#else
-    VMMC_energyCallback energyCallback =
-        std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2);
-    VMMC_pairEnergyCallback pairEnergyCallback =
-        std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4);
-    VMMC_interactionsCallback interactionsCallback =
-        std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3);
-    VMMC_postMoveCallback postMoveCallback =
-        std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2);
-#endif
-
     // Initalise VMMC object.
 #ifndef ISOTROPIC
-    VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(&squareWellium, nParticles, dimension, coordinates, orientations,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false);
 #else
-    VMMC vmmc(nParticles, dimension, coordinates, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(&squareWellium, nParticles, dimension, coordinates,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], false);
 #endif
 
     // Execute the simulation.
@@ -141,27 +113,11 @@ int main(int argc, char** argv)
         else io.appendXyzTrajectory(dimension, particles, false);
 
         // Report.
-        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy(&squareWellium));
+        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), squareWellium.getEnergy());
     }
 
     std::cout << "\nComplete!\n";
 
     // We're done!
     return (EXIT_SUCCESS);
-}
-
-// FUNCTION DEFINITIONS
-
-double getEnergy(Model* model)
-{
-    double energy = 0;
-
-    for (unsigned int i=0;i<model->particles.size();i++)
-#ifndef ISOTROPIC
-        energy += model->computeEnergy(i, &model->particles[i].position[0], &model->particles[i].orientation[0]);
-#else
-        energy += model->computeEnergy(i, &model->particles[i].position[0]);
-#endif
-
-    return energy/(2*model->particles.size());
 }

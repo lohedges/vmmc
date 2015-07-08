@@ -17,21 +17,77 @@
 
 #include "SquareWellium.h"
 
-SquareWellium::SquareWellium(Box& box_,
-                             std::vector<Particle>& particles_,
-                             CellList& cells_,
-                             unsigned int maxInteractions_,
-                             double interactionEnergy_,
-                             double interactionRange_) :
-    Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
+double INF = std::numeric_limits<double>::infinity();
+
+SquareWellium::SquareWellium(
+    Box& box_,
+    std::vector<Particle>& particles_,
+    CellList& cells_,
+    unsigned int maxInteractions_,
+    double interactionEnergy_,
+    double interactionRange_) :
+
+    box(box_),
+    particles(particles_),
+    cells(cells_),
+    maxInteractions(maxInteractions_),
+    interactionEnergy(interactionEnergy_),
+    interactionRange(interactionRange_),
+    squaredCutOffDistance(interactionRange*interactionRange)
 {
 }
 
 #ifndef ISOTROPIC
-double SquareWellium::computePairEnergy(unsigned int particle1, double position1[],
+double SquareWellium::energyCallback(unsigned int particle, double position[], double orientation[])
+#else
+double SquareWellium::energyCallback(unsigned int particle, double position[])
+#endif
+{
+    // N.B. This method is somewhat redundant since the same functionality
+    // could be achieved by using a combination of the interactionsCallback
+    // and model specific pairEnergyCallback methods.
+
+    unsigned int cell;      // cell index
+    unsigned int neighbour; // index of neighbouring particle
+    double energy = 0;      // energy counter
+
+    // Check all neighbouring cells including same cell.
+    for (unsigned int i=0;i<cells.getNeighbours();i++)
+    {
+        cell = cells[particles[particle].cell].neighbours[i];
+
+        // Check all particles within cell.
+        for (unsigned int j=0;j<cells[cell].tally;j++)
+        {
+            neighbour = cells[cell].particles[j];
+
+            // Make sure the particles are different.
+            if (neighbour != particle)
+            {
+                // Calculate model specific pair energy.
+#ifndef ISOTROPIC
+                energy += pairEnergyCallback(particle, position, orientation,
+                          neighbour, &particles[neighbour].position[0],
+                          &particles[neighbour].orientation[0]);
+#else
+                energy += pairEnergyCallback(particle, position,
+                          neighbour, &particles[neighbour].position[0]);
+#endif
+
+                // Early exit test for hard core overlaps and large finite energy repulsions.
+                if (energy > 1e6) return INF;
+            }
+        }
+    }
+
+    return energy;
+}
+
+#ifndef ISOTROPIC
+double SquareWellium::pairEnergyCallback(unsigned int particle1, double position1[],
     double orientation1[], unsigned int particle2, double position2[], double orientation2[])
 #else
-double SquareWellium::computePairEnergy(unsigned int particle1,
+double SquareWellium::pairEnergyCallback(unsigned int particle1,
     double position1[], unsigned int particle2, double position2[])
 #endif
 {
@@ -54,4 +110,100 @@ double SquareWellium::computePairEnergy(unsigned int particle1,
     if (normSqd < 1) return INF;
     if (normSqd < squaredCutOffDistance) return -interactionEnergy;
     return 0;
+}
+
+#ifndef ISOTROPIC
+unsigned int SquareWellium::interactionsCallback(unsigned int particle,
+    double position[], double orientation[], unsigned int interactions[])
+#else
+unsigned int SquareWellium::interactionsCallback(unsigned int particle,
+    double position[], unsigned int interactions[])
+#endif
+{
+    unsigned int cell;              // cell index
+    unsigned int neighbour;         // index of neighbouring particle
+    unsigned int nInteractions = 0; // interaction counter
+
+    // Check all neighbouring cells including same cell.
+    for (unsigned int i=0;i<cells.getNeighbours();i++)
+    {
+        cell = cells[particles[particle].cell].neighbours[i];
+
+        // Check all particles within cell.
+        for (unsigned int j=0;j<cells[cell].tally;j++)
+        {
+            neighbour = cells[cell].particles[j];
+
+            // Make sure the particles are different.
+            if (neighbour != particle)
+            {
+                std::vector<double> sep(box.dimension);
+
+                // Compute separation.
+                for (unsigned int k=0;k<box.dimension;k++)
+                    sep[k] = position[k] - particles[neighbour].position[k];
+
+                // Enforce minimum image.
+                box.minimumImage(sep);
+
+                double normSqd = 0;
+
+                // Calculate squared norm of vector.
+                for (unsigned int k=0;k<box.dimension;k++)
+                    normSqd += sep[k]*sep[k];
+
+                // Particles interact.
+                if (normSqd < squaredCutOffDistance)
+                {
+                    if (nInteractions == maxInteractions)
+                    {
+                        std::cerr << "[ERROR] SquareWellium: Maximum number of interactions exceeded!\n";
+                        exit(EXIT_FAILURE);
+                    }
+
+                    interactions[nInteractions] = neighbour;
+                    nInteractions++;
+                }
+            }
+        }
+    }
+
+    return nInteractions;
+}
+
+#ifndef ISOTROPIC
+void SquareWellium::postMoveCallback(unsigned int particle, double position[], double orientation[])
+#else
+void SquareWellium::postMoveCallback(unsigned int particle, double position[])
+#endif
+{
+    // Copy coordinates/orientations.
+    for (unsigned int i=0;i<box.dimension;i++)
+    {
+        particles[particle].position[i] = position[i];
+#ifndef ISOTROPIC
+        particles[particle].orientation[i] = orientation[i];
+#endif
+    }
+
+    // Calculate the particle's cell index.
+    unsigned int newCell = cells.getCell(particles[particle]);
+
+    // Update cell lists if necessary.
+    if (particles[particle].cell != newCell)
+        cells.updateCell(newCell, particles[particle], particles);
+}
+
+double SquareWellium::getEnergy()
+{
+    double energy = 0;
+
+    for (unsigned int i=0;i<particles.size();i++)
+#ifndef ISOTROPIC
+        energy += energyCallback(i, &particles[i].position[0], &particles[i].orientation[0]);
+#else
+        energy += energyCallback(i, &particles[i].position[0]);
+#endif
+
+    return energy/(2*particles.size());
 }

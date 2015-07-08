@@ -18,12 +18,6 @@
 #include "Demo.h"
 #include "VMMC.h"
 
-// FUNCTION PROTOTYPES
-
-double getEnergy(Model*);
-
-// MAIN FUNCTION
-
 int main(int argc, char** argv)
 {
     // Simulation parameters.
@@ -66,15 +60,15 @@ int main(int argc, char** argv)
     cells.setDimension(dimension);
     cells.initialise(box.boxSize, interactionRange);
 
-    // Initialise the Lennard-Jones potential model.
-    LennardJonesium lennardJonesium(box, particles, cells,
-        maxInteractions, interactionEnergy, interactionRange);
-
     // Initialise random number generator.
     MersenneTwister rng;
 
     // Initialise particle initialisation object.
     Initialise initialise;
+
+    // Initialise the Lennard-Jones potential model.
+    LennardJonesium lennardJonesium(box, particles, cells,
+        maxInteractions, interactionEnergy, interactionRange);
 
     // Generate a random particle configuration.
     initialise.random(particles, cells, box, rng);
@@ -102,35 +96,13 @@ int main(int argc, char** argv)
 #endif
     }
 
-    // Initialise VMMC callback functions.
-    using namespace std::placeholders;
-#ifndef ISOTROPIC
-    VMMC_energyCallback energyCallback =
-        std::bind(&LennardJonesium::computeEnergy, lennardJonesium, _1, _2, _3);
-    VMMC_pairEnergyCallback pairEnergyCallback =
-        std::bind(&LennardJonesium::computePairEnergy, lennardJonesium, _1, _2, _3, _4, _5, _6);
-    VMMC_interactionsCallback interactionsCallback =
-        std::bind(&LennardJonesium::computeInteractions, lennardJonesium, _1, _2, _3, _4);
-    VMMC_postMoveCallback postMoveCallback =
-        std::bind(&LennardJonesium::applyPostMoveUpdates, lennardJonesium, _1, _2, _3);
-#else
-    VMMC_energyCallback energyCallback =
-        std::bind(&LennardJonesium::computeEnergy, lennardJonesium, _1, _2);
-    VMMC_pairEnergyCallback pairEnergyCallback =
-        std::bind(&LennardJonesium::computePairEnergy, lennardJonesium, _1, _2, _3, _4);
-    VMMC_interactionsCallback interactionsCallback =
-        std::bind(&LennardJonesium::computeInteractions, lennardJonesium, _1, _2, _3);
-    VMMC_postMoveCallback postMoveCallback =
-        std::bind(&LennardJonesium::applyPostMoveUpdates, lennardJonesium, _1, _2);
-#endif
-
     // Initalise the VMMC object.
 #ifndef ISOTROPIC
-    VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], isIsotropic, true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(&lennardJonesium, nParticles, dimension, coordinates, orientations,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, true);
 #else
-    VMMC vmmc(nParticles, dimension, coordinates, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], true, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(&lennardJonesium, nParticles, dimension, coordinates,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], true);
 #endif
 
     // Execute the simulation.
@@ -144,27 +116,11 @@ int main(int argc, char** argv)
         else io.appendXyzTrajectory(dimension, particles, false);
 
         // Report.
-        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy(&lennardJonesium));
+        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), lennardJonesium.getEnergy());
     }
 
     std::cout << "\nComplete!\n";
 
     // We're done!
     return (EXIT_SUCCESS);
-}
-
-// FUNCTION DEFINITIONS
-
-double getEnergy(Model* model)
-{
-    double energy = 0;
-
-    for (unsigned int i=0;i<model->particles.size();i++)
-#ifndef ISOTROPIC
-        energy += model->computeEnergy(i, &model->particles[i].position[0], &model->particles[i].orientation[0]);
-#else
-        energy += model->computeEnergy(i, &model->particles[i].position[0]);
-#endif
-
-    return energy/(2*model->particles.size());
 }

@@ -18,13 +18,19 @@
 #ifndef _SQUAREWELLIUM_H
 #define _SQUAREWELLIUM_H
 
+#include <limits>
+
+#include "CellList.h"
 #include "Model.h"
 
 /*! \file SquareWellium.h
 */
 
+// Global infinity constant for hard core repulsions.
+extern double INF;
+
 //! Class defining the square-well potential.
-class SquareWellium : public Model
+class SquareWellium : public vmmc::Model
 {
 public:
     //! Constructor.
@@ -48,6 +54,25 @@ public:
      */
     SquareWellium(Box&, std::vector<Particle>&, CellList&, unsigned int, double, double);
 
+    //! Calculate the total interaction energy felt by a particle.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position vector of the particle.
+
+        \param orientation
+            The orientation vector of the first particle.
+
+        \return
+            The total interaction energy.
+    */
+#ifndef ISOTROPIC
+    double energyCallback(unsigned int, double[], double[]);
+#else
+    double energyCallback(unsigned int, double[]);
+#endif
+
     //! Calculate the pair energy between two particles.
     /*! \param particle1
             The index of the first particle.
@@ -66,12 +91,63 @@ public:
 
         \return
             The pair energy between particles 1 and 2.
-     */
+    */
 #ifndef ISOTROPIC
-    double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
+    double pairEnergyCallback(unsigned int, double[], double[], unsigned int, double[], double[]);
 #else
-    double computePairEnergy(unsigned int, double[], unsigned int, double[]);
+    double pairEnergyCallback(unsigned int, double[], unsigned int, double[]);
 #endif
+
+    //! Determine the interactions for a given particle.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position vector of the particle.
+
+        \param orientation
+            The orientation vector of the particle.
+
+        \param interactions
+            An array to store the indices of neighbours with which the particle interacts.
+
+        \return
+            The number of interactions.
+    */
+#ifndef ISOTROPIC
+    unsigned int interactionsCallback(unsigned int, double[], double[], unsigned int[]);
+#else
+    unsigned int interactionsCallback(unsigned int, double[], unsigned int[]);
+#endif
+
+    //! Apply any post-move updates for a given particle.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle following the  move.
+
+        \param orientation
+            The orientation of the particle following the  move.
+    */
+#ifndef ISOTROPIC
+    void postMoveCallback(unsigned int, double[], double[]);
+#else
+    void postMoveCallback(unsigned int, double[]);
+#endif
+
+    //! Calculate global energy.
+    double getEnergy();
+
+private:
+    Box& box;                           //!> a reference to the simulation box
+    std::vector<Particle>& particles;   //!> a reference to the particle list
+    CellList& cells;                    //!> a reference to the cell list
+
+    unsigned int maxInteractions;       //!> the maximum number of interactions per particle
+    double interactionEnergy;           //!> interaction energy scale (in units of kBT)
+    double interactionRange;            //!> size of interaction range (in units of particle diameter)
+    double squaredCutOffDistance;       //!> squared cut-off distance
 };
 
 #endif	/* _SQUAREWELLIUM_H */

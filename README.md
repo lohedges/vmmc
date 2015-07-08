@@ -136,7 +136,9 @@ generate Doxygen documentation with `make doc` for details on how to use it.
 
 ## Callback functions
 LibVMMC works via four user-defined callback functions that abstract model
-specific details, such as the pair potential. We make use of C++11's
+specific details, such as the pair potential. Callback functions are
+implemented using a pure abstract `Model` base class that provides and
+interface to user defined potentials.
 `std::function` to provide a general-purpose function wrapper, i.e.
 the callbacks can be free functions, member functions, etc. These callbacks
 allow LibVMMC to be blind to the implementation of the model, as well as
@@ -146,14 +148,12 @@ them from a specific design choice for the model in hand. It is possible to
 glue together components written in different ways, or to use the callbacks
 themselves as C/C++ wrappers to external libraries.
 
-Details of the callback prototypes are given below (where `typedef` has
-been used to simplify their declaration).
+Details of the callback prototypes are given below:
 
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
 ```cpp
-typedef std::function<double (unsigned int index, double position[],
-    double orientation[])> VMMC_energyCallback;
+double energyCallback(unsigned int index, double position[], double orientation[]);
 ```
 `index` = The particle index.
 
@@ -162,17 +162,17 @@ typedef std::function<double (unsigned int index, double position[],
 `orientation` = The particle's orientation unit vector.
 
 This callback function is currently somewhat redundant since it is possible to
-achieve the same outcome by combining the `VMMC_pairEnergyCallback` and
-`VMMC_interactionsCallback` functions described below. Ultimately, the callback
+achieve the same outcome by combining the `pairEnergyCallback` and
+`interactionsCallback` functions described below. Ultimately, the callback
 will be able to account for non-pairwise terms in the potential, such as
 an external field.
 
 ### Pair energy
 Calculate the pair interaction between two particles.
 ```cpp
-typedef std::function<double (unsigned int index1, double position1[],
+double pairEnergyCallback(unsigned int index1, double position1[],
     double orientation1[], unsigned int index2, double position2[],
-    double orientation2[])> VMMC_pairEnergyCallback;
+    double orientation2[]);
 ```
 `index1` = The index of the first particle.
 
@@ -189,8 +189,8 @@ typedef std::function<double (unsigned int index1, double position1[],
 ### Interactions
 Determine the interactions for a given particle.
 ```cpp
-typedef std::function<unsigned int (unsigned int index, double position[],
-    double orientation[], unsigned int interactions[])> VMMC_interactionsCallback;
+unsigned int interactionsCallback(unsigned int index, double position[],
+    double orientation[], unsigned int interactions[]);
 ```
 `index` = The index of the  particle.
 
@@ -203,8 +203,7 @@ typedef std::function<unsigned int (unsigned int index, double position[],
 ### Post-move
 Apply any post-move updates, e.g. update cell lists, or neighbour lists.
 ```cpp
-typedef std::function<void (unsigned int index, double position[],
-    double orientation[])> VMMC_postMoveCallback;
+void postMoveCallback(unsigned int index, double position[], double orientation[]);
 ```
 `index` = The index of the  particle.
 
@@ -212,36 +211,29 @@ typedef std::function<void (unsigned int index, double position[],
 
 `orientation` = The orientation unit vector of the particle following the move.
 
-## Assigning a callback
-Using the callbacks above it is easy to create a function wrapper to whatever,
-e.g.
+## Defining a model
+The demo code illustrates a simple way of defining and handling different model
+potentials. A pure abstract base class, `Model`, is used to declare an interface.
+Derived classes, such as `LennardJonesium`, are used to implement the
+model specific callbacks.
 
-```cpp
-VMMC_energyCallback energyCallback = computeEnergy;
-```
-
-if `computeEnergy` were a free function, or
-
-```cpp
-Foo foo;
-using namespace std::placeholders;
-VMMC_energyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
-```
-
-if `computeEnergy` were instead a member of some object called `Foo`.
+Declaring a new user-defined model should be as easy as creating a `UserModel`
+class with public inheritance from the `Model` base class, then overriding
+the virtual callback functions. The `LennardJonesium`, `SquareWellium`, and
+`PatchyDisc` classes will serve as useful templates.
 
 ## The VMMC object
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
 constructor:
 ```cpp
-VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
+VMMC(Model* model, unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
-    double boxSize[], bool isIsotropic[], bool isRepulsive,
-    const VMMC_energyCallback& energyCallback, const VMMC_pairEnergyCallback&
-    pairEnergyCallback, const VMMC_interactionsCallback& interactionsCallback,
-    const VMMC_postMoveCallback& postMoveCallback);
+    double boxSize[], bool isIsotropic[], bool isRepulsive);
 ```
+
+`model` = A pointer to the derived model object.
+
 `nParticles` = The number of particles in the simulation box.
 
 `dimension` = The dimension of the simulation box (either 2 or 3).
@@ -290,20 +282,6 @@ mixed-potential systems.
 `isRepulsive` = Whether the potential has finite energy repulsions. This should
 also be set to `true` when particle interactions contain a mixture of hard core
 overlaps and finite repulsions.
-
-`energyCallback` = The callback function to calculate the total pair interaction
-for a particle.
-
-`pairEnergyCallback` = The callback function to calculate the pair interaction
-between two particles.
-
-`interactionsCallback` = The callback function to determine the neighbours with
-which a particle interacts.
-
-`postMoveCallback` = The callback function to perform any required updates
-following the move. Here you should copy the updated particle positions and
-orientations back into your own data structures and implement any additional
-updates, e.g. cell lists.
 
 ## C-style arrays
 The VMMC object constructor and callback functions use C-style arrays as
@@ -391,19 +369,7 @@ phase, the square-well fluid is sampled in the crystal (FCC/HCP) phase).
 
 ![Comparison of pair distribution functions for configurations equilibrated with SPMC and VMMC.](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/images/pair-distribution.png)
 
-## Defining a model
-The demo code illustrates a simple way of defining and handling different model
-potentials. A base class, `Model`, is used to declare default functionality and
-callbacks. Derived classes, such as `LennardJonesium`, are used to implement the
-model specific pair potential, which is declared as a virtual method in the base
-class.
-
-Declaring a new user-defined model should be as easy as creating a `UserModel`
-class with public inheritance from the `Model` base class, then overriding
-the virtual `computePairEnergy` method. The `LennardJonesium`, `SquareWellium`,
-and `PatchyDisc` classes will serve as useful templates.
-
-## Pure isotropic systems
+# Pure isotropic systems
 The default build of LibVMMC provides support for systems of isotropic and
 anisotropic particles, or mixtures of both. However, in the case of pure
 isotropic systems, e.g. spherical particles interacting via a spherically
@@ -421,35 +387,32 @@ $ OPTFLAGS=-DISOTROPIC make build
 
 The isotropic version of LibVMMC provides a simplified set of callback
 functions that require no particle orientations. For example, the
-`VMMC_pairEnergyCallback` becomes
+`pairEnergyCallback` becomes
 
 ```cpp
-typedef std::function<double (unsigned int index1, double position1[],
-    unsigned int index2, double position2[])> VMMC_pairEnergyCallback;
+double pairEnergyCallback(unsigned int index1, double position1[],
+    unsigned int index2, double position2[]);
 ```
 
 In addition, the VMMC object no longer needs the `orientations` or
 `isIsotropic` arrays to be passed to its constructor, which is simplified to
 
 ```cpp
-VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
-    double maxTrialTranslation, double maxTrialRotation, double probTranslate,
-    double referenceRadius, unsigned int maxInteractions, double boxSize[],
-    bool isRepulsive, const VMMC_energyCallback& energyCallback,
-    const VMMC_pairEnergyCallback& pairEnergyCallback,
-    const VMMC_interactionsCallback& interactionsCallback,
-    const VMMC_postMoveCallback& postMoveCallback);
+VMMC(Model* model, unsigned int nParticles, unsigned int dimension,
+    double coordinates[], double maxTrialTranslation, double maxTrialRotation,
+    double probTranslate, double referenceRadius, unsigned int maxInteractions,
+    double boxSize[], bool isRepulsive);
 ```
 
 The demo code shows how preprocessor directives can be used to provide support
-for either version of the library, e.g. for the default `computeEnergy` callback
+for either version of the library, e.g. for the `energyCallback` callback
 defined in the `Model` class, we have
 
 ```cpp
 #ifndef ISOTROPIC
-    virtual double computeEnergy(unsigned int, double[], double[]);
+    virtual double energyCallback(unsigned int, double[], double[]);
 #else
-    virtual double computeEnergy(unsigned int, double[]);
+    virtual double energyCallback(unsigned int, double[]);
 #endif
 ```
 
@@ -505,8 +468,6 @@ rotate a cluster on top of itself. This can occur in a dense system when one
 axis of a cluster is longer than the box size, e.g. the cluster lies diagonally
 in a square box. In this case, a rotation across the periodic boundary can cause
 the cluster to overlap.
-* Due to the overhead of binding member functions it is marginally faster to use
-free functions as callbacks.
 
 ## Tips
 * LibVMMC currently assumes that the simulation box is periodic in all dimensions.
@@ -516,10 +477,6 @@ return an appropriately large energy so that the move will be rejected.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
-* The use of `std::function` allows the user to wrap arbitary functions as callbacks
-(rather than only using free functions, as with C-style function pointers). See
-[here](http://en.cppreference.com/w/cpp/utility/functional/function) for details
-on how to bind member functions, or function objects.
 
 ## Disclaimer
 Please be aware that this a working repository so the code should be used at

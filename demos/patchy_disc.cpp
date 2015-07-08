@@ -16,17 +16,11 @@
 */
 
 #ifdef ISOTROPIC
-#error patchy_disc.cpp cannot be linked to isotropic VMMC library!
+#error patchy_disc.cpp cannot be compiled against isotropic VMMC library!
 #endif
 
 #include "Demo.h"
 #include "VMMC.h"
-
-// FUNCTION PROTOTYPES
-
-double getEnergy(Model*);
-
-// MAIN FUNCTION
 
 int main(int argc, char** argv)
 {
@@ -68,10 +62,6 @@ int main(int argc, char** argv)
     cells.setDimension(dimension);
     cells.initialise(box.boxSize, 1 + 0.5*interactionRange);
 
-    // Initialise the patchy disc model.
-    PatchyDisc patchyDisc(box, particles, cells,
-        maxInteractions, interactionEnergy, interactionRange);
-
     // Initialise random number generator.
     MersenneTwister rng;
 
@@ -80,6 +70,10 @@ int main(int argc, char** argv)
 
     // Generate a random particle configuration.
     initialise.random(particles, cells, box, rng);
+
+    // Initialise the patchy disc model.
+    PatchyDisc patchyDisc(box, particles, cells,
+        maxInteractions, interactionEnergy, interactionRange);
 
     // Initialise data structures needed by the VMMC class.
     double coordinates[dimension*nParticles];
@@ -98,20 +92,9 @@ int main(int argc, char** argv)
         isIsotropic[i] = false;
     }
 
-    // Initialise the VMMC callback functions.
-    using namespace std::placeholders;
-    VMMC_energyCallback energyCallback =
-        std::bind(&PatchyDisc::computeEnergy, patchyDisc, _1, _2, _3);
-    VMMC_pairEnergyCallback pairEnergyCallback =
-        std::bind(&PatchyDisc::computePairEnergy, patchyDisc, _1, _2, _3, _4, _5, _6);
-    VMMC_interactionsCallback interactionsCallback =
-        std::bind(&PatchyDisc::computeInteractions, patchyDisc, _1, _2, _3, _4);
-    VMMC_postMoveCallback postMoveCallback =
-        std::bind(&PatchyDisc::applyPostMoveUpdates, patchyDisc, _1, _2, _3);
-
     // Initalise VMMC object.
-    VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(&patchyDisc, nParticles, dimension, coordinates, orientations,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false);
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
@@ -124,23 +107,11 @@ int main(int argc, char** argv)
         else io.appendXyzTrajectory(dimension, particles, false);
 
         // Report.
-        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy(&patchyDisc));
+        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), patchyDisc.getEnergy());
     }
 
     std::cout << "\nComplete!\n";
 
     // We're done!
     return (EXIT_SUCCESS);
-}
-
-// FUNCTION DEFINITIONS
-
-double getEnergy(Model* model)
-{
-    double energy = 0;
-
-    for (unsigned int i=0;i<model->particles.size();i++)
-        energy += model->computeEnergy(i, &model->particles[i].position[0], &model->particles[i].orientation[0]);
-
-    return energy/(2*model->particles.size());
 }

@@ -18,24 +18,30 @@
 #include "SingleParticleMove.h"
 
 SingleParticleMove::SingleParticleMove(
-        Model* model_,
-        double maxTrialTranslation_,
-        double maxTrialRotation_,
-        double probTranslate_,
-        bool isIsotropic_) :
+    vmmc::Model* model_,
+    Box& box_,
+    std::vector<Particle>& particles_,
+    CellList& cells_,
+    double maxTrialTranslation_,
+    double maxTrialRotation_,
+    double probTranslate_,
+    bool isIsotropic_) :
 
-        model(model_),
-        maxTrialTranslation(maxTrialTranslation_),
-        maxTrialRotation(maxTrialRotation_),
-        probTranslate(probTranslate_),
-        isIsotropic(isIsotropic_)
+    model(model_),
+    box(box_),
+    particles(particles_),
+    cells(cells_),
+    maxTrialTranslation(maxTrialTranslation_),
+    maxTrialRotation(maxTrialRotation_),
+    probTranslate(probTranslate_),
+    isIsotropic(isIsotropic_)
 {
     // Check dimensionality.
-    if (model->box.dimension == 3) is3D = true;
+    if (box.dimension == 3) is3D = true;
     else is3D = false;
 
     // Allocate memory.
-    moveParams.trialVector.resize(model->box.dimension);
+    moveParams.trialVector.resize(box.dimension);
 
     // Ignore rotations if potential is isotropic.
     if (isIsotropic) probTranslate = 1.0;
@@ -77,20 +83,20 @@ void SingleParticleMove::step()
             nRotations += moveParams.isRotation;
 
             unsigned int oldCell = moveParams.preMoveParticle.cell;
-            unsigned int newCell = model->particles[moveParams.seed].cell;
+            unsigned int newCell = particles[moveParams.seed].cell;
 
             // update cell list
             if (oldCell != newCell)
             {
-                model->particles[moveParams.seed].cell = oldCell;
-                model->cells.updateCell(newCell, model->particles[moveParams.seed], model->particles);
+                particles[moveParams.seed].cell = oldCell;
+                cells.updateCell(newCell, particles[moveParams.seed], particles);
             }
         }
     }
     else
     {
         // Revert particle to pre-move state.
-        model->particles[moveParams.seed] = moveParams.preMoveParticle;
+        particles[moveParams.seed] = moveParams.preMoveParticle;
     }
 }
 
@@ -117,15 +123,15 @@ void SingleParticleMove::reset()
 void SingleParticleMove::proposeMove()
 {
     // Choose a seed particle.
-    moveParams.seed = rng.integer(0, model->particles.size()-1);
+    moveParams.seed = rng.integer(0, particles.size()-1);
 
     // Choose a random point on the surface of the unit sphere/circle.
-    for (unsigned int i=0;i<model->box.dimension;i++)
+    for (unsigned int i=0;i<box.dimension;i++)
         moveParams.trialVector[i] = rng.normal();
 
     // Normalise the trial vector.
     double norm = computeNorm(moveParams.trialVector);
-    for (unsigned int i=0;i<model->box.dimension;i++)
+    for (unsigned int i=0;i<box.dimension;i++)
         moveParams.trialVector[i] /= norm;
 
     // Choose the move type.
@@ -147,50 +153,50 @@ void SingleParticleMove::proposeMove()
 
     // Calculate pre-move energy.
 #ifndef ISOTROPIC
-    double initialEnergy = model->computeEnergy(moveParams.seed,
-        &model->particles[moveParams.seed].position[0],
-        &model->particles[moveParams.seed].orientation[0]);
+    double initialEnergy = model->energyCallback(moveParams.seed,
+        &particles[moveParams.seed].position[0],
+        &particles[moveParams.seed].orientation[0]);
 #else
-    double initialEnergy = model->computeEnergy(moveParams.seed,
-        &model->particles[moveParams.seed].position[0]);
+    double initialEnergy = model->energyCallback(moveParams.seed,
+        &particles[moveParams.seed].position[0]);
 #endif
 
     // Store initial coordinates/orientation.
-    moveParams.preMoveParticle = model->particles[moveParams.seed];
+    moveParams.preMoveParticle = particles[moveParams.seed];
 
     // Execute the move.
     if (!moveParams.isRotation) // Translation.
     {
-        for (unsigned int i=0;i<model->box.dimension;i++)
-            model->particles[moveParams.seed].position[i] += moveParams.stepSize*moveParams.trialVector[i];
+        for (unsigned int i=0;i<box.dimension;i++)
+            particles[moveParams.seed].position[i] += moveParams.stepSize*moveParams.trialVector[i];
 
         // Apply periodic boundary conditions.
-        model->box.periodicBoundaries(model->particles[moveParams.seed].position);
+        box.periodicBoundaries(particles[moveParams.seed].position);
 
         // Work out new cell index.
-        model->particles[moveParams.seed].cell = model->cells.getCell(model->particles[moveParams.seed]);
+        particles[moveParams.seed].cell = cells.getCell(particles[moveParams.seed]);
     }
     else                        // Rotation.
     {
-        std::vector<double> vec(model->box.dimension);
+        std::vector<double> vec(box.dimension);
 
         // Calculate orientation rotation vector.
-        if (is3D) rotate3D(model->particles[moveParams.seed].orientation, moveParams.trialVector, vec, moveParams.stepSize);
-        else rotate2D(model->particles[moveParams.seed].orientation, vec, moveParams.stepSize);
+        if (is3D) rotate3D(particles[moveParams.seed].orientation, moveParams.trialVector, vec, moveParams.stepSize);
+        else rotate2D(particles[moveParams.seed].orientation, vec, moveParams.stepSize);
 
         // Update orientation.
-        for (unsigned int i=0;i<model->box.dimension;i++)
-            model->particles[moveParams.seed].orientation[i] += vec[i];
+        for (unsigned int i=0;i<box.dimension;i++)
+            particles[moveParams.seed].orientation[i] += vec[i];
     }
 
     // Calculate post-move energy.
 #ifndef ISOTROPIC
-    double finalEnergy = model->computeEnergy(moveParams.seed,
-        &model->particles[moveParams.seed].position[0],
-        &model->particles[moveParams.seed].orientation[0]);
+    double finalEnergy = model->energyCallback(moveParams.seed,
+        &particles[moveParams.seed].position[0],
+        &particles[moveParams.seed].orientation[0]);
 #else
-    double finalEnergy = model->computeEnergy(moveParams.seed,
-        &model->particles[moveParams.seed].position[0]);
+    double finalEnergy = model->energyCallback(moveParams.seed,
+        &particles[moveParams.seed].position[0]);
 #endif
 
     energyChange = finalEnergy - initialEnergy;

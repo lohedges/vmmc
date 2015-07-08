@@ -15,16 +15,21 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef ISOTROPIC
 #ifndef _PATCHYDISC_H
 #define _PATCHYDISC_H
 
+#include "CellList.h"
 #include "Model.h"
 
 /*! \file PatchyDisc.h
 */
 
+// Global infinity constant for hard core repulsions.
+extern double INF;
+
 //! Class defining the Patchy-Disc potential.
-class PatchyDisc : public Model
+class PatchyDisc : public vmmc::Model
 {
 public:
     //! Constructor.
@@ -38,15 +43,34 @@ public:
             A reference to the cell list object.
 
         \param maxInteractions_
-            The maximum number of interactions per particle (number of patches).
+            The maximum number of interactions per particle.
 
         \param interactionEnergy_
-            The potential energy scale (in units of kBT).
+            The square well interaction energy (in units of kBT).
 
         \param interactionRange_
-            The potential cut-off distance (patch diameter).
+            The square well interaction range (in units of the particle diameter).
      */
     PatchyDisc(Box&, std::vector<Particle>&, CellList&, unsigned int, double, double);
+
+    //! Calculate the total interaction energy felt by a particle.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position vector of the particle.
+
+        \param orientation
+            The orientation vector of the first particle.
+
+        \return
+            The total interaction energy.
+    */
+#ifndef ISOTROPIC
+    double energyCallback(unsigned int, double[], double[]);
+#else
+    double energyCallback(unsigned int, double[]);
+#endif
 
     //! Calculate the pair energy between two particles.
     /*! \param particle1
@@ -66,8 +90,12 @@ public:
 
         \return
             The pair energy between particles 1 and 2.
-     */
-    double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
+    */
+#ifndef ISOTROPIC
+    double pairEnergyCallback(unsigned int, double[], double[], unsigned int, double[], double[]);
+#else
+    double pairEnergyCallback(unsigned int, double[], unsigned int, double[]);
+#endif
 
     //! Determine the interactions for a given particle.
     /*! \param index
@@ -84,13 +112,45 @@ public:
 
         \return
             The number of interactions.
-     */
-     unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
+    */
+#ifndef ISOTROPIC
+    unsigned int interactionsCallback(unsigned int, double[], double[], unsigned int[]);
+#else
+    unsigned int interactionsCallback(unsigned int, double[], unsigned int[]);
+#endif
+
+    //! Apply any post-move updates for a given particle.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle following the  move.
+
+        \param orientation
+            The orientation of the particle following the  move.
+    */
+#ifndef ISOTROPIC
+    void postMoveCallback(unsigned int, double[], double[]);
+#else
+    void postMoveCallback(unsigned int, double[]);
+#endif
+
+    double getEnergy();
 
 private:
-    double patchSeparation;         //!> the angle between patches in radians
-    std::vector<double> cosTheta;   //!> lookup table for cosine rotation matrix components
-    std::vector<double> sinTheta;   //!> lookup table for sine rotation matrix components
+    Box& box;                           //!> a reference to the simulation box
+    std::vector<Particle>& particles;   //!> a reference to the particle list
+    CellList& cells;                    //!> a reference to the cell list
+
+    unsigned int maxInteractions;       //!> the maximum number of interactions per particle
+    double interactionEnergy;           //!> interaction energy scale (in units of kBT)
+    double interactionRange;            //!> size of interaction range (in units of particle diameter)
+    double squaredCutOffDistance;       //!> squared cut-off distance
+
+    double patchSeparation;             //!> the angle between patches in radians
+    std::vector<double> cosTheta;       //!> lookup table for cosine rotation matrix components
+    std::vector<double> sinTheta;       //!> lookup table for sine rotation matrix components
 };
 
 #endif	/* _PATCHYDISC_H */
+#endif
