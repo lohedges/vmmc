@@ -126,7 +126,8 @@ we specify an install location, we would use a command more like the following:
 $ g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 ```
 
-Note that the `-std=c++11` compiler flag is needed for `std::function`.
+Note that the `-std=c++11` compiler flag is needed for `std::function` and
+`std::random`.
 
 ## Dependencies
 LibVMMC uses the [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_Twister)
