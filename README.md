@@ -153,7 +153,7 @@ been used to simplify their declaration).
 Calculate the total pair interaction energy felt by a particle.
 ```cpp
 typedef std::function<double (unsigned int index, double position[],
-    double orientation[])> VMMC_energyCallback;
+    double orientation[])> EnergyCallback;
 ```
 `index` = The particle index.
 
@@ -162,8 +162,8 @@ typedef std::function<double (unsigned int index, double position[],
 `orientation` = The particle's orientation unit vector.
 
 This callback function is currently somewhat redundant since it is possible to
-achieve the same outcome by combining the `VMMC_pairEnergyCallback` and
-`VMMC_interactionsCallback` functions described below. Ultimately, the callback
+achieve the same outcome by combining the `PairEnergyCallback` and
+`InteractionsCallback` functions described below. Ultimately, the callback
 will be able to account for non-pairwise terms in the potential, such as
 an external field.
 
@@ -172,7 +172,7 @@ Calculate the pair interaction between two particles.
 ```cpp
 typedef std::function<double (unsigned int index1, double position1[],
     double orientation1[], unsigned int index2, double position2[],
-    double orientation2[])> VMMC_pairEnergyCallback;
+    double orientation2[])> PairEnergyCallback;
 ```
 `index1` = The index of the first particle.
 
@@ -190,7 +190,7 @@ typedef std::function<double (unsigned int index1, double position1[],
 Determine the interactions for a given particle.
 ```cpp
 typedef std::function<unsigned int (unsigned int index, double position[],
-    double orientation[], unsigned int interactions[])> VMMC_interactionsCallback;
+    double orientation[], unsigned int interactions[])> InteractionsCallback;
 ```
 `index` = The index of the  particle.
 
@@ -204,7 +204,7 @@ typedef std::function<unsigned int (unsigned int index, double position[],
 Apply any post-move updates, e.g. update cell lists, or neighbour lists.
 ```cpp
 typedef std::function<void (unsigned int index, double position[],
-    double orientation[])> VMMC_postMoveCallback;
+    double orientation[])> PostMoveCallback;
 ```
 `index` = The index of the  particle.
 
@@ -217,7 +217,7 @@ Using the callbacks above it is easy to create a function wrapper to whatever,
 e.g.
 
 ```cpp
-VMMC_energyCallback energyCallback = computeEnergy;
+vmmc::EnergyCallback energyCallback = computeEnergy;
 ```
 
 if `computeEnergy` were a free function, or
@@ -225,7 +225,7 @@ if `computeEnergy` were a free function, or
 ```cpp
 Foo foo;
 using namespace std::placeholders;
-VMMC_energyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
+vmmc::EnergyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
 ```
 
 if `computeEnergy` were instead a member of some object called `Foo`.
@@ -238,9 +238,9 @@ VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
     double boxSize[], bool isIsotropic[], bool isRepulsive,
-    const VMMC_energyCallback& energyCallback, const VMMC_pairEnergyCallback&
-    pairEnergyCallback, const VMMC_interactionsCallback& interactionsCallback,
-    const VMMC_postMoveCallback& postMoveCallback);
+    const EnergyCallback& energyCallback, const PairEnergyCallback&
+    pairEnergyCallback, const InteractionsCallback& interactionsCallback,
+    const PostMoveCallback& postMoveCallback);
 ```
 `nParticles` = The number of particles in the simulation box.
 
@@ -274,7 +274,7 @@ damping factor, e.g. the radius of a typical particle in the system.
 `maxInteractions` = The maximum number of pair interactions that an individual
 particle can make. This will be used to resize LibVMMC's internal data
 structures and the user should assert that this limit isn't exceed in the
-`interactionsCallback` function. The number can be chosen from the symmetry
+`InteractionsCallback` function. The number can be chosen from the symmetry
 of the system, e.g. if particles can only make a certain number of patchy
 interactions, or by estimating the average number of neighbours within the
 interaction volume around a particle.
@@ -421,11 +421,11 @@ $ OPTFLAGS=-DISOTROPIC make build
 
 The isotropic version of LibVMMC provides a simplified set of callback
 functions that require no particle orientations. For example, the
-`VMMC_pairEnergyCallback` becomes
+`PairEnergyCallback` becomes
 
 ```cpp
 typedef std::function<double (unsigned int index1, double position1[],
-    unsigned int index2, double position2[])> VMMC_pairEnergyCallback;
+    unsigned int index2, double position2[])> pairEnergyCallback;
 ```
 
 In addition, the VMMC object no longer needs the `orientations` or
@@ -435,10 +435,10 @@ In addition, the VMMC object no longer needs the `orientations` or
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double maxTrialTranslation, double maxTrialRotation, double probTranslate,
     double referenceRadius, unsigned int maxInteractions, double boxSize[],
-    bool isRepulsive, const VMMC_energyCallback& energyCallback,
-    const VMMC_pairEnergyCallback& pairEnergyCallback,
-    const VMMC_interactionsCallback& interactionsCallback,
-    const VMMC_postMoveCallback& postMoveCallback);
+    bool isRepulsive, const energyCallback& energyCallback,
+    const pairEnergyCallback& pairEnergyCallback,
+    const interactionsCallback& interactionsCallback,
+    const postMoveCallback& postMoveCallback);
 ```
 
 The demo code shows how preprocessor directives can be used to provide support
@@ -494,7 +494,7 @@ following the trial move. (This isn't necessarily true for rotation moves,
 where the displacement of particles far from the rotation axis can be large.)
 As such, there is often no need to update cell lists until confirming that
 the post-move configuration is valid, e.g. no overlaps. At present the same
-`postMoveCallback` function is called twice: once in order to apply the move;
+`PostMoveCallback` function is called twice: once in order to apply the move;
 again if the move is subsequently rejected. This means that the cell lists
 will be updated twice if a move is rejected.
 * When testing for particle overlaps following a virtual move it is normally
