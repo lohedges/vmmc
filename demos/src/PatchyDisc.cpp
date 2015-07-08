@@ -17,12 +17,13 @@
 
 #include "PatchyDisc.h"
 
-PatchyDisc::PatchyDisc(Box& box_,
-                       std::vector<Particle>& particles_,
-                       CellList& cells_,
-                       unsigned int maxInteractions_,
-                       double interactionEnergy_,
-                       double interactionRange_) :
+PatchyDisc::PatchyDisc(
+    Box& box_,
+    std::vector<Particle>& particles_,
+    CellList& cells_,
+    unsigned int maxInteractions_,
+    double interactionEnergy_,
+    double interactionRange_) :
     Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
 {
 #ifdef ISOTROPIC

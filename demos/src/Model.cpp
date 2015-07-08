@@ -19,14 +19,20 @@
 
 double INF = std::numeric_limits<double>::infinity();
 
-Model::Model(Box& box_, std::vector<Particle>& particles_, CellList& cells_,
-    unsigned int maxInteractions_, double interactionEnergy_, double interactionRange_) :
-        box(box_),
-        particles(particles_),
-        cells(cells_),
-        maxInteractions(maxInteractions_),
-        interactionEnergy(interactionEnergy_),
-        interactionRange(interactionRange_)
+Model::Model(
+    Box& box_,
+    std::vector<Particle>& particles_,
+    CellList& cells_,
+    unsigned int maxInteractions_,
+    double interactionEnergy_,
+    double interactionRange_) :
+
+    box(box_),
+    particles(particles_),
+    cells(cells_),
+    maxInteractions(maxInteractions_),
+    interactionEnergy(interactionEnergy_),
+    interactionRange(interactionRange_)
 {
     // Work out squared cut-off distance.
     squaredCutOffDistance = interactionRange * interactionRange;

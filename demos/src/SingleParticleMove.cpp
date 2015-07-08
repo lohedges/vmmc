@@ -18,17 +18,17 @@
 #include "SingleParticleMove.h"
 
 SingleParticleMove::SingleParticleMove(
-        Model* model_,
-        double maxTrialTranslation_,
-        double maxTrialRotation_,
-        double probTranslate_,
-        bool isIsotropic_) :
+    Model* model_,
+    double maxTrialTranslation_,
+    double maxTrialRotation_,
+    double probTranslate_,
+    bool isIsotropic_) :
 
-        model(model_),
-        maxTrialTranslation(maxTrialTranslation_),
-        maxTrialRotation(maxTrialRotation_),
-        probTranslate(probTranslate_),
-        isIsotropic(isIsotropic_)
+    model(model_),
+    maxTrialTranslation(maxTrialTranslation_),
+    maxTrialRotation(maxTrialRotation_),
+    probTranslate(probTranslate_),
+    isIsotropic(isIsotropic_)
 {
     // Check dimensionality.
     if (model->box.dimension == 3) is3D = true;

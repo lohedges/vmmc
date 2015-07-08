@@ -17,12 +17,13 @@
 
 #include "SquareWellium.h"
 
-SquareWellium::SquareWellium(Box& box_,
-                             std::vector<Particle>& particles_,
-                             CellList& cells_,
-                             unsigned int maxInteractions_,
-                             double interactionEnergy_,
-                             double interactionRange_) :
+SquareWellium::SquareWellium(
+    Box& box_,
+    std::vector<Particle>& particles_,
+    CellList& cells_,
+    unsigned int maxInteractions_,
+    double interactionEnergy_,
+    double interactionRange_) :
     Model(box_, particles_, cells_, maxInteractions_, interactionEnergy_, interactionRange_)
 {
 }
