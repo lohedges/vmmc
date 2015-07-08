@@ -363,7 +363,7 @@ phase, the square-well fluid is sampled in the crystal (FCC/HCP) phase).
 
 ![Comparison of pair distribution functions for configurations equilibrated with SPMC and VMMC.](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/images/pair-distribution.png)
 
-# Pure isotropic systems
+## Pure isotropic systems
 The default build of LibVMMC provides support for systems of isotropic and
 anisotropic particles, or mixtures of both. However, in the case of pure
 isotropic systems, e.g. spherical particles interacting via a spherically
