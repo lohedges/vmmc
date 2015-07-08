@@ -142,6 +142,8 @@ interface to user defined potentials. These callbacks allow LibVMMC to be
 blind to the implementation of the model, as well as the model to be blind to
 the details of the VMMC algorithm.
 
+Details of the callback prototypes are given below:
+
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
 ```cpp
