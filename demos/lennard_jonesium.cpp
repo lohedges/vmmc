@@ -18,12 +18,6 @@
 #include "Demo.h"
 #include "VMMC.h"
 
-// FUNCTION PROTOTYPES
-
-double getEnergy(Model*);
-
-// MAIN FUNCTION
-
 int main(int argc, char** argv)
 {
     // Simulation parameters.
@@ -144,27 +138,11 @@ int main(int argc, char** argv)
         else io.appendXyzTrajectory(dimension, particles, false);
 
         // Report.
-        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), getEnergy(&lennardJonesium));
+        printf("sweeps = %9.4e, energy = %5.4f\n", ((double) (i+1)*1000), lennardJonesium.getEnergy());
     }
 
     std::cout << "\nComplete!\n";
 
     // We're done!
     return (EXIT_SUCCESS);
-}
-
-// FUNCTION DEFINITIONS
-
-double getEnergy(Model* model)
-{
-    double energy = 0;
-
-    for (unsigned int i=0;i<model->particles.size();i++)
-#ifndef ISOTROPIC
-        energy += model->computeEnergy(i, &model->particles[i].position[0], &model->particles[i].orientation[0]);
-#else
-        energy += model->computeEnergy(i, &model->particles[i].position[0]);
-#endif
-
-    return energy/(2*model->particles.size());
 }
