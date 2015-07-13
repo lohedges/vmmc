@@ -432,7 +432,7 @@ functions that require no particle orientations. For example, the
 
 ```cpp
 typedef std::function<double (unsigned int index1, double position1[],
-    unsigned int index2, double position2[])> pairEnergyCallback;
+    unsigned int index2, double position2[])> PairEnergyCallback;
 ```
 
 In addition, the VMMC object no longer needs the `orientations` or
@@ -442,10 +442,10 @@ In addition, the VMMC object no longer needs the `orientations` or
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double maxTrialTranslation, double maxTrialRotation, double probTranslate,
     double referenceRadius, unsigned int maxInteractions, double boxSize[],
-    bool isRepulsive, const energyCallback& energyCallback,
-    const pairEnergyCallback& pairEnergyCallback,
-    const interactionsCallback& interactionsCallback,
-    const postMoveCallback& postMoveCallback);
+    bool isRepulsive, const EnergyCallback& energyCallback,
+    const PairEnergyCallback& pairEnergyCallback,
+    const InteractionsCallback& interactionsCallback,
+    const PostMoveCallback& postMoveCallback);
 ```
 
 The demo code shows how preprocessor directives can be used to provide support
