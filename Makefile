@@ -146,12 +146,17 @@ help:
 	@echo " uninstall  -->  uninstall library, demos, and documentation"
 	@echo
 	$(call boldcolorecho, 4, "Tips")
-	@echo " To set a different installation path run: PREFIX=path make install"
+	@echo " To set a different installation path run"
+	@echo "     PREFIX=path make install"
 	@echo
 	@echo " Additional CXXFLAGS can be passed using OPTFLAGS, e.g."
-	@echo " OPTFLAGS=-Wall make devel"
+	@echo "     OPTFLAGS=-Wall make devel"
 	@echo
-	@echo " Targets can be chained together, e.g. make release doc"
+	@echo " To compile an optimised version for pure isotropic systems"
+	@echo "     OPTFLAGS=-DISOTROPIC make release"
+	@echo
+	@echo " Targets can be chained together, e.g."
+	@echo "     make release doc"
 
 # Set development compilation flags and build.
 devel: CXXFLAGS := $(cxxflags_devel)
