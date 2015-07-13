@@ -275,13 +275,13 @@ e.g.</p>
 
 <div class="highlight highlight-cpp"><pre>vmmc::EnergyCallback energyCallback = computeEnergy;</pre></div>
 
-<p>if <code>energyCallback</code> were a free function, or</p>
+<p>if <code>computeEnergy</code> were a free function, or</p>
 
 <div class="highlight highlight-cpp"><pre>Foo foo;
 <span class="pl-k">using</span> <span class="pl-k">namespace</span> <span class="pl-en">std</span>::placeholders<span class="pl-k">;</span>
 vmmc::EnergyCallback energyCallback = std::bind(&amp;Foo::computeEnergy, foo, _1, _2, _3);</pre></div>
 
-<p>if <code>energyCallback</code> were instead a member of some object called <code>Foo</code>.</p>
+<p>if <code>computeEnergy</code> were instead a member of some object called <code>Foo</code>.</p>
 
 <h2>
 <a id="the-vmmc-object" class="anchor" href="#the-vmmc-object" aria-hidden="true"><span class="octicon octicon-link"></span></a>The VMMC object</h2>
