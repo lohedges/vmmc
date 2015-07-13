@@ -175,3 +175,17 @@ void Model::applyPostMoveUpdates(unsigned int particle, double position[])
     if (particles[particle].cell != newCell)
         cells.updateCell(newCell, particles[particle], particles);
 }
+
+double Model::getEnergy()
+{
+    double energy = 0;
+
+    for (unsigned int i=0;i<particles.size();i++)
+#ifndef ISOTROPIC
+        energy += computeEnergy(i, &particles[i].position[0], &particles[i].orientation[0]);
+#else
+        energy += computeEnergy(i, &particles[i].position[0]);
+#endif
+
+    return energy/(2*particles.size());
+}

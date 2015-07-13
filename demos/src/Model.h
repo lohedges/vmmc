@@ -136,6 +136,10 @@ public:
     virtual void applyPostMoveUpdates(unsigned int, double[]);
 #endif
 
+    //! Get the average pair energy.
+    /*! \return The average pair energy. */
+    double getEnergy();
+
     Box& box;                           //!> a reference to the simulation box
     std::vector<Particle>& particles;   //!> a reference to the particle list
     CellList& cells;                    //!> a reference to the cell list
