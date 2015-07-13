@@ -489,7 +489,7 @@ functions that require no particle orientations. For example, the
 <code>PairEnergyCallback</code> becomes</p>
 
 <div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index1, <span class="pl-k">double</span> position1[],
-    <span class="pl-k">unsigned</span> <span class="pl-k">int</span> index2, <span class="pl-k">double</span> position2[])&gt; pairEnergyCallback;</pre></div>
+    <span class="pl-k">unsigned</span> <span class="pl-k">int</span> index2, <span class="pl-k">double</span> position2[])&gt; PairEnergyCallback;</pre></div>
 
 <p>In addition, the VMMC object no longer needs the <code>orientations</code> or
 <code>isIsotropic</code> arrays to be passed to its constructor, which is simplified to</p>
@@ -497,10 +497,10 @@ functions that require no particle orientations. For example, the
 <div class="highlight highlight-cpp"><pre><span class="pl-en">VMMC</span>(<span class="pl-k">unsigned</span> <span class="pl-k">int</span> nParticles, <span class="pl-k">unsigned</span> <span class="pl-k">int</span> dimension, <span class="pl-k">double</span> coordinates[],
     <span class="pl-k">double</span> maxTrialTranslation, <span class="pl-k">double</span> maxTrialRotation, <span class="pl-k">double</span> probTranslate,
     <span class="pl-k">double</span> referenceRadius, <span class="pl-k">unsigned</span> <span class="pl-k">int</span> maxInteractions, <span class="pl-k">double</span> boxSize[],
-    <span class="pl-k">bool</span> isRepulsive, <span class="pl-k">const</span> energyCallback&amp; energyCallback,
-    <span class="pl-k">const</span> pairEnergyCallback&amp; pairEnergyCallback,
-    <span class="pl-k">const</span> interactionsCallback&amp; interactionsCallback,
-    <span class="pl-k">const</span> postMoveCallback&amp; postMoveCallback);</pre></div>
+    <span class="pl-k">bool</span> isRepulsive, <span class="pl-k">const</span> EnergyCallback&amp; energyCallback,
+    <span class="pl-k">const</span> PairEnergyCallback&amp; pairEnergyCallback,
+    <span class="pl-k">const</span> InteractionsCallback&amp; interactionsCallback,
+    <span class="pl-k">const</span> PostMoveCallback&amp; postMoveCallback);</pre></div>
 
 <p>The demo code shows how preprocessor directives can be used to provide support
 for either version of the library, e.g. for the default <code>computeEnergy</code> callback
