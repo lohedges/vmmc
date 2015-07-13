@@ -75,8 +75,8 @@ balance, thus ensuring that the probability of a given particle pushing or
 pulling on the cluster is the same.
 
 <section>
-    <img width="360" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/translation.gif">
-    <img width="360" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/rotation.gif">
+    <img width="360" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/translation.gif" alt="Example VMMC translation move.">
+    <img width="360" src="https://raw.githubusercontent.com/lohedges/assets/master/vmmc/animations/rotation.gif" alt="Example VMMC rotation move.">
 </section>
 
 ## Installation
