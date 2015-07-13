@@ -38,8 +38,7 @@ public:
     }
 
     //! Overloaded () operator.
-    /*! \return A uniform random double in range [0-1].
-     */
+    /*! \return A uniform random double in range [0-1]. */
     double operator()()
     {
         return default_uniform_real_distribution(generator);
