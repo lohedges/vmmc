@@ -227,7 +227,7 @@ e.g.
 vmmc::EnergyCallback energyCallback = computeEnergy;
 ```
 
-if `energyCallback` were a free function, or
+if `computeEnergy` were a free function, or
 
 ```cpp
 Foo foo;
@@ -235,7 +235,7 @@ using namespace std::placeholders;
 vmmc::EnergyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
 ```
 
-if `energyCallback` were instead a member of some object called `Foo`.
+if `computeEnergy` were instead a member of some object called `Foo`.
 
 ## The VMMC object
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
