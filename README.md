@@ -536,7 +536,7 @@ If you make If you make use of LibVMMC in any published research please cite the
 attractive particles, S. Whitelam and P.L. Geissler,
 [Journal of Chemical Physics, 127, 154101 (2007)](http://dx.doi.org/10.1063/1.2790421)
 
-A properly formatted BibTex file is provided [here](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/vmmc.bib)
+A properly formatted BibTex file is provided [here](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/vmmc.bib).
 
 Please also include a citation to the official LibVMMC page:
 
