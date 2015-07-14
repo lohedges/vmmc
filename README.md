@@ -529,6 +529,19 @@ order to distinguish different species.
 [here](http://en.cppreference.com/w/cpp/utility/functional/function) for details
 on how to bind member functions, or function objects.
 
+## Citing LibVMMC
+If you make If you make use of LibVMMC in any published research please cite the canonical VMMC reference:
+
+* Avoiding unphysical kinetic traps in Monte Carlo simulations of strongly
+attractive particles, S. Whitelam and P.L. Geissler,
+[Journal of Chemical Physics, 127, 154101 (2007)](http://dx.doi.org/10.1063/1.2790421)
+
+A properly formatted BibTex file is provided [here](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/vmmc.bib)
+
+Please also include a citation to the official LibVMMC page:
+
+* http://www.vmmc.xyz
+
 ## Disclaimer
 Please be aware that this a working repository so the code should be used at
 your own risk. At present the code is being tested so expect that it will be
