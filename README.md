@@ -2,7 +2,8 @@
 
 Copyright &copy; 2015 Lester Hedges.
 
-Released under the [GPL](http://www.gnu.org/copyleft/gpl.html).
+<p>Released under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">
+<img width="80" src="http://www.gnu.org/graphics/gplv3-88x31.png"></a></p>
 
 ## About
 A simple C++ library to implement the "virtual-move" Monte Carlo (VMMC)
