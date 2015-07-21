@@ -541,11 +541,11 @@ and the symmetrised version of the algorithm described in the appendix of
 S. Whitelam, E.H. Feng, M.F. Hagan, and P.L. Geissler,
 [Soft Matter, 5, 1251 (2009)](http://dx.doi.org/10.1039/B810031D)
 
-A properly formatted BibTex file is provided [here](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/vmmc.bib).
-
 Please also include a citation to the official LibVMMC page:
 
 * http://vmmc.xyz
+
+A properly formatted BibTex file is provided [here](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/vmmc.bib).
 
 ## Disclaimer
 Please be aware that this a working repository so the code should be used at
