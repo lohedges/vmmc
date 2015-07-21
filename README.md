@@ -545,7 +545,7 @@ A properly formatted BibTex file is provided [here](https://raw.githubuserconten
 
 Please also include a citation to the official LibVMMC page:
 
-* http://www.vmmc.xyz
+* http://vmmc.xyz
 
 ## Disclaimer
 Please be aware that this a working repository so the code should be used at
