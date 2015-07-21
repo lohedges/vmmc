@@ -535,6 +535,12 @@ If you make If you make use of LibVMMC in any published research please cite the
 attractive particles, S. Whitelam and P.L. Geissler,
 [Journal of Chemical Physics, 127, 154101 (2007)](http://dx.doi.org/10.1063/1.2790421)
 
+and the symmetrised version of the algorithm described in the appendix of
+
+* The role of collective motion in examples of coarsening and self-assembly,
+S. Whitelam, E.H. Feng, M.F. Hagan, and P.L. Geissler,
+[Soft Matter, 5, 1251 (2009)](http://dx.doi.org/10.1039/B810031D)
+
 A properly formatted BibTex file is provided [here](https://raw.githubusercontent.com/lohedges/assets/master/vmmc/vmmc.bib).
 
 Please also include a citation to the official LibVMMC page:
