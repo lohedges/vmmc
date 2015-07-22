@@ -618,13 +618,17 @@ namespace vmmc
                 postMoveParticle.postMovePosition[i] += v2[i];
 
 #ifndef ISOTROPIC
-            // Calculate orientation rotation vector.
-            if (is3D) rotate3D(postMoveParticle.postMoveOrientation, moveParams.trialVector, v2, moveParams.stepSize);
-            else rotate2D(postMoveParticle.postMoveOrientation, v2, moveParams.stepSize);
+            // Only update orientations for anisotropic particles.
+            if (!isIsotropic[particle])
+            {
+                // Calculate orientation rotation vector.
+                if (is3D) rotate3D(postMoveParticle.postMoveOrientation, moveParams.trialVector, v2, moveParams.stepSize);
+                else rotate2D(postMoveParticle.postMoveOrientation, v2, moveParams.stepSize);
 
-            // Update orientation.
-            for (unsigned int i=0;i<dimension;i++)
-                postMoveParticle.postMoveOrientation[i] += v2[i];
+                // Update orientation.
+                for (unsigned int i=0;i<dimension;i++)
+                    postMoveParticle.postMoveOrientation[i] += v2[i];
+            }
 #endif
         }
 
