@@ -3,9 +3,15 @@ lib/
 obj/
 demos/lib/
 demos/obj/
+demos/src/Demo.h
 demos/square_wellium
 demos/lennard_jonesium
-demos/src/Demo.h
+demos/patchy_disc
+demos/python/square_wellium
+demos/python/lennard_jonesium
+demos/python/patchy_disc
+demos/python/demo/*.pyc
 .compiler_flags
+.check_python
 trajectory.xyz
 vmd.tcl
