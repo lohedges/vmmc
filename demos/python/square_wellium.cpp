@@ -71,7 +71,7 @@ int main(int argc, char** argv)
     PyObject *pArgs, *pClass, *pString, *pResult;
 
     // Load the module object.
-    PyObject* pModule = PyImport_ImportModule("demo");
+    PyObject *pModule = PyImport_ImportModule("demo");
 
     // Create box size list.
     PyObject *pBoxSize = PyList_New(dimension);
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
     pClass = PyObject_GetAttrString(pModule, "Initialise");
 
     // Instatiate initialise object.
-    PyObject* initialise = PyObject_CallObject(pClass, NULL);
+    PyObject *initialise = PyObject_CallObject(pClass, NULL);
 
     // Create method name string.
     pString = PyString_FromString("random");
