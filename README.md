@@ -381,9 +381,9 @@ updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
 for implementation details.
 
 Also included in the `demos/python` directory are examples showing how to
-interface with Python code via the i[Python C API](https://docs.python.org/2/c-api/).
+interface with Python code via the [Python C API](https://docs.python.org/2/c-api/).
 Note that this code is intended to be used for illustrative purposes and
-avoids the use of additional dependencies (e.g. [NumPy](http://www.numpy.org).
+avoids the use of additional dependencies (e.g. [NumPy](http://www.numpy.org)).
 As such, it is likely that performance could be significantly improved.
 
 ## Tests
