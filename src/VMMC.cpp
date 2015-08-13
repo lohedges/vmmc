@@ -108,6 +108,9 @@ namespace vmmc
             particles[i].postMoveOrientation.resize(dimension);
 #endif
 
+            // Initialise frustrated boolean flag.
+            particles[i].isFrustrated = false;
+
             // Copy particle coordinates and orientations.
             for (unsigned int j=0;j<dimension;j++)
             {
