@@ -186,6 +186,8 @@ devel release:
 .compiler_flags: force
 	@echo "$(CXXFLAGS)" | cmp -s - $@ || echo "$(CXXFLAGS)" > $@
 
+# Check that Python header file and library are present.
+# This target ensures that all Python demos are recompiled if the .check_python file changes.
 .PHONY: force
 .check_python: force
 	@echo "Python found." | cmp -s - $@ || \
