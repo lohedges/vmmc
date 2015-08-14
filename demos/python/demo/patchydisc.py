@@ -33,8 +33,7 @@ class PatchyDisc(Model):
             self.cos_theta[x] = math.cos(x*self.patch_separation)
             self.sin_theta[x] = math.sin(x*self.patch_separation)
 
-    def compute_pair_energy(self, particle1, position1, orientation1,
-            particle2, position2, orientation2):
+    def compute_pair_energy(self, particle1, position1, orientation1, particle2, position2, orientation2):
         """ Compute pair interaction energy between two discs. """
 
         # Calculate particle separation.
