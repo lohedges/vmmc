@@ -35,6 +35,23 @@ public:
         // Get a hardware random number and seed the generator.
         seed = std::random_device{}();
         generator.seed(seed);
+
+        /* Note that seeding the generator with a single 32-bit integer
+           only allows for 2^32 initial states.
+
+          For a better RNG, consider using the Permuted Congruential Generator
+
+            http://www.pcg-random.org
+
+          For details on the pitfalls of seeding the C++11 mt19937 generator,
+          see
+
+            http://www.pcg-random.org/posts/cpp-seeding-surprises.html
+
+          To enable good seeding with mt19937, consider using randutils.hpp
+
+            https://gist.github.com/imneme/540829265469e673d045
+         */
     }
 
     //! Overloaded () operator.
