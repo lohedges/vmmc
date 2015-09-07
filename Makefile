@@ -326,3 +326,21 @@ clobber:
 	rm -f $(demo_dir)/python/demo/*.pyc
 	rm -f .compiler_flags
 	rm -f .check_python
+
+.PHONY: sandwich
+sandwich:
+	if [ "$$(id -u)" != "0" ]; then                        \
+		echo " What? Make it yourself."                   ;\
+	else                                                   \
+		echo "                      ____"                 ;\
+		echo "          .----------'    '-."              ;\
+		echo "         /  .      '     .   \\"            ;\
+		echo "        /        '    .      /|"            ;\
+		echo "       /      .             \ /"            ;\
+		echo "      /  ' .       .     .  || |"           ;\
+		echo "     /.___________    '    / //"            ;\
+		echo "     |._          '------'| /|"             ;\
+		echo "     '.............______.-' /"             ;\
+		echo "     |-.                  | /"              ;\
+		echo "     \`\"\"\"\"\"\"\"\"\"\"\"\"\"-.....-'"  ;\
+	fi;                                                    \
