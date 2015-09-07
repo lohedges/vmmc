@@ -97,12 +97,6 @@ iflags := -m 0644
 # Git commit information.
 commit := $(shell git describe --abbrev=4 --dirty --always --tags)
 
-# Python header file.
-python_header := $(shell locate Python.h | grep 2.7 | head -n 1 | awk -F "/Python.h" '{print $$1}')
-
-# Python library.
-python_library := $(shell locate libpython2.7 | head -n 1)
-
 # C++ compiler flags for development build.
 cxxflags_devel := -O0 -std=c++11 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
 
@@ -127,11 +121,6 @@ demo_headers := $(filter-out $(demo_library_header), $(demo_headers))
 demo_sources := $(wildcard $(demo_dir)/src/*.cpp)
 temp := $(patsubst %.cpp,%.o,$(demo_sources))
 demo_objects := $(subst $(demo_dir)/src,$(demo_obj_dir),$(temp))
-
-# Source files and executable names for Python demos.
-python_demo_files := $(wildcard $(demo_dir)/python/*.cpp)
-python_demos := $(patsubst %.cpp,%,$(python_demo_files))
-python_sources := $(wildcard $(demo_dir)/python/demo/*.py)
 
 dox_files := $(wildcard dox/*.dox)
 
@@ -186,17 +175,6 @@ devel release:
 .compiler_flags: force
 	@echo "$(CXXFLAGS)" | cmp -s - $@ || echo "$(CXXFLAGS)" > $@
 
-# Check that Python header file and library are present.
-# This target ensures that all Python demos are recompiled if the .check_python file changes.
-.PHONY: force
-.check_python: force
-	@echo "Python found." | cmp -s - $@ || \
-	if [ "$(python_header)" = "" ] || [ "$(python_library)" = "" ] ; then \
-        echo "Python not found."; \
-        exit 1; \
-	else echo "Python found."; \
-	fi > $@
-
 # Compile VMMC object files.
 # Autodepenencies are handled using a recipe taken from
 # http://scottmcpeak.com/autodepend/autodepend.html
@@ -225,7 +203,7 @@ $(demo_obj_dir)/%.o: $(demo_dir)/src/%.cpp .compiler_flags
 
 # Build the library and demos.
 .PHONY: build
-build: $(obj_dir) $(demo_obj_dir) $(library) $(demo_library_header) $(demo_library) $(demos) $(python_demos)
+build: $(obj_dir) $(demo_obj_dir) $(library) $(demo_library_header) $(demo_library) $(demos)
 
 # Create output directory for object and dependency files.
 $(obj_dir):
@@ -264,11 +242,6 @@ $(demos): %: %.cpp $(demo_library_header) $(library) $(demo_library) $(demo_obje
 	$(call colorecho, 1, "--> Linking CXX executable $@")
 	-$(CXX) $(CXXFLAGS) -Wfatal-errors -I$(demo_dir)/src $@.cpp $(library) $(demo_library) $(LIBS) $(LDFLAGS) -o $@
 
-# Compile C++ Python API demonstration code.
-$(python_demos): $(python_sources) .check_python
-	$(call colorecho, 1, "--> Linking CXX executable $@")
-	-$(CXX) $(CXXFLAGS) -Wfatal-errors -I$(python_header) $@.cpp $(library) $(python_library) $(LIBS) $(LDFLAGS) -o $@
-
 # Build documentation using Doxygen.
 doc: $(headers) $(vmmc_headers) $(dox_files)
 	$(call colorecho, 4, "--> Generating CXX source documentation with Doxygen")
@@ -283,14 +256,10 @@ install: build doc
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/lib
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/include/$(project)
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/$(project)-demos
-	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/$(project)-demos/python
-	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/$(project)-demos/python/demo
 	$(install_cmd) -d $(iflags_exec) $(PREFIX)/share/doc/$(project)
 	$(install_cmd) $(iflags) $(library) $(PREFIX)/lib
 	$(install_cmd) $(iflags) $(library_header) $(PREFIX)/include/$(project)
 	$(install_cmd) $(iflags_exec) $(demos) $(PREFIX)/share/$(project)-demos
-	$(install_cmd) $(iflags_exec) $(python_demos) $(PREFIX)/share/$(project)-demos/python
-	$(install_cmd) $(iflags) $(python_sources) $(PREFIX)/share/$(project)-demos/python/demo
 	cp -r doc/html $(PREFIX)/share/doc/$(project)
 
 # Uninstall the library and demos.
@@ -322,10 +291,7 @@ clobber:
 	rm -rf doc
 	rm -f $(demos)
 	rm -f $(demo_library_header)
-	rm -f $(python_demos)
-	rm -f $(demo_dir)/python/demo/*.pyc
 	rm -f .compiler_flags
-	rm -f .check_python
 
 .PHONY: sandwich
 sandwich:
