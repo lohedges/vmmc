@@ -103,7 +103,7 @@ namespace vmmc
 #endif
 
             // Initialise frustrated boolean flag.
-            particles[i].isFrustrated = false
+            particles[i].isFrustrated = false;
 
             // Copy particle coordinates and orientations.
             for (unsigned int j=0;j<dimension;j++)
