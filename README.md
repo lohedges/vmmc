@@ -464,10 +464,9 @@ in a square box. In this case, a rotation across the periodic boundary can cause
 the cluster to overlap.
 
 ## Tips
-* LibVMMC currently assumes that the simulation box is periodic in all dimensions.
-To impose non-periodic boundaries simply check whether the move leads to a particle
-being displaced by more than half the box width along the restricted dimension and
-return an appropriately large energy so that the move will be rejected.
+* The `EnergyCallback` function can be used to account for non-pairwise terms in
+the potential, such as an external field, or the interaction between particles
+and a surface.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
