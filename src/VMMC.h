@@ -237,10 +237,13 @@ namespace vmmc
         /*! \param particle
                 Index of the particle.
 
+            \param
+                Whether the move is forward (1) or reverse (-1).
+
             \param postMoveParticle
                 The particle data structure.
         */
-        void computePostMoveParticle(unsigned int, Particle&);
+        void computePostMoveParticle(unsigned int, int, Particle&);
 
         //! Initiate a particle ready for the virtual move.
         /*! \param particle

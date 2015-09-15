@@ -194,6 +194,15 @@ void SquareWellium::postMoveCallback(unsigned int particle, double position[])
         cells.updateCell(newCell, particles[particle], particles);
 }
 
+#ifndef ISOTROPIC
+bool SquareWellium::boundaryCallback(unsigned int particle, double position[], double orientation[])
+#else
+bool SquareWellium::boundaryCallback(unsigned int particle, double position[])
+#endif
+{
+    return false;
+}
+
 double SquareWellium::getEnergy()
 {
     double energy = 0;

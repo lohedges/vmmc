@@ -198,6 +198,15 @@ void LennardJonesium::postMoveCallback(unsigned int particle, double position[])
         cells.updateCell(newCell, particles[particle], particles);
 }
 
+#ifndef ISOTROPIC
+bool LennardJonesium::boundaryCallback(unsigned int particle, double position[], double orientation[])
+#else
+bool LennardJonesium::boundaryCallback(unsigned int particle, double position[])
+#endif
+{
+    return false;
+}
+
 double LennardJonesium::getEnergy()
 {
     double energy = 0;

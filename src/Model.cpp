@@ -64,4 +64,14 @@ namespace vmmc
         std::cerr << "[ERROR] Model: Virtual function Model::postMoveCallback() must be defined.\n";
         exit(EXIT_FAILURE);
     }
+
+#ifndef ISOTROPIC
+    bool Model::boundaryCallback(unsigned int particle, double position[], double orientation[])
+#else
+    bool Model::boundaryCallback(unsigned int particle, double position[])
+#endif
+    {
+        std::cerr << "[ERROR] Model: Virtual function Model::boundaryCallback() must be defined.\n";
+        exit(EXIT_FAILURE);
+    }
 }

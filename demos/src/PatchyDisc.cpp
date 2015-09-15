@@ -30,8 +30,8 @@ PatchyDisc::PatchyDisc(
     particles(particles_),
     cells(cells_),
     maxInteractions(maxInteractions_),
-    interactionRange(interactionRange_),
     interactionEnergy(interactionEnergy_),
+    interactionRange(interactionRange_),
     squaredCutOffDistance(interactionRange*interactionRange)
 {
 #ifdef ISOTROPIC
@@ -219,6 +219,11 @@ void PatchyDisc::postMoveCallback(unsigned int particle, double position[], doub
     // Update cell lists if necessary.
     if (particles[particle].cell != newCell)
         cells.updateCell(newCell, particles[particle], particles);
+}
+
+bool PatchyDisc::boundaryCallback(unsigned int particle, double position[], double orientation[])
+{
+    return false;
 }
 
 double PatchyDisc::getEnergy()

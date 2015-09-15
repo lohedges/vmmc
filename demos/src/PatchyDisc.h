@@ -135,6 +135,25 @@ public:
     void postMoveCallback(unsigned int, double[]);
 #endif
 
+    //! Check custom boundary condition.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle following the virtual move.
+
+        \param orientation
+            The orientation of the particle following the virtual move.
+
+        \param return
+            Whether the particle is outside the boundary.
+    */
+#ifndef ISOTROPIC
+    bool boundaryCallback(unsigned int, double[], double[]);
+#else
+    bool boundaryCallback(unsigned int, double[]);
+#endif
+
     double getEnergy();
 
 private:

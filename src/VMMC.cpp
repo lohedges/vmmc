@@ -362,6 +362,9 @@ namespace vmmc
 
     bool VMMC::accept()
     {
+        // Abort if early exit condition has been triggered.
+        if (isEarlyExit) return false;
+
         // Any remaining frustrated links must be external to the cluster.
         if (nFrustrated > 0)
         {
@@ -584,7 +587,7 @@ namespace vmmc
         return scaleFactor;
     }
 
-    void VMMC::computePostMoveParticle(unsigned int particle, Particle& postMoveParticle)
+    void VMMC::computePostMoveParticle(unsigned int particle, int direction, Particle& postMoveParticle)
     {
         // Initialise post-move position and orientation.
         postMoveParticle.postMovePosition = particles[particle].preMovePosition;
@@ -595,7 +598,7 @@ namespace vmmc
         if (!moveParams.isRotation) // Translation.
         {
             for (unsigned int i=0;i<dimension;i++)
-                postMoveParticle.postMovePosition[i] += moveParams.stepSize*moveParams.trialVector[i];
+                postMoveParticle.postMovePosition[i] += direction*moveParams.stepSize*moveParams.trialVector[i];
         }
         else                        // Rotation.
         {
@@ -607,8 +610,8 @@ namespace vmmc
                 v1[i] = particles[particle].pseudoPosition[i] - particles[moveParams.seed].pseudoPosition[i];
 
             // Calculate position rotation vector.
-            if (is3D) rotate3D(v1, moveParams.trialVector, v2, moveParams.stepSize);
-            else rotate2D(v1, v2, moveParams.stepSize);
+            if (is3D) rotate3D(v1, moveParams.trialVector, v2, direction*moveParams.stepSize);
+            else rotate2D(v1, v2, direction*moveParams.stepSize);
 
             // Update position.
             for (unsigned int i=0;i<dimension;i++)
@@ -619,8 +622,8 @@ namespace vmmc
             if (!isIsotropic[particle])
             {
                 // Calculate orientation rotation vector.
-                if (is3D) rotate3D(postMoveParticle.postMoveOrientation, moveParams.trialVector, v2, moveParams.stepSize);
-                else rotate2D(postMoveParticle.postMoveOrientation, v2, moveParams.stepSize);
+                if (is3D) rotate3D(postMoveParticle.postMoveOrientation, moveParams.trialVector, v2, direction*moveParams.stepSize);
+                else rotate2D(postMoveParticle.postMoveOrientation, v2, direction*moveParams.stepSize);
 
                 // Update orientation.
                 for (unsigned int i=0;i<dimension;i++)
@@ -628,6 +631,10 @@ namespace vmmc
             }
 #endif
         }
+
+        // Check custom boundary condition.
+        isEarlyExit = model->boundaryCallback(particle,
+            &postMoveParticle.postMovePosition[0], &postMoveParticle.postMoveOrientation[0]);
 
         // Apply periodic boundary conditions.
         applyPeriodicBoundaryConditions(postMoveParticle.postMovePosition);
@@ -660,97 +667,99 @@ namespace vmmc
         }
 
         // Calculate updated position and orientation.
-        computePostMoveParticle(particle, particles[particle]);
+        computePostMoveParticle(particle, 1, particles[particle]);
     }
 
     void VMMC::recursiveMoveAssignment(unsigned int particle)
     {
-        // Abort if the cluster size cut-off is exceeded.
-        if (nMoving <= cutOff)
+        // Abort if  any early exit conditions have been triggered.
+        if (!isEarlyExit)
         {
-            Particle reverseMoveParticle(dimension);
-
-            // Calculate coordinates under reverse trial move.
-            moveParams.stepSize = -moveParams.stepSize;
-            computePostMoveParticle(particle, reverseMoveParticle);
-            moveParams.stepSize = -moveParams.stepSize;
-
-            unsigned int pairInteractions[maxInteractions];
-
-            // Get list of interactions.
-#ifndef ISOTROPIC
-            unsigned int nPairs = model->interactionsCallback(particle, &particles[particle].preMovePosition[0],
-                &particles[particle].preMoveOrientation[0], pairInteractions);
-#else
-            unsigned int nPairs = model->interactionsCallback(particle,
-                &particles[particle].preMovePosition[0], pairInteractions);
-#endif
-
-            // Loop over all interactions.
-            for (unsigned int i=0;i<nPairs;i++)
+            // Abort if the cluster size cut-off is exceeded.
+            if (nMoving <= cutOff)
             {
-                unsigned int neighbour = pairInteractions[i];
+                Particle reverseMoveParticle(dimension);
 
-                // Make sure link hasn't been tested already.
-                if (!particles[neighbour].isMoving)
+                // Calculate coordinates under reverse trial move.
+                computePostMoveParticle(particle, -1, reverseMoveParticle);
+
+                unsigned int pairInteractions[maxInteractions];
+
+                // Get list of interactions.
+#ifndef ISOTROPIC
+                unsigned int nPairs = model->interactionsCallback(particle, &particles[particle].preMovePosition[0],
+                    &particles[particle].preMoveOrientation[0], pairInteractions);
+#else
+                unsigned int nPairs = model->interactionsCallback(particle,
+                    &particles[particle].preMovePosition[0], pairInteractions);
+#endif
+
+                // Loop over all interactions.
+                for (unsigned int i=0;i<nPairs;i++)
                 {
-                    // Pre-move pair energy.
-#ifndef ISOTROPIC
-                    double initialEnergy = model->pairEnergyCallback(particle,
-                        &particles[particle].preMovePosition[0], &particles[particle].preMoveOrientation[0],
-                        neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
-#else
-                    double initialEnergy = model->pairEnergyCallback(particle, &particles[particle].preMovePosition[0],
-                        neighbour, &particles[neighbour].preMovePosition[0]);
-#endif
+                    unsigned int neighbour = pairInteractions[i];
 
-                    // Post-move pair energy.
-#ifndef ISOTROPIC
-                    double finalEnergy = model->pairEnergyCallback(particle,
-                        &particles[particle].postMovePosition[0], &particles[particle].postMoveOrientation[0],
-                        neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
-#else
-                    double finalEnergy = model->pairEnergyCallback(particle, &particles[particle].postMovePosition[0],
-                        neighbour, &particles[neighbour].preMovePosition[0]);
-#endif
-
-                    // Pair energy following the reverse virtual move.
-#ifndef ISOTROPIC
-                    double reverseMoveEnergy = model->pairEnergyCallback(particle,
-                        &reverseMoveParticle.postMovePosition[0], &reverseMoveParticle.postMoveOrientation[0],
-                        neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
-#else
-                    double reverseMoveEnergy = model->pairEnergyCallback(particle, &reverseMoveParticle.postMovePosition[0],
-                        neighbour, &particles[neighbour].preMovePosition[0]);
-#endif
-
-                    // Forward link weight.
-                    double linkWeight = std::max(1.0-exp(initialEnergy-finalEnergy),0.0);
-
-                    // Reverse link weight.
-                    double reverseLinkWeight = std::max(1.0-exp(initialEnergy-reverseMoveEnergy),0.0);
-
-                    // Test links.
-                    if (rng() <= linkWeight)
+                    // Make sure link hasn't been tested already.
+                    if (!particles[neighbour].isMoving)
                     {
-                        if (rng() > reverseLinkWeight/linkWeight)
-                        {
-                            // Particle isn't already participating in a frustrated link.
-                            if (!particles[neighbour].isFrustrated)
-                            {
-                                particles[neighbour].isFrustrated = true;
-                                particles[neighbour].posFrustated = nFrustrated;
-                                frustratedLinks[nFrustrated] = neighbour;
-                                nFrustrated++;
-                            }
-                        }
-                        else
-                        {
-                            // Prepare neighbour for virtual move.
-                            initiateParticle(neighbour, particles[particle]);
+                        // Pre-move pair energy.
+#ifndef ISOTROPIC
+                        double initialEnergy = model->pairEnergyCallback(particle,
+                            &particles[particle].preMovePosition[0], &particles[particle].preMoveOrientation[0],
+                            neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+#else
+                        double initialEnergy = model->pairEnergyCallback(particle, &particles[particle].preMovePosition[0],
+                            neighbour, &particles[neighbour].preMovePosition[0]);
+#endif
 
-                            // Continue search from neighbor.
-                            recursiveMoveAssignment(neighbour);
+                        // Post-move pair energy.
+#ifndef ISOTROPIC
+                        double finalEnergy = model->pairEnergyCallback(particle,
+                            &particles[particle].postMovePosition[0], &particles[particle].postMoveOrientation[0],
+                            neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+#else
+                        double finalEnergy = model->pairEnergyCallback(particle, &particles[particle].postMovePosition[0],
+                            neighbour, &particles[neighbour].preMovePosition[0]);
+#endif
+
+                        // Pair energy following the reverse virtual move.
+#ifndef ISOTROPIC
+                        double reverseMoveEnergy = model->pairEnergyCallback(particle,
+                            &reverseMoveParticle.postMovePosition[0], &reverseMoveParticle.postMoveOrientation[0],
+                            neighbour, &particles[neighbour].preMovePosition[0], &particles[neighbour].preMoveOrientation[0]);
+#else
+                        double reverseMoveEnergy = model->pairEnergyCallback(particle, &reverseMoveParticle.postMovePosition[0],
+                            neighbour, &particles[neighbour].preMovePosition[0]);
+#endif
+
+                        // Forward link weight.
+                        double linkWeight = std::max(1.0-exp(initialEnergy-finalEnergy),0.0);
+
+                        // Reverse link weight.
+                        double reverseLinkWeight = std::max(1.0-exp(initialEnergy-reverseMoveEnergy),0.0);
+
+                        // Test links.
+                        if (rng() <= linkWeight)
+                        {
+                            if (rng() > reverseLinkWeight/linkWeight)
+                            {
+                                // Particle isn't already participating in a frustrated link.
+                                if (!particles[neighbour].isFrustrated)
+                                {
+                                    particles[neighbour].isFrustrated = true;
+                                    particles[neighbour].posFrustated = nFrustrated;
+                                    frustratedLinks[nFrustrated] = neighbour;
+                                    nFrustrated++;
+                                }
+                            }
+                            else
+                            {
+                                // Prepare neighbour for virtual move.
+                                initiateParticle(neighbour, particles[particle]);
+
+                                // Continue search from neighbor.
+                                recursiveMoveAssignment(neighbour);
+                            }
                         }
                     }
                 }
