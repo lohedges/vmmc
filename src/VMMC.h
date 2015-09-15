@@ -126,6 +126,22 @@ namespace vmmc
     typedef std::function<void (unsigned int, double[])> PostMoveCallback;
 #endif
 
+//! Check custom boundary condition.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle following the virtual move.
+
+        \param orientation
+            The orientation of the particle following the virtual move.
+    */
+#ifndef ISOTROPIC
+    typedef std::function<bool (unsigned int, double[], double[])> BoundaryCallback;
+#else
+    typedef std::function<bool (unsigned int, double[])> BoundaryCallback;
+#endif
+
     // DATA TYPES
 
     //! Container for storing virtual move parameters.
@@ -161,6 +177,18 @@ namespace vmmc
         std::vector<double> preMoveOrientation;     //!> particle orientation before the virtual move
         std::vector<double> postMoveOrientation;    //!> particle orientation following the virtual move
 #endif
+    };
+
+    //! Container for storing callback functions
+    struct CallbackFunctions
+    {
+        EnergyCallback energyCallback;              //!< callback function to calculate particle energies
+        PairEnergyCallback pairEnergyCallback;      //!< callback function to calculate pair energies
+        InteractionsCallback interactionsCallback;  //!< callback function to determine particle interactions
+        PostMoveCallback postMoveCallback;          //!< callback function to apply any post-move updates
+        BoundaryCallback boundaryCallback;          //!< callback function to apply any post-move updates
+
+        bool isCustomBoundary;                      //!< whether the boundary callback function is defined
     };
 
     //! Main VMMC class.
@@ -204,24 +232,15 @@ namespace vmmc
             \param isRepusive_
                 Whether there are finite repulsive interactions.
 
-            \param energyCallback_
-                Callback function for particle energy calculations.
-
-            \param pairEnergyCallback_
-                Callback function for pair energy calculations.
-
-            \param interactionsCallback_
-                Callback function for determining particle interactions.
-
-            \param postMoveCallback_
-                Apply any post-move updates following the virtual particle move.
+            \param callbacks_
+                Callback function container.
         */
 #ifndef ISOTROPIC
         VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool[], bool,
 #else
         VMMC(unsigned int, unsigned int, double[], double, double, double, double, unsigned int, double[], bool,
 #endif
-            const EnergyCallback&, const PairEnergyCallback&, const InteractionsCallback&, const PostMoveCallback&);
+            const CallbackFunctions&);
 
         //! Overloaded ++ operator. Perform a single VMMC step.
         void operator ++ (const int);
@@ -305,10 +324,7 @@ namespace vmmc
         bool isRepusive;                            //!< whether there are finite repulsive interactions
         bool is3D;                                  //!< whether the simulation is three-dimensional
 
-        EnergyCallback energyCallback;              //!< callback function to calculate particle energies
-        PairEnergyCallback pairEnergyCallback;      //!< callback function to calculate pair energies
-        InteractionsCallback interactionsCallback;  //!< callback function to determine particle interactions
-        PostMoveCallback postMoveCallback;          //!< callback function to apply any post-move updates
+        CallbackFunctions callbacks;                //!< callback functions
 
         std::vector<Particle> particles;            //!< vector of particles
 
@@ -343,11 +359,14 @@ namespace vmmc
             \param postMoveParticle
                 The particle data structure.
         */
-        void computePostMoveParticle(unsigned int, Particle&);
+        void computePostMoveParticle(unsigned int, int, Particle&);
 
         //! Initiate a particle ready for the virtual move.
         /*! \param particle
                 Index of the particle.
+
+            \param direction
+                Whether move is forward (1) or reverse (-1).
 
             \param linker
                 A reference to the linking particle.
