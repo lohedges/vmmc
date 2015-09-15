@@ -68,7 +68,7 @@ int main(int argc, char** argv)
     Initialise initialise;
 
     // Generate a random particle configuration.
-    initialise.random(particles, cells, box, rng);
+    initialise.random(particles, cells, box, rng, false);
 
     // Initialise data structures needed by the VMMC class.
     double coordinates[dimension*nParticles];
