@@ -341,26 +341,30 @@ namespace vmmc
             particles[moveParams.seed].pseudoPosition = particles[moveParams.seed].preMovePosition;
             initiateParticle(moveParams.seed, particles[moveParams.seed]);
 
+            // Check that trial move of seed hasn't triggered early exit condition.
+            if (!isEarlyExit)
+            {
 #ifndef ISOTROPIC
-            if (isIsotropic[moveParams.seed] && moveParams.isRotation)
+                if (isIsotropic[moveParams.seed] && moveParams.isRotation)
 #else
-            if (moveParams.isRotation)
+                if (moveParams.isRotation)
 #endif
-            {
-                // Initialise neighbouring particle.
-                initiateParticle(neighbour, particles[moveParams.seed]);
+                {
+                    // Initialise neighbouring particle.
+                    initiateParticle(neighbour, particles[moveParams.seed]);
 
-                // Recursively recruit neighbours to the cluster.
-                recursiveMoveAssignment(neighbour);
-            }
-            else
-            {
-                // Recursively recruit neighbours to the cluster.
-                recursiveMoveAssignment(moveParams.seed);
-            }
+                    // Recursively recruit neighbours to the cluster.
+                    recursiveMoveAssignment(neighbour);
+                }
+                else
+                {
+                    // Recursively recruit neighbours to the cluster.
+                    recursiveMoveAssignment(moveParams.seed);
+                }
 
-            // Check whether the cluster is too large.
-            if (nMoving > cutOff) isEarlyExit = true;
+                // Check whether the cluster is too large.
+                if (nMoving > cutOff) isEarlyExit = true;
+            }
         }
     }
 
@@ -636,15 +640,21 @@ namespace vmmc
 #endif
         }
 
-        // Check custom boundary condition.
-        if (callbacks.isCustomBoundary)
+        // Only check forward move.
+        if (direction == 1)
         {
+            // Check custom boundary condition.
+            if (callbacks.isCustomBoundary)
+            {
 #ifndef ISOTROPIC
-            isEarlyExit = callbacks.boundaryCallback(particle,
-                &postMoveParticle.postMovePosition[0], &postMoveParticle.postMoveOrientation[0]);
+                bool isOutsideBoundary = callbacks.boundaryCallback(particle,
+                    &postMoveParticle.postMovePosition[0], &postMoveParticle.postMoveOrientation[0]);
 #else
-            isEarlyExit = callbacks.boundaryCallback(particle, &postMoveParticle.postMovePosition[0]);
+                bool isOutSideBoundary = callbacks.boundaryCallback(particle, &postMoveParticle.postMovePosition[0]);
 #endif
+                // Particle has moved outside boundary. Abort move!
+                if (isOutsideBoundary) isEarlyExit = true;
+            }
         }
 
         // Apply periodic boundary conditions.
