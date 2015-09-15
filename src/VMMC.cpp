@@ -639,8 +639,12 @@ namespace vmmc
         // Check custom boundary condition.
         if (callbacks.isCustomBoundary)
         {
+#ifndef ISOTROPIC
             isEarlyExit = callbacks.boundaryCallback(particle,
                 &postMoveParticle.postMovePosition[0], &postMoveParticle.postMoveOrientation[0]);
+#else
+            isEarlyExit = callbacks.boundaryCallback(particle, &postMoveParticle.postMovePosition[0]);
+#endif
         }
 
         // Apply periodic boundary conditions.
