@@ -95,33 +95,34 @@ int main(int argc, char** argv)
 
     // Initialise the VMMC callback functions.
     using namespace std::placeholders;
+    vmmc::CallbackFunctions callbacks;
 #ifndef ISOTROPIC
-    vmmc::EnergyCallback energyCallback =
+    callbacks.energyCallback =
         std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2, _3);
-    vmmc::PairEnergyCallback pairEnergyCallback =
+    callbacks.pairEnergyCallback =
         std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4, _5, _6);
-    vmmc::InteractionsCallback interactionsCallback =
+    callbacks.interactionsCallback =
         std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3, _4);
-    vmmc::PostMoveCallback postMoveCallback =
+    callbacks.postMoveCallback =
         std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2, _3);
 #else
-    vmmc::EnergyCallback energyCallback =
+    callbacks.energyCallback =
         std::bind(&SquareWellium::computeEnergy, squareWellium, _1, _2);
-    vmmc::PairEnergyCallback pairEnergyCallback =
+    callbacks.pairEnergyCallback =
         std::bind(&SquareWellium::computePairEnergy, squareWellium, _1, _2, _3, _4);
-    vmmc::InteractionsCallback interactionsCallback =
+    callbacks.interactionsCallback =
         std::bind(&SquareWellium::computeInteractions, squareWellium, _1, _2, _3);
-    vmmc::PostMoveCallback postMoveCallback =
+    callbacks.postMoveCallback =
         std::bind(&SquareWellium::applyPostMoveUpdates, squareWellium, _1, _2);
 #endif
 
     // Initalise VMMC object.
 #ifndef ISOTROPIC
-    vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false, callbacks);
 #else
-    vmmc::VMMC vmmc(nParticles, dimension, coordinates, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(nParticles, dimension, coordinates,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], false, callbacks);
 #endif
 
     // Execute the simulation.

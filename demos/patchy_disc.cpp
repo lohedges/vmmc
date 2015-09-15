@@ -94,18 +94,30 @@ int main(int argc, char** argv)
 
     // Initialise the VMMC callback functions.
     using namespace std::placeholders;
-    vmmc::EnergyCallback energyCallback =
+    vmmc::CallbackFunctions callbacks;
+#ifndef ISOTROPIC
+    callbacks.energyCallback =
         std::bind(&PatchyDisc::computeEnergy, patchyDisc, _1, _2, _3);
-    vmmc::PairEnergyCallback pairEnergyCallback =
+    callbacks.pairEnergyCallback =
         std::bind(&PatchyDisc::computePairEnergy, patchyDisc, _1, _2, _3, _4, _5, _6);
-    vmmc::InteractionsCallback interactionsCallback =
+    callbacks.interactionsCallback =
         std::bind(&PatchyDisc::computeInteractions, patchyDisc, _1, _2, _3, _4);
-    vmmc::PostMoveCallback postMoveCallback =
+    callbacks.postMoveCallback =
         std::bind(&PatchyDisc::applyPostMoveUpdates, patchyDisc, _1, _2, _3);
+#else
+    callbacks.energyCallback =
+        std::bind(&PatchyDisc::computeEnergy, patchyDisc, _1, _2);
+    callbacks.pairEnergyCallback =
+        std::bind(&PatchyDisc::computePairEnergy, patchyDisc, _1, _2, _3, _4);
+    callbacks.interactionsCallback =
+        std::bind(&PatchyDisc::computeInteractions, patchyDisc, _1, _2, _3);
+    callbacks.postMoveCallback =
+        std::bind(&PatchyDisc::applyPostMoveUpdates, patchyDisc, _1, _2);
+#endif
 
     // Initalise VMMC object.
-    vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false, callbacks);
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
