@@ -38,6 +38,15 @@ public:
      */
     Box(const std::vector<double>&);
 
+    //! Constructor: Initialise a simulation box with defined periodicity.
+    /*! \param boxSize_
+            Vector containing x,y,z size of box.
+
+        \param isPeriodic_
+            Vector containing x,y,z periodicity of box.
+     */
+    Box(const std::vector<double>&, const std::vector<bool>&);
+
     //! Apply periodic boundary conditions.
     /* \param coord
             x,y,z coordinate vector.
@@ -54,6 +63,7 @@ public:
     unsigned int dimension;             //!< dimensionality of the simulation box
 
 private:
+    std::vector<bool> isPeriodic;       //!< whether the box is periodic across each boundary
     std::vector<double> posMinImage;    //!< minimum image condition in each dimension
     std::vector<double> negMinImage;    //!< negative minimum image condition in each dimension
 };

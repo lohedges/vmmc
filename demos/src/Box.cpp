@@ -29,6 +29,31 @@ Box::Box(const std::vector<double>& boxSize_) :
         exit(EXIT_FAILURE);
     }
 
+    isPeriodic.resize(dimension);
+    posMinImage.resize(dimension);
+    negMinImage.resize(dimension);
+
+    for (unsigned int i=0;i<dimension;i++)
+    {
+        isPeriodic[i] = true;
+        posMinImage[i] = 0.5*boxSize[i];
+        negMinImage[i] = -0.5*boxSize[i];
+    }
+}
+
+Box::Box(const std::vector<double>& boxSize_, const std::vector<bool>& isPeriodic_) :
+    boxSize(boxSize_),
+    isPeriodic(isPeriodic_)
+{
+    dimension = boxSize.size();
+
+    // Check dimensionality is valid.
+    if (dimension != 2 && dimension != 3)
+    {
+        std::cerr << "[ERROR] Box: Invalid dimensionality!\n";
+        exit(EXIT_FAILURE);
+    }
+
     posMinImage.resize(dimension);
     negMinImage.resize(dimension);
 
@@ -63,13 +88,13 @@ void Box::minimumImage(std::vector<double>& separation)
     {
         if (separation[i] < negMinImage[i])
         {
-            separation[i] += boxSize[i];
+            separation[i] += isPeriodic[i]*boxSize[i];
         }
         else
         {
             if (separation[i] >= posMinImage[i])
             {
-                separation[i] -= boxSize[i];
+                separation[i] -= isPeriodic[i]*boxSize[i];
             }
         }
     }
