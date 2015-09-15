@@ -135,6 +135,9 @@ namespace vmmc
 
         \param orientation
             The orientation of the particle following the virtual move.
+
+        \return
+            Whether the particle lies outside the custom boundary.
     */
 #ifndef ISOTROPIC
     typedef std::function<bool (unsigned int, double[], double[])> BoundaryCallback;
