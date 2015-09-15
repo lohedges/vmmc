@@ -115,7 +115,7 @@ int main(int argc, char** argv)
         std::bind(&PatchyDisc::applyPostMoveUpdates, patchyDisc, _1, _2);
 #endif
 
-    // Initalise VMMC object.
+    // Initialise VMMC object.
     vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations,
         0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false, callbacks);
 

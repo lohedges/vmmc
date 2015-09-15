@@ -172,7 +172,7 @@ int main(int argc, char** argv)
     callbacks.interactionsCallback = computeInteractions;
     callbacks.postMoveCallback = applyPostMoveUpdates;
 
-    // Initalise VMMC object.
+    // Initialise VMMC object.
     vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations,
         0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false, callbacks);
 
