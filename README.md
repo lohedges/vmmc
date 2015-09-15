@@ -388,6 +388,8 @@ The following example codes showing how to interface with LibVMMC are included
 in the `demos` directory.
 
 * `square_wellium.cpp`: A simulation of a square-well fluid in two- or three-dimensions.
+* `square_wellium.cpp`: A simulation of a three dimensional square-well fluid
+confined within an inert spherocylinder.
 * `lennard_jonesium.cpp`: A simulation of a Lennard-Jones fluid in two- or three-dimensions.
 * `patchy_disc.cpp`: A simulation of a two dimensional patchy disc model.
 
@@ -545,10 +547,9 @@ the cluster to overlap.
 free functions as callbacks.
 
 ## Tips
-* LibVMMC currently assumes that the simulation box is periodic in all dimensions.
-To impose non-periodic boundaries simply check whether the move leads to a particle
-being displaced by more than half the box width along the restricted dimension and
-return an appropriately large energy so that the move will be rejected.
+* The `EnergyCallback` function can be used to account for non-pairwise terms
+in the potential, such as an external field, or the interaction between
+particles and a surface.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
