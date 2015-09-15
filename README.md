@@ -252,9 +252,9 @@ vmmc::EnergyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2
 
 if `computeEnergy` were instead a member of some object called `Foo`.
 
-For simplicity we provide a simple container for callback functions. This
-simplifies their assignment and makes it possible to pass a single callback
-argument to the constructor of the VMMC object.
+For simplicity we provide a container for callback functions. This simplifies
+assignment and makes it possible to pass a single callback argument to the
+constructor of the VMMC object.
 
 ```cpp
 struct CallbackFunctions
