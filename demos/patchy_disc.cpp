@@ -92,7 +92,7 @@ int main(int argc, char** argv)
         isIsotropic[i] = false;
     }
 
-    // Initalise VMMC object.
+    // Initialise VMMC object.
     vmmc::VMMC vmmc(&patchyDisc, nParticles, dimension, coordinates, orientations,
         0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false);
 

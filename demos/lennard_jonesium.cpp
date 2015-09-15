@@ -96,7 +96,7 @@ int main(int argc, char** argv)
 #endif
     }
 
-    // Initalise the VMMC object.
+    // Initialise the VMMC object.
 #ifndef ISOTROPIC
     vmmc::VMMC vmmc(&lennardJonesium, nParticles, dimension, coordinates, orientations,
         0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, true);
