@@ -388,8 +388,8 @@ The following example codes showing how to interface with LibVMMC are included
 in the `demos` directory.
 
 * `square_wellium.cpp`: A simulation of a square-well fluid in two- or three-dimensions.
-* `square_wellium.cpp`: A simulation of a three dimensional square-well fluid
-confined within an inert spherocylinder.
+* `square_wellium_spherocylinder.cpp`: A simulation of a three dimensional square-well
+fluid confined within an inert spherocylinder.
 * `lennard_jonesium.cpp`: A simulation of a Lennard-Jones fluid in two- or three-dimensions.
 * `patchy_disc.cpp`: A simulation of a two dimensional patchy disc model.
 
