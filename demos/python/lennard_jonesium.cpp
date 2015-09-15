@@ -166,14 +166,15 @@ int main(int argc, char** argv)
     Py_DECREF(pOrientation);
 
     // Assign VMMC callback functions.
-    vmmc::EnergyCallback energyCallback = computeEnergy;
-    vmmc::PairEnergyCallback pairEnergyCallback = computePairEnergy;
-    vmmc::InteractionsCallback interactionsCallback = computeInteractions;
-    vmmc::PostMoveCallback postMoveCallback = applyPostMoveUpdates;
+    vmmc::CallbackFunctions callbacks;
+    callbacks.energyCallback = computeEnergy;
+    callbacks.pairEnergyCallback = computePairEnergy;
+    callbacks.interactionsCallback = computeInteractions;
+    callbacks.postMoveCallback = applyPostMoveUpdates;
 
     // Initalise VMMC object.
-    vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations, 0.15, 0.2, 0.5, 0.5, maxInteractions,
-        &boxSize[0], isIsotropic, false, energyCallback, pairEnergyCallback, interactionsCallback, postMoveCallback);
+    vmmc::VMMC vmmc(nParticles, dimension, coordinates, orientations,
+        0.15, 0.2, 0.5, 0.5, maxInteractions, &boxSize[0], isIsotropic, false, callbacks);
 
     // Execute the simulation.
     for (unsigned int i=0;i<1000;i++)
