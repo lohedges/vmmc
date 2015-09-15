@@ -205,3 +205,54 @@ void InputOutput::vmdScript(const std::vector<double>& boxSize)
 
     fclose(pFile);
 }
+
+void InputOutput::vmdSpherocylinder(const std::vector<double>& boxSize)
+{
+    FILE *pFile;
+
+    // Radius of spherocylinder cap.
+    double r = 0.5*boxSize[0];
+
+    pFile = fopen("vmd.tcl", "w");
+
+    // Turn on lights 0 and 1.
+    fprintf(pFile, "light 0 on\n");
+    fprintf(pFile, "light 1 on\n");
+    fprintf(pFile, "light 2 off\n");
+    fprintf(pFile, "light 3 off\n");
+
+    // Position the stage and axes.
+    fprintf(pFile, "axes location off\n");
+    fprintf(pFile, "stage location off\n");
+
+    // Set orthographic projection.
+    fprintf(pFile, "display projection orthographic\n");
+
+    // Set drawing method to van der Waals radius.
+    fprintf(pFile, "mol modstyle 0 0 VDW 1 30\n");
+
+    // Set sensible atom radius.
+    fprintf(pFile, "set sel [atomselect top \"name X\"]\n");
+    fprintf(pFile, "atomselect0 set radius 0.4\n");
+
+    // Set default particle to blue.
+    fprintf(pFile, "color Name X blue\n");
+
+    // Turn off depth cue.
+    fprintf(pFile, "display depthcue off\n");
+
+    // Set colours.
+    fprintf(pFile, "draw materials off\n");
+    fprintf(pFile, "draw color white\n");
+
+    // Draw half spherocylinder.
+    fprintf(pFile, "draw sphere { %3.2f %3.2f %3.2f } radius %3.2f resolution 25\n", r, r, r, r);
+    fprintf(pFile, "draw cylinder { %3.2f %3.2f %3.2f } { %3.2f %3.2f %3.2f } radius %3.2f resolution 25 filled no\n", r, r, r, r, r, 0.5*boxSize[2], r);
+    fprintf(pFile, "draw material Transparent\n");
+
+    fprintf(pFile, "rotate x by -60\n");
+    fprintf(pFile, "rotate y by -30\n");
+    fprintf(pFile, "rotate z by -15\n");
+
+    fclose(pFile);
+}

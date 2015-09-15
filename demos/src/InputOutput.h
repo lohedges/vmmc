@@ -84,6 +84,12 @@ public:
             The size of the simulation box in each dimension.
      */
     void vmdScript(const std::vector<double>&);
+
+    //! Create a VMD TcL script to set the particle view and draw sphereocylinrical boundary.
+    /*! \param boxSize
+            The size of the simulation box in each dimension.
+     */
+    void vmdSpherocylinder(const std::vector<double>&);
 };
 
 #endif  /* _INPUTOUTPUT_H */
