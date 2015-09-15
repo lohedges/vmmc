@@ -632,9 +632,13 @@ namespace vmmc
 #endif
         }
 
+#ifndef ISOTROPIC
         // Check custom boundary condition.
         isEarlyExit = model->boundaryCallback(particle,
             &postMoveParticle.postMovePosition[0], &postMoveParticle.postMoveOrientation[0]);
+#else
+        isEarlyExit = model->boundaryCallback(particle, &postMoveParticle.postMovePosition[0]);
+#endif
 
         // Apply periodic boundary conditions.
         applyPeriodicBoundaryConditions(postMoveParticle.postMovePosition);
