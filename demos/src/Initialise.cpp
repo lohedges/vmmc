@@ -21,8 +21,17 @@ Initialise::Initialise()
 {
 }
 
-void Initialise::random(std::vector<Particle>& particles, CellList& cells, Box& box, MersenneTwister& rng)
+void Initialise::random(std::vector<Particle>& particles, CellList& cells, Box& box, MersenneTwister& rng, bool isSpherocylinder)
 {
+    if (isSpherocylinder && (box.dimension != 3))
+    {
+        std::cerr << "[ERROR] Initialise: Spherocylindrical boundary only valid for three dimensional simulation box!\n";
+        exit(EXIT_FAILURE);
+    }
+
+    // Copy box dimensions.
+    boxSize = box.boxSize;
+
     for (unsigned i=0;i<particles.size();i++)
     {
         // Current number of attempted particle insertions.
@@ -67,8 +76,26 @@ void Initialise::random(std::vector<Particle>& particles, CellList& cells, Box& 
             // Calculate the particle's cell index.
             particles[i].cell = cells.getCell(particles[i]);
 
-            // See if there is any overlap between particles.
-            isOverlap = checkOverlap(particles[i], particles, cells, box);
+            // Enforce spherocylindrical boundary.
+            if (isSpherocylinder)
+            {
+                // Make sure particle lies within the spherocylinder.
+#ifndef ISOTROPIC
+                if (!outsideSpherocylinder(i, &particles[i].position[0], &particles[i].orientation[0]))
+#else
+                if (!outsideSpherocylinder(i, &particles[i].position[0]))
+#endif
+                {
+                    // See if there is any overlap between particles.
+                    isOverlap = checkOverlap(particles[i], particles, cells, box);
+                }
+                else isOverlap = true;
+            }
+            else
+            {
+                // See if there is any overlap between particles.
+                isOverlap = checkOverlap(particles[i], particles, cells, box);
+            }
 
             // Check trial limit isn't exceeded.
             if (nTrials == MAX_TRIALS)
@@ -81,6 +108,78 @@ void Initialise::random(std::vector<Particle>& particles, CellList& cells, Box& 
         // Update cell list.
         cells.initCell(particles[i].cell, particles[i]);
     }
+}
+
+#ifndef ISOTROPIC
+bool Initialise::outsideSpherocylinder(unsigned int particle, double position[], double orientation[])
+#else
+bool Initialise::outsideSpherocylinder(unsigned int particle, double position[])
+#endif
+{
+    // Centre of sphere or circle.
+    std::vector<double> centre(3);
+
+    // Separation vector.
+    std::vector<double> sep(3);
+
+    // Squared radius of spherical cap (minus squared radius of particle).
+    double radiusSqd = 0.25*(boxSize[0] - 1)*(boxSize[0] - 1);
+
+    // Squared norm of separation vector.
+    double normSqd = 0;
+
+    // Initialise x and y coordinates of sphere centres.
+    centre[0] = 0.5*boxSize[0];
+    centre[1] = 0.5*boxSize[0];
+
+    // Check whether particle lies in lower cap.
+    if (position[2] < 0.5*boxSize[0])
+    {
+        centre[2] = 0.5*boxSize[0];
+
+        // Calculate separation.
+        for (unsigned int i=0;i<3;i++)
+        {
+            sep[i] = position[i] - centre[i];
+            normSqd += sep[i]*sep[i];
+        }
+
+        // Particle lies outside of cap.
+        if (normSqd > radiusSqd) return true;
+    }
+    else
+    {
+        // Check whether particle lies in upper cap.
+        if (position[2] > (boxSize[2] - 0.5*boxSize[0]))
+        {
+            centre[2] = boxSize[2] - 0.5*boxSize[0];
+
+            // Calculate separation.
+            for (unsigned int i=0;i<3;i++)
+            {
+                sep[i] = position[i] - centre[i];
+                normSqd += sep[i]*sep[i];
+            }
+
+            // Particle lies outside of cap.
+            if (normSqd > radiusSqd) return true;
+        }
+        else
+        {
+            // Calculate separation.
+            for (unsigned int i=0;i<2;i++)
+            {
+                sep[i] = position[i] - centre[i];
+                normSqd += sep[i]*sep[i];
+            }
+
+            // Particle lies outside of cylinder.
+            if (normSqd > radiusSqd) return true;
+        }
+    }
+
+    // Inside spherocylinder.
+    return false;
 }
 
 bool Initialise::checkOverlap(Particle& particle, std::vector<Particle>& particles, CellList& cells, Box& box)

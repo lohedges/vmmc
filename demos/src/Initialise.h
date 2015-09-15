@@ -46,10 +46,34 @@ public:
 
         \param rng
             A reference to the random number generator.
+
+        \param isSpherocylinder
+            Whether particles are confined to a sphereocyliner.
      */
-    void random(std::vector<Particle>&, CellList&, Box&, MersenneTwister&);
+    void random(std::vector<Particle>&, CellList&, Box&, MersenneTwister&, bool);
+
+    //! Check whether particle is within spherocylinder.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle following the virtual move.
+
+        \param orientation
+            The orientation of the particle following the virtual move.
+
+        \return
+            Whether the particle lies outside of the spherocylinder.
+    */
+#ifndef ISOTROPIC
+    bool outsideSpherocylinder(unsigned int, double[], double[]);
+#else
+    bool outsideSpherocylinder(unsigned int, double[]);
+#endif
 
 private:
+    std::vector<double> boxSize;    //!< copy of the simulation box size
+
     //! Helper function for testing particle insertions.
     /*! \param particle
             A reference to the trial particle.
