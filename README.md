@@ -136,7 +136,7 @@ included as a bundled header file, `MersenneTwister.h`. See the source code or
 generate Doxygen documentation with `make doc` for details on how to use it.
 
 ## Callback functions
-LibVMMC works via four user-defined callback functions that abstract model
+LibVMMC works via several user-defined callback functions that abstract model
 specific details, such as the pair potential. We make use of C++11's
 `std::function` to provide a general-purpose function wrapper, i.e.
 the callbacks can be free functions, member functions, etc. These callbacks
@@ -219,6 +219,21 @@ typedef std::function<void (unsigned int index, double position[],
 
 `orientation` = The orientation unit vector of the particle following the move.
 
+### Boundary condition (optional)
+Test for a custom boundary condition. This should return true if the particle
+moves outside of the boundary following the virtual move. An example showing
+how to implement custom boundary conditions is provided with the demonstration
+code.
+```cpp
+typedef std::function<bool (unsigned int index, double position[],
+    double orientation[])> BoundaryCallback;
+```
+`index` = The index of the  particle.
+
+`position` = The coordinate vector of the particle following the move.
+
+`orientation` = The orientation unit vector of the particle following the move.
+
 ## Assigning a callback
 Using the callbacks above it is easy to create a function wrapper to whatever,
 e.g.
@@ -237,6 +252,31 @@ vmmc::EnergyCallback energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2
 
 if `computeEnergy` were instead a member of some object called `Foo`.
 
+For simplicity we provide a simple container for callback functions. This
+simplifies their assignment and makes it possible to pass a single callback
+argument to the constructor of the VMMC object.
+
+```cpp
+struct CallbackFunctions
+{
+    EnergyCallback energyCallback;
+    PairEnergyCallback pairEnergyCallback;
+    InteractionsCallback interactionsCallback;
+    PostMoveCallback postMoveCallback;
+    BoundaryCallback boundaryCallback;
+};
+```
+
+In the second example above, initialisation of the `energyCallback` function
+would become
+
+```cpp
+Foo foo;
+using namespace std::placeholders;
+vmmc::CallbackFunctions callbacks;
+callbacks.energyCallback = std::bind(&Foo::computeEnergy, foo, _1, _2, _3);
+```
+
 ## The VMMC object
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
 constructor:
@@ -245,9 +285,7 @@ VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double orientations[], double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
     double boxSize[], bool isIsotropic[], bool isRepulsive,
-    const EnergyCallback& energyCallback, const PairEnergyCallback&
-    pairEnergyCallback, const InteractionsCallback& interactionsCallback,
-    const PostMoveCallback& postMoveCallback);
+    const CallbackFunctions& callbacks);
 ```
 `nParticles` = The number of particles in the simulation box.
 
@@ -298,19 +336,7 @@ mixed-potential systems.
 also be set to `true` when particle interactions contain a mixture of hard core
 overlaps and finite repulsions.
 
-`energyCallback` = The callback function to calculate the total pair interaction
-for a particle.
-
-`pairEnergyCallback` = The callback function to calculate the pair interaction
-between two particles.
-
-`interactionsCallback` = The callback function to determine the neighbours with
-which a particle interacts.
-
-`postMoveCallback` = The callback function to perform any required updates
-following the move. Here you should copy the updated particle positions and
-orientations back into your own data structures and implement any additional
-updates, e.g. cell lists.
+`callbacks` = The callback function container.
 
 ## C-style arrays
 The VMMC object constructor and callback functions use C-style arrays as
@@ -448,10 +474,7 @@ In addition, the VMMC object no longer needs the `orientations` or
 VMMC(unsigned int nParticles, unsigned int dimension, double coordinates[],
     double maxTrialTranslation, double maxTrialRotation, double probTranslate,
     double referenceRadius, unsigned int maxInteractions, double boxSize[],
-    bool isRepulsive, const EnergyCallback& energyCallback,
-    const PairEnergyCallback& pairEnergyCallback,
-    const InteractionsCallback& interactionsCallback,
-    const PostMoveCallback& postMoveCallback);
+    bool isRepulsive, const CallbackFunctions& callbacks);
 ```
 
 The demo code shows how preprocessor directives can be used to provide support
