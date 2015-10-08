@@ -133,6 +133,7 @@ python_demo_files := $(wildcard $(demo_dir)/python/*.cpp)
 python_demos := $(patsubst %.cpp,%,$(python_demo_files))
 python_sources := $(wildcard $(demo_dir)/python/demo/*.py)
 
+# Doxygen files.
 dox_files := $(wildcard dox/*.dox)
 
 ############################### TARGETS #######################################
