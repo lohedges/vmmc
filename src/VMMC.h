@@ -359,6 +359,9 @@ namespace vmmc
         /*! \param particle
                 Index of the particle.
 
+            \param direction
+                Whether move is forward (1) or reverse (-1).
+
             \param postMoveParticle
                 The particle data structure.
         */
@@ -367,9 +370,6 @@ namespace vmmc
         //! Initiate a particle ready for the virtual move.
         /*! \param particle
                 Index of the particle.
-
-            \param direction
-                Whether move is forward (1) or reverse (-1).
 
             \param linker
                 A reference to the linking particle.
