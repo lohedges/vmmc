@@ -237,7 +237,7 @@ namespace vmmc
         /*! \param particle
                 Index of the particle.
 
-            \param
+            \param direction
                 Whether the move is forward (1) or reverse (-1).
 
             \param postMoveParticle

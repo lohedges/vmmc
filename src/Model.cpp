@@ -34,9 +34,11 @@ namespace vmmc
     }
 
 #ifndef ISOTROPIC
-    double Model::pairEnergyCallback(unsigned int, double[], double[], unsigned int, double[], double[])
+    double Model::pairEnergyCallback(unsigned int particle1, double position1[],
+        double orientation1[], unsigned int particle2, double position2[], double orientation2[])
 #else
-    double Model::pairEnergyCallback(unsigned int, double[], unsigned int, double[])
+    double Model::pairEnergyCallback(unsigned int particle1,
+        double position1[], unsigned int particle2, double position2[])
 #endif
     {
         std::cerr << "[ERROR] Model: Virtual function Model::pairEnergyCallback() must be defined.\n";

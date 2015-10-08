@@ -37,7 +37,7 @@ namespace vmmc
         ~Model();
 
         //! Calculate the total interaction energy felt by a particle.
-        /*! \param index
+        /*! \param particle
                 The particle index.
 
             \param position
@@ -65,6 +65,9 @@ namespace vmmc
             \param orientation1
                 The orientation vector of the first particle.
 
+            \param particle2
+                The index of the second particle.
+
             \param position2
                 The position vector of the second particle.
 
@@ -81,7 +84,7 @@ namespace vmmc
 #endif
 
         //! Determine the interactions for a given particle.
-        /*! \param index
+        /*! \param particle
                 The particle index.
 
             \param position
@@ -103,7 +106,7 @@ namespace vmmc
 #endif
 
         //! Apply any post-move updates for a given particle.
-        /*! \param index
+        /*! \param particle
                 The particle index.
 
             \param position
@@ -119,7 +122,7 @@ namespace vmmc
 #endif
 
         //! Check custom boundary condition.
-        /*! \param index
+        /*! \param particle
                 The particle index.
 
             \param position
@@ -128,7 +131,7 @@ namespace vmmc
             \param orientation
                 The orientation of the particle following the virtual move.
 
-            \param return
+            \return
                 Whether the particle is outside the boundary.
         */
 #ifndef ISOTROPIC
