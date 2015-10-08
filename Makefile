@@ -122,6 +122,7 @@ demo_sources := $(wildcard $(demo_dir)/src/*.cpp)
 temp := $(patsubst %.cpp,%.o,$(demo_sources))
 demo_objects := $(subst $(demo_dir)/src,$(demo_obj_dir),$(temp))
 
+# Doxygen files.
 dox_files := $(wildcard dox/*.dox)
 
 ############################### TARGETS #######################################
