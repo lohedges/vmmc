@@ -42,10 +42,10 @@ namespace vmmc
     //! Container for storing virtual move parameters.
     struct Parameters
     {
-        unsigned int seed;                          //!> index of the seed particle
-        bool isRotation;                            //!> whether the move is a rotation
-        double stepSize;                            //!> the magnitude of the trial move
-        std::vector<double> trialVector;            //!> vector for trial move
+        unsigned int seed;                          //!< Index of the seed particle.
+        bool isRotation;                            //!< Whether the move is a rotation.
+        double stepSize;                            //!< The magnitude of the trial move.
+        std::vector<double> trialVector;            //!< Vector for trial move.
     };
 
     //! Container for storing particle attributes during the virtual move.
@@ -61,16 +61,16 @@ namespace vmmc
         */
         Particle(unsigned int);
 
-        unsigned int index;                         //!> particle index
-        bool isMoving;                              //!> whether the particle is part of the virtual move
-        bool isFrustrated;                          //!> whether the particle is involved in a frustrated link
-        unsigned int posFrustated;                  //!> index in the frustrated links array
-        std::vector<double> preMovePosition;        //!> particle position before the virtual move
-        std::vector<double> postMovePosition;       //!> particle position following the virtual move
-        std::vector<double> pseudoPosition;         //!> position of the particle in the pseudo-cluster
+        unsigned int index;                         //!< Particle index.
+        bool isMoving;                              //!< Whether the particle is part of the virtual move.
+        bool isFrustrated;                          //!< Whether the particle is involved in a frustrated link.
+        unsigned int posFrustated;                  //!< Index in the frustrated links array.
+        std::vector<double> preMovePosition;        //!< Particle position before the virtual move.
+        std::vector<double> postMovePosition;       //!< Particle position following the virtual move.
+        std::vector<double> pseudoPosition;         //!< Position of the particle in the pseudo-cluster.
 #ifndef ISOTROPIC
-        std::vector<double> preMoveOrientation;     //!> particle orientation before the virtual move
-        std::vector<double> postMoveOrientation;    //!> particle orientation following the virtual move
+        std::vector<double> preMoveOrientation;     //!< Particle orientation before the virtual move.
+        std::vector<double> postMoveOrientation;    //!< Particle orientation following the virtual move.
 #endif
     };
 
@@ -184,45 +184,45 @@ namespace vmmc
         //! Reset statistics.
         void reset();
 
-        MersenneTwister rng;                        //!< random number generator
+        MersenneTwister rng;                        //!< Random number generator.
 
     private:
-        Parameters moveParams;                      //!< parameters for the trial move
-        unsigned long long nAttempts;               //!< number of attempted moves
-        unsigned long long nAccepts;                //!< number of accepted moves
-        unsigned long long nRotations;              //!< number of accepted rotations
+        Parameters moveParams;                      //!< Parameters for the trial move.
+        unsigned long long nAttempts;               //!< Number of attempted moves.
+        unsigned long long nAccepts;                //!< Number of accepted moves.
+        unsigned long long nRotations;              //!< Number of accepted rotations.
 
-        Model* model;                               //!< a pointer to the derived model object
-        unsigned int nParticles;                    //!< the number of particles in the simulation box
-        unsigned int dimension;                     //!< the dimension of the simulation box
-        double maxTrialTranslation;                 //!< the maximum trial translation (in units of the reference diameter)
-        double maxTrialRotation;                    //!< the maximum trial rotation
-        double probTranslate;                       //!< the relative probability of translational moves (vs rotations)
-        double referenceRadius;                     //!< reference particle radius (for Stokes scaling)
-        unsigned int maxInteractions;               //!< maximum number of interactions per particle
-        std::vector<double> boxSize;                //!< the size of the simulation box in each dimension
+        Model* model;                               //!< A pointer to the derived model object.
+        unsigned int nParticles;                    //!< The number of particles in the simulation box.
+        unsigned int dimension;                     //!< The dimension of the simulation box.
+        double maxTrialTranslation;                 //!< The maximum trial translation (in units of the reference diameter).
+        double maxTrialRotation;                    //!< The maximum trial rotation.
+        double probTranslate;                       //!< The relative probability of translational moves (vs rotations).
+        double referenceRadius;                     //!< Reference particle radius (for Stokes scaling).
+        unsigned int maxInteractions;               //!< Maximum number of interactions per particle.
+        std::vector<double> boxSize;                //!< The size of the simulation box in each dimension.
 #ifndef ISOTROPIC
-        std::vector<bool> isIsotropic;              //!< whether the potential of each particle is isotropic.
+        std::vector<bool> isIsotropic;              //!< Whether the potential of each particle is isotropic..
 #endif
-        bool isRepusive;                            //!< whether there are finite repulsive interactions
-        bool is3D;                                  //!< whether the simulation is three-dimensional
+        bool isRepusive;                            //!< Whether there are finite repulsive interactions.
+        bool is3D;                                  //!< Whether the simulation is three-dimensional.
 
-        std::vector<Particle> particles;            //!< vector of particles
+        std::vector<Particle> particles;            //!< Vector of particles.
 
-        unsigned int nMoving;                                   //!< the number of particles in the cluster
-        std::vector<unsigned int> moveList;                     //!< the indices of particles in the cluster
-        std::vector<unsigned long long> clusterTranslations;    //!< array for storing the number of translations for each cluster size
-        std::vector<unsigned long long> clusterRotations;       //!< array for storing the number of rotations for each cluster size
+        unsigned int nMoving;                                   //!< The number of particles in the cluster.
+        std::vector<unsigned int> moveList;                     //!< The indices of particles in the cluster.
+        std::vector<unsigned long long> clusterTranslations;    //!< Array for storing the number of translations for each cluster size.
+        std::vector<unsigned long long> clusterRotations;       //!< Array for storing the number of rotations for each cluster size.
 
-        unsigned int nFrustrated;                               //!< the number of frustrated links
-        std::vector<unsigned int> frustratedLinks;              //!< array of particles involved in frustrated links
+        unsigned int nFrustrated;                               //!< The number of frustrated links.
+        std::vector<unsigned int> frustratedLinks;              //!< Array of particles involved in frustrated links.
 
-        unsigned int nInteractions;                             //!< the number of pair interactions for particles in the cluster
-        std::vector<std::vector<unsigned int> > interactions;   //!< indices of particle pairs that interact in the cluster
-        std::vector<std::vector<double> > pairEnergyMatrix;     //!< pair energies for particle interactions in the cluster
+        unsigned int nInteractions;                             //!< The number of pair interactions for particles in the cluster.
+        std::vector<std::vector<unsigned int> > interactions;   //!< Indices of particle pairs that interact in the cluster.
+        std::vector<std::vector<double> > pairEnergyMatrix;     //!< Pair energies for particle interactions in the cluster.
 
-        unsigned int cutOff;                        //!< the cut-off cluster size for the trial move
-        bool isEarlyExit;                           //!< whether trial move aborted early
+        unsigned int cutOff;                        //!< The cut-off cluster size for the trial move.
+        bool isEarlyExit;                           //!< Whether trial move aborted early.
 
         //! Propose a trial particle translation/rotation.
         void proposeMove();

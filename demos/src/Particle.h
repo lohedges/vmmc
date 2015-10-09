@@ -32,15 +32,17 @@ public:
     Particle();
 
     //! Constructor.
-    //! \param index The particle index.
+    /*! \param index
+            The particle index.
+     */
     Particle(unsigned int);
 
-    unsigned int index;                 //!< particle index
-    std::vector<double> position;       //!< x,y,z coordinates of particle
-    std::vector<double> orientation;    //!< orientation of particle (unit vector)
+    unsigned int index;                 //!< Particle index.
+    std::vector<double> position;       //!< The x,y,z coordinates of particle.
+    std::vector<double> orientation;    //!< The orientation of the particle (unit vector).
 
-    unsigned int cell;                  //!< index of the cell in which the particle is located
-    unsigned int posCell;               //!< position of particle in the corresponding cell list
+    unsigned int cell;                  //!< Index of the cell in which the particle is located.
+    unsigned int posCell;               //!< Position of particle in the corresponding cell list.
 };
 
 #endif  /* _PARTICLE_H */

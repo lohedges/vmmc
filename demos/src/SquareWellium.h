@@ -159,14 +159,14 @@ public:
     double getEnergy();
 
 private:
-    Box& box;                           //!> a reference to the simulation box
-    std::vector<Particle>& particles;   //!> a reference to the particle list
-    CellList& cells;                    //!> a reference to the cell list
+    Box& box;                           //!< A reference to the simulation box.
+    std::vector<Particle>& particles;   //!< A reference to the particle list.
+    CellList& cells;                    //!< A reference to the cell list.
 
-    unsigned int maxInteractions;       //!> the maximum number of interactions per particle
-    double interactionEnergy;           //!> interaction energy scale (in units of kBT)
-    double interactionRange;            //!> size of interaction range (in units of particle diameter)
-    double squaredCutOffDistance;       //!> squared cut-off distance
+    unsigned int maxInteractions;       //!< The maximum number of interactions per particle.
+    double interactionEnergy;           //!< Interaction energy scale (in units of kBT).
+    double interactionRange;            //!< Size of interaction range (in units of particle diameter).
+    double squaredCutOffDistance;       //!< Squared cut-off distance.
 };
 
 #endif	/* _SQUAREWELLIUM_H */
