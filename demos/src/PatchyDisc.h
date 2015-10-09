@@ -88,9 +88,9 @@ public:
      unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
 
 private:
-    double patchSeparation;         //!> the angle between patches in radians
-    std::vector<double> cosTheta;   //!> lookup table for cosine rotation matrix components
-    std::vector<double> sinTheta;   //!> lookup table for sine rotation matrix components
+    double patchSeparation;         //!< The angle between patches in radians.
+    std::vector<double> cosTheta;   //!< Lookup table for cosine rotation matrix components.
+    std::vector<double> sinTheta;   //!< Lookup table for sine rotation matrix components.
 };
 
 #endif	/* _PATCHYDISC_H */

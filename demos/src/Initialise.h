@@ -34,7 +34,7 @@ public:
     //! Default constructor.
     Initialise();
 
-    //!< Initialise a random particle configuration.
+    //! Initialise a random particle configuration.
     /*! \param particles
             A reference to a vector of particles.
 
@@ -72,7 +72,8 @@ public:
 #endif
 
 private:
-    std::vector<double> boxSize;    //!< copy of the simulation box size
+    /// Copy of the simulation box size.
+    std::vector<double> boxSize;
 
     //! Helper function for testing particle insertions.
     /*! \param particle
@@ -89,7 +90,7 @@ private:
      */
     bool checkOverlap(Particle&, std::vector<Particle>&, CellList&, Box&);
 
-    //!< maximum number of trial particle insertions (per particle)
+    /// Maximum number of trial particle insertions (per particle).
     static const unsigned int MAX_TRIALS = 100000000;
 };
 

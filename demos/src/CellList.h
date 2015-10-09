@@ -46,10 +46,10 @@
 //! Structure containing attributes for an individual cell.
 struct Cell
 {
-    unsigned int index;                     //!< cell index
-    unsigned int tally;                     //!< number of particles in the cell
-    std::vector<unsigned int> particles;    //!< indices of particles in the cell
-    std::vector<unsigned int> neighbours;   //!< indices of nearest neighbour cells
+    unsigned int index;                     //!< Cell index.
+    unsigned int tally;                     //!< Number of particles in the cell.
+    std::vector<unsigned int> particles;    //!< Indices of particles in the cell.
+    std::vector<unsigned int> neighbours;   //!< Indices of nearest neighbour cells.
 };
 
 //! Container class for storing a list of cells.
@@ -135,12 +135,12 @@ public:
     unsigned int getNeighbours() const;
 
 private:
-    unsigned int dimension;                     //!< dimension of the simulation box
-    unsigned int nCells;                        //!< total number of cells
-    unsigned int nNeighbours;                   //!< number of neighbours per cell
-    unsigned int maxParticles;                  //!< maximum number of particles per cell
-    std::vector<unsigned int> cellsPerAxis;     //!< number of cells per axis
-    std::vector<double> cellSpacing;            //!< spacing between cells
+    unsigned int dimension;                     //!< Dimension of the simulation box.
+    unsigned int nCells;                        //!< Total number of cells.
+    unsigned int nNeighbours;                   //!< Number of neighbours per cell.
+    unsigned int maxParticles;                  //!< Maximum number of particles per cell.
+    std::vector<unsigned int> cellsPerAxis;     //!< Number of cells per axis.
+    std::vector<double> cellSpacing;            //!< Spacing between cells.
 };
 
 #endif  /* _CELLLIST_H */

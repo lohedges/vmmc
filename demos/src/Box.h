@@ -59,13 +59,13 @@ public:
      */
     void minimumImage(std::vector<double>&);
 
-    std::vector<double> boxSize;        //!< size of the box in x,y,z directions
-    unsigned int dimension;             //!< dimensionality of the simulation box
+    std::vector<double> boxSize;        //!< Size of the box in x,y,z directions.
+    unsigned int dimension;             //!< Dimensionality of the simulation box.
 
 private:
-    std::vector<bool> isPeriodic;       //!< whether the box is periodic across each boundary
-    std::vector<double> posMinImage;    //!< minimum image condition in each dimension
-    std::vector<double> negMinImage;    //!< negative minimum image condition in each dimension
+    std::vector<bool> isPeriodic;       //!< Whether the box is periodic across each boundary.
+    std::vector<double> posMinImage;    //!< Minimum image condition in each dimension.
+    std::vector<double> negMinImage;    //!< Negative minimum image condition in each dimension.
 };
 
 #endif  /* _BOX_H */

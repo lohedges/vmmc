@@ -28,11 +28,11 @@
 //! Container for storing move parameters.
 struct MoveParams
 {
-    unsigned int seed;                          //!> index of the seed particle
-    bool isRotation;                            //!> whether the move is a rotation
-    double stepSize;                            //!> the magnitude of the trial move
-    std::vector<double> trialVector;            //!> vector for trial move
-    Particle preMoveParticle;                   //!> particle state before the trial move
+    unsigned int seed;                          //!< Index of the seed particle.
+    bool isRotation;                            //!< Whether the move is a rotation.
+    double stepSize;                            //!< The magnitude of the trial move.
+    std::vector<double> trialVector;            //!< Vector for trial move.
+    Particle preMoveParticle;                   //!< Particle state before the trial move.
 };
 
 class SingleParticleMove
@@ -92,21 +92,21 @@ public:
     //! Reset statistics.
     void reset();
 
-    MersenneTwister rng;                        //!< random number generator
+    MersenneTwister rng;                        //!< Random number generator.
 
 private:
-    MoveParams moveParams;                      //!< parameters for the trial move
-    Model* model;                               //!< a pointer to the model object
-    unsigned long long nAttempts;               //!< number of attempted moves
-    unsigned long long nAccepts;                //!< number of accepted moves
-    unsigned long long nRotations;              //!< number of accepted rotations
+    MoveParams moveParams;                      //!< Parameters for the trial move.
+    Model* model;                               //!< A pointer to the model object.
+    unsigned long long nAttempts;               //!< Number of attempted moves.
+    unsigned long long nAccepts;                //!< Number of accepted moves.
+    unsigned long long nRotations;              //!< Number of accepted rotations.
 
-    double maxTrialTranslation;                 //!< the maximum trial translation (in units of the reference diameter)
-    double maxTrialRotation;                    //!< the maximum trial rotation
-    double probTranslate;                       //!< the relative probability of translational moves (vs rotations)
-    bool is3D;                                  //!< whether the simulation is three-dimensional
-    bool isIsotropic;                           //!< whether the potential is isotropic
-    double energyChange;                        //!< energy change resulting from trial move
+    double maxTrialTranslation;                 //!< The maximum trial translation (in units of the reference diameter).
+    double maxTrialRotation;                    //!< The maximum trial rotation.
+    double probTranslate;                       //!< The relative probability of translational moves (vs rotations).
+    bool is3D;                                  //!< Whether the simulation is three-dimensional.
+    bool isIsotropic;                           //!< Whether the potential is isotropic.
+    double energyChange;                        //!< Energy change resulting from trial move.
 
     //! Propose a trial particle translation/rotation.
     void proposeMove();
