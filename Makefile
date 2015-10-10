@@ -95,7 +95,7 @@ iflags_exec := -m 0755
 iflags := -m 0644
 
 # Git commit information.
-commit := $(shell git describe --abbrev=4 --dirty --always --tags)
+commit := $(shell git describe --abbrev=4 --dirty --always --tags 2> /dev/null)
 
 # C++ compiler flags for development build.
 cxxflags_devel := -O0 -std=c++11 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
