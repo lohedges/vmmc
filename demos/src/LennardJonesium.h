@@ -77,4 +77,4 @@ private:
     double potentialShift;  //!< Shift factor to zero potential at cut-off.
 };
 
-#endif	/* _LENNARDJONESIUM_H */
+#endif  /* _LENNARDJONESIUM_H */

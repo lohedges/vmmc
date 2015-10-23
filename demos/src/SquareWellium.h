@@ -74,4 +74,4 @@ public:
 #endif
 };
 
-#endif	/* _SQUAREWELLIUM_H */
+#endif  /* _SQUAREWELLIUM_H */

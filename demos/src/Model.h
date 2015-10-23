@@ -153,4 +153,4 @@ protected:
     double squaredCutOffDistance;       //!< The squared cut-off distance.
 };
 
-#endif	/* _MODEL_H */
+#endif  /* _MODEL_H */
