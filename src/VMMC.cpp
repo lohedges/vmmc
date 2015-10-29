@@ -446,12 +446,34 @@ namespace vmmc
             }
         }
 
+		// Check for non-pairwise energy contributions.
+		for (unsigned int i=0;i<nMoving;i++)
+		{
+#ifndef ISOTROPIC
+			excessEnergy -= model->nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
+				&particles[moveList[i]].preMoveOrientation[0]);
+#else
+			excessEnergy -= model->nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0]);
+#endif
+		}
+
         // Apply the move.
         swapMoveStatus();
 
         // Check for overlaps (or finite repulsions).
         for (unsigned int i=0;i<nMoving;i++)
         {
+            // Check for non-pairwise energy contributions.
+#ifndef ISOTROPIC
+			excessEnergy += model->nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
+				&particles[moveList[i]].preMoveOrientation[0]);
+#else
+			excessEnergy += model->nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0]);
+#endif
+
+			// Early exit test.
+			if (excessEnergy > 1e6) return false;
+
             if (!isRepusive)
             {
 #ifndef ISOTROPIC
@@ -529,10 +551,7 @@ namespace vmmc
             }
         }
 
-        if (isRepusive)
-        {
-            if (rng() > exp(-excessEnergy)) return false;
-        }
+		if (rng() >= exp(-excessEnergy)) return false;
 
         // Move succesful.
         return true;

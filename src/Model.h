@@ -121,6 +121,25 @@ namespace vmmc
         virtual void postMoveCallback(unsigned int, double[]);
 #endif
 
+        //! Check for non-pairwise energy contributions.
+        /*! \param particle
+                The particle index.
+
+            \param position
+                The position of the particle.
+
+            \param orientation
+                The orientation of the particle.
+
+            \return
+                The total non-pairwise energy felt by the particle.
+        */
+#ifndef ISOTROPIC
+        virtual double nonPairwiseCallback(unsigned int, double[], double[]);
+#else
+        virtual double nonPairwiseCallback(unsigned int, double[]);
+#endif
+
         //! Check custom boundary condition.
         /*! \param particle
                 The particle index.

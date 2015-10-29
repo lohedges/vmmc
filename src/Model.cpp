@@ -68,6 +68,16 @@ namespace vmmc
     }
 
 #ifndef ISOTROPIC
+    double Model::nonPairwiseCallback(unsigned int particle, double position[], double orientation[])
+#else
+    double Model::nonPairwiseCallback(unsigned int particle, double position[])
+#endif
+    {
+        std::cerr << "[ERROR] Model: Virtual function Model::nonPairwiseCallback() must be defined.\n";
+        exit(EXIT_FAILURE);
+    }
+
+#ifndef ISOTROPIC
     bool Model::boundaryCallback(unsigned int particle, double position[], double orientation[])
 #else
     bool Model::boundaryCallback(unsigned int particle, double position[])
