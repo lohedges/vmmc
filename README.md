@@ -157,9 +157,7 @@ double energyCallback(unsigned int index, double position[], double orientation[
 
 This callback function is currently somewhat redundant since it is possible to
 achieve the same outcome by combining the `pairEnergyCallback` and
-`interactionsCallback` functions described below. Ultimately, the callback
-will be able to account for non-pairwise terms in the potential, such as
-an external field.
+`interactionsCallback` functions described below.
 
 ### Pair energy
 Calculate the pair interaction between two particles.
@@ -198,6 +196,33 @@ unsigned int interactionsCallback(unsigned int index, double position[],
 Apply any post-move updates, e.g. update cell lists, or neighbour lists.
 ```cpp
 void postMoveCallback(unsigned int index, double position[], double orientation[]);
+```
+`index` = The index of the  particle.
+
+`position` = The coordinate vector of the particle following the move.
+
+`orientation` = The orientation unit vector of the particle following the move.
+
+### Non-pairwise energy (optional)
+Test for non-pairwise energy contributions, such as interactions with a
+surface or external field.
+
+```cpp
+double nonPairwiseCallback(unsigned int index, double position[], double orientation[]);
+```
+`index` = The index of the  particle.
+
+`position` = The coordinate vector of the particle.
+
+`orientation` = The orientation unit vector of the particle.
+
+### Boundary condition (optional)
+Test for a custom boundary condition. This should return true if the particle
+moves outside of the boundary following the virtual move. An example showing
+how to implement custom boundary conditions is provided with the demonstration
+code.
+```cpp
+bool boundaryCallback(unsigned int index, double position[], double orientation[]);
 ```
 `index` = The index of the  particle.
 
@@ -464,9 +489,9 @@ in a square box. In this case, a rotation across the periodic boundary can cause
 the cluster to overlap.
 
 ## Tips
-* The `EnergyCallback` function can be used to account for non-pairwise terms in
-the potential, such as an external field, or the interaction between particles
-and a surface.
+* The `nonPairwiseCallback` function can be used to account for non-pairwise
+terms in the potential, such as an external field, or the interaction between
+particles and a surface.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
