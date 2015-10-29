@@ -17,6 +17,7 @@ For specific instructions regarding how to install LibVMMC, see:
 To get a feel for the how to write a code using the library,
 see the demos:
 - demos/square_wellium.cpp
+- demos/square_wellium_wall.cpp
 - demos/square_wellium_spherocylinder.cpp
 - demos/lennard_jonesium.cpp
 - demos/patchy_disc.cpp
