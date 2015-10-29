@@ -460,8 +460,12 @@ namespace vmmc
             // Check all particles in the pseudo-cluster.
             for (unsigned int i=0;i<nMoving;i++)
             {
+#ifndef ISOTROPIC
                 excessEnergy -= callbacks.nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                     &particles[moveList[i]].preMoveOrientation[0]);
+#else
+                excessEnergy += callbacks.nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0]);
+#endif
             }
         }
 
@@ -474,8 +478,12 @@ namespace vmmc
             // Check for non-pairwise energy contributions.
             if (callbacks.isNonPairwise)
             {
+#ifndef ISOTROPIC
                 excessEnergy += callbacks.nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
                     &particles[moveList[i]].preMoveOrientation[0]);
+#else
+                excessEnergy += callbacks.nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0]);
+#endif
 
                 // Early exit test.
                 if (excessEnergy > 1e6) return false;
@@ -560,7 +568,7 @@ namespace vmmc
 
         if (isRepusive || callbacks.isNonPairwise)
         {
-            if (rng() > exp(-excessEnergy)) return false;
+            if (rng() >= exp(-excessEnergy)) return false;
         }
 
         // Move successful.
