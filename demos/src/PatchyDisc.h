@@ -171,5 +171,5 @@ private:
     std::vector<double> sinTheta;       //!< Lookup table for sine rotation matrix components.
 };
 
-#endif	/* _PATCHYDISC_H */
+#endif  /* _PATCHYDISC_H */
 #endif

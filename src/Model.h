@@ -142,4 +142,4 @@ namespace vmmc
     };
 }
 
-#endif	/* _MODEL_H */
+#endif  /* _MODEL_H */

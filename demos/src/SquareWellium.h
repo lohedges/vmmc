@@ -169,4 +169,4 @@ private:
     double squaredCutOffDistance;       //!< Squared cut-off distance.
 };
 
-#endif	/* _SQUAREWELLIUM_H */
+#endif  /* _SQUAREWELLIUM_H */
