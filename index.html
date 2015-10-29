@@ -211,9 +211,7 @@ been used to simplify their declaration).</p>
 
 <p>This callback function is currently somewhat redundant since it is possible to
 achieve the same outcome by combining the <code>PairEnergyCallback</code> and
-<code>InteractionsCallback</code> functions described below. Ultimately, the callback
-will be able to account for non-pairwise terms in the potential, such as
-an external field.</p>
+<code>InteractionsCallback</code> functions described below.</p>
 
 <h3>
 <a id="pair-energy" class="anchor" href="#pair-energy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pair energy</h3>
@@ -265,6 +263,20 @@ an external field.</p>
 <p><code>position</code> = The coordinate vector of the particle following the move.</p>
 
 <p><code>orientation</code> = The orientation unit vector of the particle following the move.</p>
+
+<h3>
+<a id="non-pairwise" class="anchor" href="#non-pairwise" aria-hidden="true"><span class="octicon octicon-link"></span></a>Non-pairwise energy (optional)</h3>
+
+<p>Test for non-pairwise energy contributions, such as interactions with a surface or external field.</p>
+
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index, <span class="pl-k">double</span> position[],
+    <span class="pl-k">double</span> orientation[])&gt; NonPairwiseCallback;</pre></div>
+
+<p><code>index</code> = The index of the  particle.</p>
+
+<p><code>position</code> = The coordinate vector of the particle.</p>
+
+<p><code>orientation</code> = The orientation unit vector of the particle.</p>
 
 <h3>
 <a id="boundary-condition" class="anchor" href="#boundary-condition" aria-hidden="true"><span class="octicon octicon-link"></span></a>Boundary condition (optional)</h3>
@@ -605,7 +617,7 @@ free functions as callbacks.</li>
 <a id="tips" class="anchor" href="#tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tips</h2>
 
 <ul>
-<li>The <code>EnergyCallback</code> function can be used to account for non-pairwise terms in the
+<li>The <code>NonPairwiseCallback</code> function can be used to account for non-pairwise terms in the
 potential, such as an external field, or the interaction between particles and a surface.</li>
 <li>It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
