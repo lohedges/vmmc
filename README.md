@@ -170,9 +170,7 @@ typedef std::function<double (unsigned int index, double position[],
 
 This callback function is currently somewhat redundant since it is possible to
 achieve the same outcome by combining the `PairEnergyCallback` and
-`InteractionsCallback` functions described below. Ultimately, the callback
-will be able to account for non-pairwise terms in the potential, such as
-an external field.
+`InteractionsCallback` functions described below.
 
 ### Pair energy
 Calculate the pair interaction between two particles.
@@ -218,6 +216,20 @@ typedef std::function<void (unsigned int index, double position[],
 `position` = The coordinate vector of the particle following the move.
 
 `orientation` = The orientation unit vector of the particle following the move.
+
+### Non-pairwise energy (optional)
+Test for non-pairwise energy contributions, such as interactions with a
+surface or external field.
+
+```cpp
+typedef std::function<double (unsigned int index, double position[],
+    double orientation[])> NonPairwiseCallback;
+```
+`index` = The index of the  particle.
+
+`position` = The coordinate vector of the particle.
+
+`orientation` = The orientation unit vector of the particle.
 
 ### Boundary condition (optional)
 Test for a custom boundary condition. This should return true if the particle
@@ -547,8 +559,8 @@ the cluster to overlap.
 free functions as callbacks.
 
 ## Tips
-* The `EnergyCallback` function can be used to account for non-pairwise terms
-in the potential, such as an external field, or the interaction between
+* The `NonPairwiseCallback` function can be used to account for non-pairwise
+terms in the potential, such as an external field, or the interaction between
 particles and a surface.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
