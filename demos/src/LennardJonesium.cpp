@@ -199,6 +199,15 @@ void LennardJonesium::postMoveCallback(unsigned int particle, double position[])
 }
 
 #ifndef ISOTROPIC
+double LennardJonesium::nonPairwiseCallback(unsigned int particle, double position[], double orientation[])
+#else
+double LennardJonesium::nonPairwiseCallback(unsigned int particle, double position[])
+#endif
+{
+    return 0;
+}
+
+#ifndef ISOTROPIC
 bool LennardJonesium::boundaryCallback(unsigned int particle, double position[], double orientation[])
 #else
 bool LennardJonesium::boundaryCallback(unsigned int particle, double position[])

@@ -135,6 +135,25 @@ public:
     void postMoveCallback(unsigned int, double[]);
 #endif
 
+    //! Check for non-pairwise energy contributions.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle.
+
+        \param orientation
+            The orientation of the particle.
+
+        \param return
+            The total non-pairwise energy felt by the particle.
+    */
+#ifndef ISOTROPIC
+    double nonPairwiseCallback(unsigned int, double[], double[]);
+#else
+    double nonPairwiseCallback(unsigned int, double[]);
+#endif
+
     //! Check custom boundary condition.
     /*! \param index
             The particle index.

@@ -195,6 +195,15 @@ void SquareWellium::postMoveCallback(unsigned int particle, double position[])
 }
 
 #ifndef ISOTROPIC
+double SquareWellium::nonPairwiseCallback(unsigned int particle, double position[], double orientation[])
+#else
+double SquareWellium::nonPairwiseCallback(unsigned int particle, double position[])
+#endif
+{
+    return 0;
+}
+
+#ifndef ISOTROPIC
 bool SquareWellium::boundaryCallback(unsigned int particle, double position[], double orientation[])
 #else
 bool SquareWellium::boundaryCallback(unsigned int particle, double position[])

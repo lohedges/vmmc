@@ -221,6 +221,11 @@ void PatchyDisc::postMoveCallback(unsigned int particle, double position[], doub
         cells.updateCell(newCell, particles[particle], particles);
 }
 
+double PatchyDisc::nonPairwiseCallback(unsigned int particle, double position[], double orientation[])
+{
+    return 0;
+}
+
 bool PatchyDisc::boundaryCallback(unsigned int particle, double position[], double orientation[])
 {
     return false;
