@@ -126,7 +126,26 @@ namespace vmmc
     typedef std::function<void (unsigned int, double[])> PostMoveCallback;
 #endif
 
-//! Check custom boundary condition.
+    //! Calculate the non-pairwise energy felt by a particle.
+    /*! \param index
+            The particle index.
+
+        \param position
+            The position of the particle following.
+
+        \param orientation
+            The orientation of the particle.
+
+        \return
+            The total non-pairwise energy felt by the particle.
+    */
+#ifndef ISOTROPIC
+    typedef std::function<double (unsigned int, double[], double[])> NonPairwiseCallback;
+#else
+    typedef std::function<double (unsigned int, double[])> NonPairwiseCallback;
+#endif
+
+    //! Check custom boundary condition.
     /*! \param index
             The particle index.
 
@@ -189,9 +208,11 @@ namespace vmmc
         PairEnergyCallback pairEnergyCallback;      //!< Callback function to calculate pair energies.
         InteractionsCallback interactionsCallback;  //!< Callback function to determine particle interactions.
         PostMoveCallback postMoveCallback;          //!< Callback function to apply any post-move updates.
-        BoundaryCallback boundaryCallback;          //!< Callback function to apply any post-move updates.
+        NonPairwiseCallback nonPairwiseCallback;    //!< Callback function to calculate non-pairwise interaction energies.
+        BoundaryCallback boundaryCallback;          //!< Callback function to apply custom boundary conditions.
 
-        bool isCustomBoundary;                      //!< Whether the boundary callback function is defined.
+        bool isNonPairwise;                         //!< Whether the non-pairwise energy callback is defined.
+        bool isCustomBoundary;                      //!< Whether the boundary callback is defined.
     };
 
     //! Main VMMC class.

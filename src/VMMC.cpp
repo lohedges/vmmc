@@ -136,6 +136,10 @@ namespace vmmc
                 pairEnergyMatrix[i].resize(i);
         }
 
+        // Check for non-pairwise energy callback function.
+        if (callbacks.nonPairwiseCallback == nullptr) callbacks.isNonPairwise = false;
+        else callbacks.isNonPairwise = true;
+
         // Check for custom boundary callback function.
         if (callbacks.boundaryCallback == nullptr) callbacks.isCustomBoundary = false;
         else callbacks.isCustomBoundary = true;
@@ -450,12 +454,33 @@ namespace vmmc
             }
         }
 
+        // Check for non-pairwise energy contributions.
+        if (callbacks.isNonPairwise)
+        {
+            // Check all particles in the pseudo-cluster.
+            for (unsigned int i=0;i<nMoving;i++)
+            {
+                excessEnergy -= callbacks.nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
+                    &particles[moveList[i]].preMoveOrientation[0]);
+            }
+        }
+
         // Apply the move.
         swapMoveStatus();
 
         // Check for overlaps (or finite repulsions).
         for (unsigned int i=0;i<nMoving;i++)
         {
+            // Check for non-pairwise energy contributions.
+            if (callbacks.isNonPairwise)
+            {
+                excessEnergy += callbacks.nonPairwiseCallback(moveList[i], &particles[moveList[i]].preMovePosition[0],
+                    &particles[moveList[i]].preMoveOrientation[0]);
+
+                // Early exit test.
+                if (excessEnergy > 1e6) return false;
+            }
+
             if (!isRepusive)
             {
 #ifndef ISOTROPIC
@@ -533,12 +558,12 @@ namespace vmmc
             }
         }
 
-        if (isRepusive)
+        if (isRepusive || callbacks.isNonPairwise)
         {
             if (rng() > exp(-excessEnergy)) return false;
         }
 
-        // Move succesful.
+        // Move successful.
         return true;
     }
 
