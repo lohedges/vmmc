@@ -551,7 +551,7 @@ namespace vmmc
             }
         }
 
-		if (rng() >= exp(-excessEnergy)) return false;
+		if (rng() > exp(-excessEnergy)) return false;
 
         // Move succesful.
         return true;
