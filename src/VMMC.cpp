@@ -568,7 +568,7 @@ namespace vmmc
 
         if (isRepusive || callbacks.isNonPairwise)
         {
-            if (rng() >= exp(-excessEnergy)) return false;
+            if (rng() > exp(-excessEnergy)) return false;
         }
 
         // Move successful.
