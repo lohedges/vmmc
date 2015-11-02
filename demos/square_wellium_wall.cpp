@@ -23,9 +23,9 @@ int main(int argc, char** argv)
     // Simulation parameters.
     unsigned int dimension = 3;                     // dimension of simulation box
     unsigned int nParticles = 1000;                 // number of particles
-    double interactionEnergy = 2.6;                 // pair interaction energy scale (in units of kBT)
+    double interactionEnergy = 2.3;                 // pair interaction energy scale (in units of kBT)
     double interactionRange = 1.1;                  // size of interaction range (in units of particle diameter)
-    double wallInteractionEnergy = 10;              // particle-wall interaction energy scale (in units of kBT)
+    double wallInteractionEnergy = 3.5;             // particle-wall interaction energy scale (in units of kBT)
     double wallInteractionRange = 0.1;              // particle-wall interaction range (particle surface to wall distance)
     double density = 0.05;                          // particle density
     double baseLength;                              // base length of simulation box
