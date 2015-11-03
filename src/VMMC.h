@@ -67,7 +67,7 @@ namespace vmmc
         unsigned int posFrustated;                  //!< Index in the frustrated links array.
         std::vector<double> preMovePosition;        //!< Particle position before the virtual move.
         std::vector<double> postMovePosition;       //!< Particle position following the virtual move.
-        std::vector<double> pseudoPosition;         //!< Position of the particle in the pseudo-cluster.
+        std::vector<double> clusterPosition;        //!< Position of the particle in the moving cluster (relative to the seed).
 #ifndef ISOTROPIC
         std::vector<double> preMoveOrientation;     //!< Particle orientation before the virtual move.
         std::vector<double> postMoveOrientation;    //!< Particle orientation following the virtual move.
@@ -230,7 +230,7 @@ namespace vmmc
         //! Determine whether move is accepted.
         bool accept();
 
-        //! Compute the hydrodynamic radius of the pseudo-cluster.
+        //! Compute the hydrodynamic radius of the moving cluster.
         double computeHydrodynamicRadius() const;
 
         //! Compute particle's position and orientation following the trial move.
