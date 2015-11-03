@@ -527,8 +527,7 @@ namespace vmmc
 #endif
 
                     // Early exit test for hard core overlaps and large finite energy repulsions.
-                    if (energy > 1e6)
-                        return false;
+                    if (energy > 1e6) return false;
 
                     x = moveList[i];
                     y = pairInteractions[j];
