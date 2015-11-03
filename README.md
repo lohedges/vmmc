@@ -130,7 +130,7 @@ Note that the `-std=c++11` compiler flag is needed for `std::random`.
 
 ## Dependencies
 LibVMMC uses the [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_Twister)
-psuedorandom number generator. A C++11 implementation using `std::random` is
+pseudorandom number generator. A C++11 implementation using `std::random` is
 included as a bundled header file, `MersenneTwister.h`. See the source code or
 generate Doxygen documentation with `make doc` for details on how to use it.
 
