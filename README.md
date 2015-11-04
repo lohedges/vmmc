@@ -24,7 +24,7 @@ attractive particles, S. Whitelam and P.L. Geissler,
 > algorithm avoids this problem by proposing simultaneous moves of collections
 > (clusters) of particles according to gradients of interaction energies.
 > One particle first executes a “virtual” trial move. We determine which of
-> its neighbors move in a similar fashion by calculating individual bond
+> its neighbours move in a similar fashion by calculating individual bond
 > energies before and after the proposed move. We iterate this procedure and
 > update simultaneously the positions of all affected particles. Particles
 > move according to an approximation of realistic dynamics without requiring
@@ -64,7 +64,7 @@ each new recruit until no further particles show a tendency to move.
 
 The animations below illustrate example VMMC translation and rotation moves
 taken from a real simulation. Red indicates the most recent recruit to the
-cluster, orange indicates the nearest neigbour to which link formation is
+cluster, orange indicates the nearest neighbour to which link formation is
 currently being tested, and green indicates those particles that have been
 accepted as part of the cluster move. The animations show how a recursive
 depth-first search is used to iteratively link particles to the cluster.
