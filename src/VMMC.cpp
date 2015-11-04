@@ -295,7 +295,7 @@ namespace vmmc
         for (unsigned int i=0;i<dimension;i++)
             moveParams.trialVector[i] /= norm;
 
-        // Neigbour index (for isotropic rotations).
+        // Neighbour index (for isotropic rotations).
         unsigned int neighbour;
 
         // Choose the move type.
@@ -547,7 +547,7 @@ namespace vmmc
                     }
                     else
                     {
-                        // Neigbour isn't part of the moving cluster.
+                        // Neighbour isn't part of the moving cluster.
                         if (!particles[pairInteractions[j]].isMoving)
                         {
                             // Particles no longer interact.
@@ -810,7 +810,7 @@ namespace vmmc
                                 // Prepare neighbour for virtual move.
                                 initiateParticle(neighbour, particles[particle]);
 
-                                // Continue search from neighbor.
+                                // Continue search from neighbour.
                                 recursiveMoveAssignment(neighbour);
                             }
                         }
