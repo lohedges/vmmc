@@ -275,6 +275,7 @@ struct CallbackFunctions
     PairEnergyCallback pairEnergyCallback;
     InteractionsCallback interactionsCallback;
     PostMoveCallback postMoveCallback;
+    NonPairwiseCallback nonPairwiseCallback;
     BoundaryCallback boundaryCallback;
 };
 ```
