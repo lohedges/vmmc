@@ -94,7 +94,7 @@ priveleges for the final `make install` step above. An alternative is to change
 the install location:
 
 ```bash
-$ PREFIX=MY_INSTALL_DIR make install
+$ make PREFIX=MY_INSTALL_DIR install
 ```
 
 Further details on using the Makefile can be found by running make without
@@ -477,7 +477,7 @@ We provide preprocessor directives that allow LibVMMC to be compiled as an
 optimised library for pure isotropic systems. This can be achieved as follows:
 
 ```bash
-$ OPTFLAGS=-DISOTROPIC make build
+$ make OPTFLAGS=-DISOTROPIC build
 ```
 
 The isotropic version of LibVMMC provides a simplified set of callback
