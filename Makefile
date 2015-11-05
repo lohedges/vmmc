@@ -50,7 +50,7 @@ SHELL := bash
 project := vmmc
 
 # C++ compiler.
-CXX := g++
+CXX ?= g++
 
 # Installation path.
 PREFIX ?= /usr/local
