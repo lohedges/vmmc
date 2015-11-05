@@ -50,10 +50,10 @@ SHELL := bash
 project := vmmc
 
 # C++ compiler.
-CXX ?= g++
+CXX := g++
 
 # Installation path.
-PREFIX ?= /usr/local
+PREFIX := /usr/local
 
 # Path for source files.
 src_dir := src
@@ -147,13 +147,13 @@ help:
 	@echo
 	$(call boldcolorecho, 4, "Tips")
 	@echo " To set a different installation path run"
-	@echo "     PREFIX=path make install"
+	@echo "     make PREFIX=path install"
 	@echo
 	@echo " Additional CXXFLAGS can be passed using OPTFLAGS, e.g."
-	@echo "     OPTFLAGS=-Wall make devel"
+	@echo "     make OPTFLAGS=-Wall devel"
 	@echo
 	@echo " To compile an optimised version for pure isotropic systems"
-	@echo "     OPTFLAGS=-DISOTROPIC make release"
+	@echo "     make OPTFLAGS=-DISOTROPIC release"
 	@echo
 	@echo " Targets can be chained together, e.g."
 	@echo "     make release doc"
