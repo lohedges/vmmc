@@ -153,7 +153,7 @@ void InputOutput::vmdScript(const std::vector<double>& boxSize)
 
     // Set sensible atom radius.
     fprintf(pFile, "set sel [atomselect top \"name X\"]\n");
-    fprintf(pFile, "atomselect0 set radius 0.4\n");
+    fprintf(pFile, "atomselect0 set radius 0.5\n");
 
     // Set default particle to blue.
     fprintf(pFile, "color Name X blue\n");
@@ -233,7 +233,7 @@ void InputOutput::vmdSpherocylinder(const std::vector<double>& boxSize)
 
     // Set sensible atom radius.
     fprintf(pFile, "set sel [atomselect top \"name X\"]\n");
-    fprintf(pFile, "atomselect0 set radius 0.4\n");
+    fprintf(pFile, "atomselect0 set radius 0.5\n");
 
     // Set default particle to blue.
     fprintf(pFile, "color Name X blue\n");
