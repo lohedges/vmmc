@@ -136,7 +136,7 @@ $ make install</pre></div>
 priveleges for the final <code>make install</code> step above. An alternative is to change
 the install location:</p>
 
-<div class="highlight highlight-bash"><pre>$ PREFIX=MY_INSTALL_DIR make install</pre></div>
+<div class="highlight highlight-bash"><pre>$ make PREFIX=MY_INSTALL_DIR install</pre></div>
 
 <p>Further details on using the Makefile can be found by running make without
 a target, i.e.</p>
@@ -531,7 +531,7 @@ functions, or to update particle orientations during VMMC trial moves.</p>
 <p>We provide preprocessor directives that allow LibVMMC to be compiled as an
 optimised library for pure isotropic systems. This can be achieved as follows:</p>
 
-<div class="highlight highlight-bash"><pre>$ OPTFLAGS=-DISOTROPIC make build</pre></div>
+<div class="highlight highlight-bash"><pre>$ make OPTFLAGS=-DISOTROPIC build</pre></div>
 
 <p>The isotropic version of LibVMMC provides a simplified set of callback
 functions that require no particle orientations. For example, the
