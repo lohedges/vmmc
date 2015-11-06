@@ -324,6 +324,8 @@ clobber:
 	rm -f $(demos)
 	rm -f $(demo_library_header)
 	rm -f $(python_demos)
+	rm -rf $(demo_dir)/*dSYM
+	rm -rf $(demo_dir)/python/*dSYM
 	rm -f $(demo_dir)/python/demo/*.pyc
 	rm -f .compiler_flags
 	rm -f .check_python
