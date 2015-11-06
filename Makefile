@@ -292,6 +292,7 @@ clobber:
 	rm -rf doc
 	rm -f $(demos)
 	rm -f $(demo_library_header)
+	rm -rf $(demo_dir)/*dSYM
 	rm -f .compiler_flags
 
 .PHONY: sandwich
