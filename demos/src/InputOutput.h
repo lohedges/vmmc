@@ -18,7 +18,6 @@
 #ifndef _INPUTOUTPUT_H
 #define _INPUTOUTPUT_H
 
-#include <cstdio>
 #include <fstream>
 #include <string>
 

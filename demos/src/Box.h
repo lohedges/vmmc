@@ -18,7 +18,6 @@
 #ifndef _BOX_H
 #define _BOX_H
 
-#include <cstdlib>
 #include <iostream>
 #include <vector>
 
