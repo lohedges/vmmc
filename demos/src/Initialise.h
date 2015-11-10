@@ -18,9 +18,6 @@
 #ifndef _INITIALISE_H
 #define _INITIALISE_H
 
-#include <iostream>
-#include <string>
-
 #include "CellList.h"
 #include "MersenneTwister.h"
 
