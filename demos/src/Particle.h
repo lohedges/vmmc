@@ -31,12 +31,6 @@ public:
     //! Default constructor.
     Particle();
 
-    //! Constructor.
-    /*! \param index
-            The particle index.
-     */
-    Particle(unsigned int);
-
     unsigned int index;                 //!< Particle index.
     std::vector<double> position;       //!< The x,y,z coordinates of the particle.
     std::vector<double> orientation;    //!< The orientation of the particle (unit vector).
