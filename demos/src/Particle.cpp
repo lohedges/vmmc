@@ -17,10 +17,6 @@
 
 #include "Particle.h"
 
-Particle::Particle() 
-{
-}
-
-Particle::Particle(unsigned int index_) : index(index_)
+Particle::Particle()
 {
 }
