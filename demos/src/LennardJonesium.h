@@ -58,6 +58,9 @@ public:
         \param orientation1
             The orientation vector of the first particle.
 
+        \param particle2
+            The index of the second particle.
+
         \param position2
             The position vector of the second particle.
 
