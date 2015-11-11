@@ -54,7 +54,7 @@ public:
     PatchyDisc(Box&, std::vector<Particle>&, CellList&, unsigned int, double, double);
 
     //! Calculate the total interaction energy felt by a particle.
-    /*! \param index
+    /*! \param particle
             The particle index.
 
         \param position
@@ -81,6 +81,9 @@ public:
 
         \param orientation1
             The orientation vector of the first particle.
+
+        \param particle2
+            The index of the second particle.
 
         \param position2
             The position vector of the second particle.
@@ -136,7 +139,7 @@ public:
 #endif
 
     //! Check for non-pairwise energy contributions.
-    /*! \param index
+    /*! \param particle
             The particle index.
 
         \param position
@@ -155,7 +158,7 @@ public:
 #endif
 
     //! Check custom boundary condition.
-    /*! \param index
+    /*! \param particle
             The particle index.
 
         \param position

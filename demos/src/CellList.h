@@ -61,7 +61,7 @@ public:
     CellList();
 
     //! Constructor.
-    /*! \param dimension
+    /*! \param dimension_
             The dimensionality of the simulation box.
 
         \param boxSize

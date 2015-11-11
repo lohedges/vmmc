@@ -67,19 +67,20 @@ double PatchyDisc::energyCallback(unsigned int particle, double position[], doub
     // could be achieved by using a combination of the interactionsCallback
     // and model specific pairEnergyCallback methods.
 
-    unsigned int cell;      // cell index
-    unsigned int neighbour; // index of neighbouring particle
-    double energy = 0;      // energy counter
+    // Energy counter.
+    double energy = 0;
 
     // Check all neighbouring cells including same cell.
     for (unsigned int i=0;i<cells.getNeighbours();i++)
     {
-        cell = cells[particles[particle].cell].neighbours[i];
+        // Cell index.
+        unsigned int cell = cells[particles[particle].cell].neighbours[i];
 
         // Check all particles within cell.
         for (unsigned int j=0;j<cells[cell].tally;j++)
         {
-            neighbour = cells[cell].particles[j];
+            // Index of neighbouring particle.
+            unsigned int neighbour = cells[cell].particles[j];
 
             // Make sure the particles are different.
             if (neighbour != particle)
@@ -163,19 +164,20 @@ double PatchyDisc::pairEnergyCallback(unsigned int particle1, double position1[]
 unsigned int PatchyDisc::interactionsCallback(unsigned int particle,
     double position[], double orientation[], unsigned int interactions[])
 {
-    unsigned int cell;              // cell index
-    unsigned int neighbour;         // index of neighbouring particle
-    unsigned int nInteractions = 0; // interaction counter
+    // Interaction counter.
+    unsigned int nInteractions = 0;
 
     // Check all neighbouring cells including same cell.
     for (unsigned int i=0;i<cells.getNeighbours();i++)
     {
-        cell = cells[particles[particle].cell].neighbours[i];
+        // Cell index.
+        unsigned int cell = cells[particles[particle].cell].neighbours[i];
 
         // Check all particles within cell.
         for (unsigned int j=0;j<cells[cell].tally;j++)
         {
-            neighbour = cells[cell].particles[j];
+            // Index of neighbouring particle.
+            unsigned int neighbour = cells[cell].particles[j];
 
             // Make sure the particles are different.
             if (neighbour != particle)
