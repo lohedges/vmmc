@@ -70,7 +70,7 @@ public:
     double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
 
     //! Determine the interactions for a given particle.
-    /*! \param index
+    /*! \param particle
             The particle index.
 
         \param position
@@ -85,7 +85,7 @@ public:
         \return
             The number of interactions.
      */
-     unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
+    unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
 
 private:
     double patchSeparation;         //!< The angle between patches in radians.

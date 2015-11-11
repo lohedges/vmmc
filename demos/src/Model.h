@@ -83,6 +83,9 @@ public:
         \param orientation1
             The orientation vector of the first particle.
 
+        \param particle2
+            The index of the second particle.
+
         \param position2
             The position vector of the second particle.
 
@@ -99,7 +102,7 @@ public:
 #endif
 
     //! Determine the interactions for a given particle.
-    /*! \param index
+    /*! \param particle
             The particle index.
 
         \param position
@@ -121,7 +124,7 @@ public:
 #endif
 
     //! Apply any post-move updates for a given particle.
-    /*! \param index
+    /*! \param particle
             The particle index.
 
         \param position

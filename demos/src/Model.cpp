@@ -48,19 +48,20 @@ double Model::computeEnergy(unsigned int particle, double position[])
     // could be achieved by using a combination of the computeInteractions
     // and model specific computePairEnergy methods.
 
-    unsigned int cell;      // cell index
-    unsigned int neighbour; // index of neighbouring particle
-    double energy = 0;      // energy counter
+    // Energy counter.
+    double energy = 0;
 
     // Check all neighbouring cells including same cell.
     for (unsigned int i=0;i<cells.getNeighbours();i++)
     {
-        cell = cells[particles[particle].cell].neighbours[i];
+        // Cell index.
+        unsigned int cell = cells[particles[particle].cell].neighbours[i];
 
         // Check all particles within cell.
         for (unsigned int j=0;j<cells[cell].tally;j++)
         {
-            neighbour = cells[cell].particles[j];
+            // Index of neighbouring particle.
+            unsigned int neighbour = cells[cell].particles[j];
 
             // Make sure the particles are different.
             if (neighbour != particle)
@@ -85,9 +86,11 @@ double Model::computeEnergy(unsigned int particle, double position[])
 }
 
 #ifndef ISOTROPIC
-double Model::computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[])
+double Model::computePairEnergy(unsigned int particle1, double position1[], double orientation1[],
+    unsigned int particle2, double position2[], double orientation2[])
 #else
-double Model::computePairEnergy(unsigned int, double[], unsigned int, double[])
+double Model::computePairEnergy(unsigned int particle1,
+    double position1[], unsigned int particle2, double position2[])
 #endif
 {
     std::cerr << "[ERROR] Model: Virtual function Model::computePairEnergy() must be defined.\n";
@@ -102,19 +105,20 @@ unsigned int Model::computeInteractions(unsigned int particle,
     double position[], unsigned int interactions[])
 #endif
 {
-    unsigned int cell;              // cell index
-    unsigned int neighbour;         // index of neighbouring particle
-    unsigned int nInteractions = 0; // interaction counter
+    // Interaction counter.
+    unsigned int nInteractions = 0;
 
     // Check all neighbouring cells including same cell.
     for (unsigned int i=0;i<cells.getNeighbours();i++)
     {
-        cell = cells[particles[particle].cell].neighbours[i];
+        // Cell index.
+        unsigned int cell = cells[particles[particle].cell].neighbours[i];
 
         // Check all particles within cell.
         for (unsigned int j=0;j<cells[cell].tally;j++)
         {
-            neighbour = cells[cell].particles[j];
+            // Index of neighbouring particle.
+            unsigned int neighbour = cells[cell].particles[j];
 
             // Make sure the particles are different.
             if (neighbour != particle)
