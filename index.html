@@ -314,7 +314,7 @@ vmmc::EnergyCallback energyCallback = std::bind(&amp;Foo::computeEnergy, foo, _1
 assignment and makes it possible to pass a single callback argument to the
 constructor of the VMMC object.</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">struct</span>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">struct</span> <span class="pl-en">CallbackFunctions</span>
 {
     <span class="pl-k">EnergyCallback</span> energyCallback;
     <span class="pl-k">PairEnergyCallback</span> pairEnergyCallback;
