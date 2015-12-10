@@ -153,6 +153,10 @@ namespace vmmc
 #ifdef COMMIT
         std::cout << "commit\t" <<  COMMIT << '\n';
 #endif
+        // Print branch info.
+#ifdef BRANCH
+        std::cout << "branch\t" <<  BRANCH << '\n';
+#endif
     }
 
     void VMMC::step(const int nSteps)
