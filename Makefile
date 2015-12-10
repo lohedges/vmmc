@@ -101,6 +101,9 @@ iflags := -m 0644
 # Git commit information.
 commit := $(shell git describe --abbrev=4 --dirty --always --tags 2> /dev/null)
 
+# Git branch information.
+branch := $(shell git rev-parse --abbrev-ref HEAD 2> /dev/null)
+
 # Python header file.
 python_header := $(shell locate Python.h | grep 2.7 | head -n 1 | awk -F "/Python.h" '{print $$1}')
 
@@ -108,10 +111,10 @@ python_header := $(shell locate Python.h | grep 2.7 | head -n 1 | awk -F "/Pytho
 python_library := $(shell locate libpython2.7 | head -n 1)
 
 # C++ compiler flags for development build.
-cxxflags_devel := -O0 -std=c++11 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
+cxxflags_devel := -O0 -std=c++11 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" -DBRANCH=\"$(branch)\" $(OPTFLAGS)
 
 # C++ compiler flags for release build.
-cxxflags_release := -O3 -std=c++11 -funroll-loops -DNDEBUG -Isrc -DCOMMIT=\"$(commit)\" $(OPTFLAGS)
+cxxflags_release := -O3 -std=c++11 -funroll-loops -DNDEBUG -Isrc -DCOMMIT=\"$(commit)\" -DBRANCH=\"$(branch)\" $(OPTFLAGS)
 
 # Default to release build.
 CXXFLAGS := $(cxxflags_release)
