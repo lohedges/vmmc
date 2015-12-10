@@ -140,10 +140,14 @@ namespace vmmc
 #ifdef ISOTROPIC
         std::cout << " (isotropic)";
 #endif
-        std::cout << ".\nseed\t" <<  rng.getSeed() << '\n';
+        std::cout << ".\nseed\t" << rng.getSeed() << '\n';
         // Print version info.
 #ifdef COMMIT
-        std::cout << "commit\t" <<  COMMIT << '\n';
+        std::cout << "commit\t" << COMMIT << '\n';
+#endif
+        // Print branch info.
+#ifdef COMMIT
+        std::cout << "branch\t" << BRANCH << '\n';
 #endif
     }
 
