@@ -50,9 +50,9 @@ namespace vmmc
                 The total interaction energy.
         */
 #ifndef ISOTROPIC
-        virtual double energyCallback(unsigned int, double[], double[]);
+        virtual double energyCallback(unsigned int, const double*, const double*);
 #else
-        virtual double energyCallback(unsigned int, double[]);
+        virtual double energyCallback(unsigned int, const double*);
 #endif
 
         //! Calculate the pair energy between two particles.
@@ -78,9 +78,9 @@ namespace vmmc
                 The pair energy between particles 1 and 2.
         */
 #ifndef ISOTROPIC
-        virtual double pairEnergyCallback(unsigned int, double[], double[], unsigned int, double[], double[]);
+        virtual double pairEnergyCallback(unsigned int, const double*, const double*, unsigned int, const double*, const double*);
 #else
-        virtual double pairEnergyCallback(unsigned int, double[], unsigned int, double[]);
+        virtual double pairEnergyCallback(unsigned int, const double*, unsigned int, const double*);
 #endif
 
         //! Determine the interactions for a given particle.
@@ -100,9 +100,9 @@ namespace vmmc
                 The number of interactions.
         */
 #ifndef ISOTROPIC
-        virtual unsigned int interactionsCallback(unsigned int, double[], double[], unsigned int[]);
+        virtual unsigned int interactionsCallback(unsigned int, const double*, const double*, unsigned int*);
 #else
-        virtual unsigned int interactionsCallback(unsigned int, double[], unsigned int[]);
+        virtual unsigned int interactionsCallback(unsigned int, const double*, unsigned int*);
 #endif
 
         //! Apply any post-move updates for a given particle.
@@ -116,9 +116,9 @@ namespace vmmc
                 The orientation of the particle following the virtual move.
         */
 #ifndef ISOTROPIC
-        virtual void postMoveCallback(unsigned int, double[], double[]);
+        virtual void postMoveCallback(unsigned int, const double*, const double*);
 #else
-        virtual void postMoveCallback(unsigned int, double[]);
+        virtual void postMoveCallback(unsigned int, const double*);
 #endif
 
         //! Check for non-pairwise energy contributions.
@@ -135,9 +135,9 @@ namespace vmmc
                 The total non-pairwise energy felt by the particle.
         */
 #ifndef ISOTROPIC
-        virtual double nonPairwiseCallback(unsigned int, double[], double[]);
+        virtual double nonPairwiseCallback(unsigned int, const double*, const double*);
 #else
-        virtual double nonPairwiseCallback(unsigned int, double[]);
+        virtual double nonPairwiseCallback(unsigned int, const double*);
 #endif
 
         //! Check custom boundary condition.
@@ -154,9 +154,9 @@ namespace vmmc
                 Whether the particle is outside the boundary.
         */
 #ifndef ISOTROPIC
-        virtual bool boundaryCallback(unsigned int, double[], double[]);
+        virtual bool boundaryCallback(unsigned int, const double*, const double*);
 #else
-        virtual bool boundaryCallback(unsigned int, double[]);
+        virtual bool boundaryCallback(unsigned int, const double*);
 #endif
     };
 }

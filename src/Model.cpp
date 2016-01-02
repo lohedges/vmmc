@@ -24,9 +24,9 @@ namespace vmmc
     Model::~Model() {};
 
 #ifndef ISOTROPIC
-    double Model::energyCallback(unsigned int particle, double position[], double orientation[])
+    double Model::energyCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-    double Model::energyCallback(unsigned int particle, double position[])
+    double Model::energyCallback(unsigned int particle, const double* position)
 #endif
     {
         std::cerr << "[ERROR] Model: Virtual function Model::energyCallback() must be defined.\n";
@@ -34,11 +34,11 @@ namespace vmmc
     }
 
 #ifndef ISOTROPIC
-    double Model::pairEnergyCallback(unsigned int particle1, double position1[],
-        double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+    double Model::pairEnergyCallback(unsigned int particle1, const double* position1,
+        const double* orientation1, unsigned int particle2, const double* position2, const double* orientation2)
 #else
     double Model::pairEnergyCallback(unsigned int particle1,
-        double position1[], unsigned int particle2, double position2[])
+        const double* position1, unsigned int particle2, const double* position2)
 #endif
     {
         std::cerr << "[ERROR] Model: Virtual function Model::pairEnergyCallback() must be defined.\n";
@@ -47,10 +47,10 @@ namespace vmmc
 
 #ifndef ISOTROPIC
     unsigned int Model::interactionsCallback(unsigned int particle,
-        double position[], double orientation[], unsigned int interactions[])
+        const double* position, const double* orientation, unsigned int* interactions)
 #else
     unsigned int Model::interactionsCallback(unsigned int particle,
-        double position[], unsigned int interactions[])
+        const double* position, unsigned int* interactions)
 #endif
     {
         std::cerr << "[ERROR] Model: Virtual function Model::interactionsCallback() must be defined.\n";
@@ -58,9 +58,9 @@ namespace vmmc
     }
 
 #ifndef ISOTROPIC
-    void Model::postMoveCallback(unsigned int particle, double position[], double orientation[])
+    void Model::postMoveCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-    void Model::postMoveCallback(unsigned int particle, double position[])
+    void Model::postMoveCallback(unsigned int particle, const double* position)
 #endif
     {
         std::cerr << "[ERROR] Model: Virtual function Model::postMoveCallback() must be defined.\n";
@@ -68,9 +68,9 @@ namespace vmmc
     }
 
 #ifndef ISOTROPIC
-    double Model::nonPairwiseCallback(unsigned int particle, double position[], double orientation[])
+    double Model::nonPairwiseCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-    double Model::nonPairwiseCallback(unsigned int particle, double position[])
+    double Model::nonPairwiseCallback(unsigned int particle, const double* position)
 #endif
     {
         std::cerr << "[ERROR] Model: Virtual function Model::nonPairwiseCallback() must be defined.\n";
@@ -78,9 +78,9 @@ namespace vmmc
     }
 
 #ifndef ISOTROPIC
-    bool Model::boundaryCallback(unsigned int particle, double position[], double orientation[])
+    bool Model::boundaryCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-    bool Model::boundaryCallback(unsigned int particle, double position[])
+    bool Model::boundaryCallback(unsigned int particle, const double* position)
 #endif
     {
         std::cerr << "[ERROR] Model: Virtual function Model::boundaryCallback() must be defined.\n";
