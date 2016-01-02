@@ -5,6 +5,8 @@ demos/lib/
 demos/obj/
 demos/src/Demo.h
 demos/square_wellium
+demos/square_wellium_spherocylinder
+demos/square_wellium_wall
 demos/lennard_jonesium
 demos/patchy_disc
 demos/python/square_wellium
