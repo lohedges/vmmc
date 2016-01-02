@@ -37,18 +37,18 @@ namespace vmmc
         Model* model_,
         unsigned int nParticles_,
         unsigned int dimension_,
-        double coordinates[],
+        double* coordinates,
 #ifndef ISOTROPIC
-        double orientations[],
+        double* orientations,
 #endif
         double maxTrialTranslation_,
         double maxTrialRotation_,
         double probTranslate_,
         double referenceRadius_,
         unsigned int maxInteractions_,
-        double boxSize_[],
+        double* boxSize_,
 #ifndef ISOTROPIC
-        bool isIsotropic_[],
+        bool* isIsotropic_,
 #endif
         bool isRepusive_) :
 

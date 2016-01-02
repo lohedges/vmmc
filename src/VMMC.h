@@ -119,9 +119,9 @@ namespace vmmc
                 Whether there are finite repulsive interactions.
         */
 #ifndef ISOTROPIC
-        VMMC(Model*, unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool[], bool);
+        VMMC(Model*, unsigned int, unsigned int, double*, double*, double, double, double, double, unsigned int, double*, bool*, bool);
 #else
-        VMMC(Model*, unsigned int, unsigned int, double[], double, double, double, double, unsigned int, double[], bool);
+        VMMC(Model*, unsigned int, unsigned int, double*, double, double, double, double, unsigned int, double*, bool);
 #endif
 
         //! Overloaded ++ operator. Perform a single VMMC step.
