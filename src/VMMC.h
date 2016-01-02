@@ -260,9 +260,9 @@ namespace vmmc
                 Callback function container.
         */
 #ifndef ISOTROPIC
-        VMMC(unsigned int, unsigned int, double[], double[], double, double, double, double, unsigned int, double[], bool[], bool,
+        VMMC(unsigned int, unsigned int, double*, double*, double, double, double, double, unsigned int, double*, bool*, bool,
 #else
-        VMMC(unsigned int, unsigned int, double[], double, double, double, double, unsigned int, double[], bool,
+        VMMC(unsigned int, unsigned int, double*, double, double, double, double, unsigned int, double*, bool,
 #endif
             const CallbackFunctions&);
 
