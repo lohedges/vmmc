@@ -33,11 +33,11 @@ SquareWelliumWall::SquareWelliumWall(
 }
 
 #ifndef ISOTROPIC
-double SquareWelliumWall::computePairEnergy(unsigned int particle1, double position1[],
-    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+double SquareWelliumWall::computePairEnergy(unsigned int particle1, const double* position1,
+    const double* orientation1, unsigned int particle2, const double* position2, const double* orientation2)
 #else
 double SquareWelliumWall::computePairEnergy(unsigned int particle1,
-    double position1[], unsigned int particle2, double position2[])
+    const double* position1, unsigned int particle2, const double* position2)
 #endif
 {
     // Separation vector.
@@ -62,9 +62,9 @@ double SquareWelliumWall::computePairEnergy(unsigned int particle1,
 }
 
 #ifndef ISOTROPIC
-double SquareWelliumWall::computeWallEnergy(unsigned int particle, double position[], double orientation[])
+double SquareWelliumWall::computeWallEnergy(unsigned int particle, const double* position, const double* orientation)
 #else
-double SquareWelliumWall::computeWallEnergy(unsigned int particle, double position[])
+double SquareWelliumWall::computeWallEnergy(unsigned int particle, const double* position)
 #endif
 {
     if (position[box.dimension - 1] < wallInteractionRange)
@@ -74,9 +74,9 @@ double SquareWelliumWall::computeWallEnergy(unsigned int particle, double positi
 }
 
 #ifndef ISOTROPIC
-bool SquareWelliumWall::isOutsideBoundary(unsigned int particle, double position[], double orientation[])
+bool SquareWelliumWall::isOutsideBoundary(unsigned int particle, const double* position, const double* orientation)
 #else
-bool SquareWelliumWall::isOutsideBoundary(unsigned int particle, double position[])
+bool SquareWelliumWall::isOutsideBoundary(unsigned int particle, const double* position)
 #endif
 {
     // Particle centre is below bottom of box.

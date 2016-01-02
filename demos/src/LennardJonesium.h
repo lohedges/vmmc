@@ -71,9 +71,9 @@ public:
             The pair energy between particles 1 and 2.
      */
 #ifndef ISOTROPIC
-    double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
+    double computePairEnergy(unsigned int, const double*, const double*, unsigned int, const double*, const double*);
 #else
-    double computePairEnergy(unsigned int, double[], unsigned int, double[]);
+    double computePairEnergy(unsigned int, const double*, unsigned int, const double*);
 #endif
 
 private:

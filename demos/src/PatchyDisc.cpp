@@ -53,8 +53,8 @@ PatchyDisc::PatchyDisc(
     }
 }
 
-double PatchyDisc::computePairEnergy(unsigned int particle1, double position1[],
-    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+double PatchyDisc::computePairEnergy(unsigned int particle1, const double* position1,
+    const double* orientation1, unsigned int particle2, const double* position2, const double* orientation2)
 {
     // Separation vector.
     std::vector<double> sep(2);
@@ -116,7 +116,7 @@ double PatchyDisc::computePairEnergy(unsigned int particle1, double position1[],
 }
 
 unsigned int PatchyDisc::computeInteractions(unsigned int particle,
-    double position[], double orientation[], unsigned int interactions[])
+    const double* position, const double* orientation, unsigned int* interactions)
 {
     // Interaction counter.
     unsigned int nInteractions = 0;

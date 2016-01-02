@@ -31,11 +31,11 @@ LennardJonesium::LennardJonesium(
 }
 
 #ifndef ISOTROPIC
-double LennardJonesium::computePairEnergy(unsigned int particle1, double position1[],
-    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+double LennardJonesium::computePairEnergy(const unsigned int particle1, const double* position1,
+    const double* orientation1, const unsigned int particle2, const double* position2, const double* orientation2)
 #else
-double LennardJonesium::computePairEnergy(unsigned int particle1,
-    double position1[], unsigned int particle2, double position2[])
+double LennardJonesium::computePairEnergy(const unsigned int particle1,
+    const double* position1, const unsigned int particle2, const double* position2)
 #endif
 {
     // Separation vector.

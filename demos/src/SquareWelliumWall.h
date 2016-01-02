@@ -82,9 +82,9 @@ public:
             The pair energy between particles 1 and 2.
      */
 #ifndef ISOTROPIC
-    double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
+    double computePairEnergy(unsigned int, const double*, const double*, unsigned int, const double*, const double*);
 #else
-    double computePairEnergy(unsigned int, double[], unsigned int, double[]);
+    double computePairEnergy(unsigned int, const double*, unsigned int, const double*);
 #endif
 
     //! Calculate the interaction energy between a particle and the wall.
@@ -101,9 +101,9 @@ public:
             The pair interaction energy between the particle and the wall.
      */
 #ifndef ISOTROPIC
-    double computeWallEnergy(unsigned int, double[], double[]);
+    double computeWallEnergy(unsigned int, const double*, const double*);
 #else
-    double computeWallEnergy(unsigned int, double[]);
+    double computeWallEnergy(unsigned int, const double*);
 #endif
 
     //! Test whether a particle moves outside of the non-periodic boundaries.
@@ -120,9 +120,9 @@ public:
             The pair interaction energy between the particle and the wall.
      */
 #ifndef ISOTROPIC
-    bool isOutsideBoundary(unsigned int, double[], double[]);
+    bool isOutsideBoundary(unsigned int, const double*, const double*);
 #else
-    bool isOutsideBoundary(unsigned int, double[]);
+    bool isOutsideBoundary(unsigned int, const double*);
 #endif
 
 private:

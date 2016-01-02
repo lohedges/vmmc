@@ -29,11 +29,11 @@ SquareWellium::SquareWellium(
 }
 
 #ifndef ISOTROPIC
-double SquareWellium::computePairEnergy(unsigned int particle1, double position1[],
-    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+double SquareWellium::computePairEnergy(unsigned int particle1, const double* position1,
+    const double* orientation1, unsigned int particle2, const double* position2, const double* orientation2)
 #else
 double SquareWellium::computePairEnergy(unsigned int particle1,
-    double position1[], unsigned int particle2, double position2[])
+    const double position1, unsigned int particle2, const double* position2)
 #endif
 {
     // Separation vector.

@@ -70,7 +70,7 @@ public:
         \return
             The pair energy between particles 1 and 2.
      */
-    double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
+    double computePairEnergy(unsigned int, const double*, const double*, unsigned int, const double*, const double*);
 
     //! Determine the interactions for a given particle.
     /*! \param particle
@@ -88,7 +88,7 @@ public:
         \return
             The number of interactions.
      */
-    unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
+    unsigned int computeInteractions(unsigned int, const double*, const double*, unsigned int*);
 
 private:
     double patchSeparation;         //!< The angle between patches in radians.
