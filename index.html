@@ -10,6 +10,10 @@
     <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
     <title>VMMC</title>
   </head>
 
@@ -193,15 +197,22 @@ flexibility provided by <code>std::function</code> more than offsets the minimal
 performance cost.</p>
 
 <p>Details of the callback prototypes are given below (where <code>typedef</code> has
-been used to simplify their declaration).</p>
+been used to simplify their declaration). The <code>const</code> keyword is used to
+aid readability and to prevent the user from modifying particle positions
+and orientations. (For those unfamiliar with C/C++, <code>const double* p_double</code>
+means that you can't modify the data pointed to by <code>p_double</code> although you
+can change what <code>p_double</code> points to.) For simplicity we make use of the
+"pointer to type" representation of array data, i.e. all pointer arguments in the
+callback prototypes represent arrays.
+</p>
 
 <h3>
 <a id="particle-energy" class="anchor" href="#particle-energy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Particle energy</h3>
 
 <p>Calculate the total pair interaction energy felt by a particle.</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index, <span class="pl-k">double</span> position[],
-    <span class="pl-k">double</span> orientation[])&gt; EnergyCallback;</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned int</span> index, <span class="pl-k">const double</span>* position,
+    <span class="pl-k">const double</span>* orientation)&gt; EnergyCallback;</pre></div>
 
 <p><code>index</code> = The particle index.</p>
 
@@ -218,9 +229,9 @@ achieve the same outcome by combining the <code>PairEnergyCallback</code> and
 
 <p>Calculate the pair interaction between two particles.</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index1, <span class="pl-k">double</span> position1[],
-    <span class="pl-k">double</span> orientation1[], <span class="pl-k">unsigned</span> <span class="pl-k">int</span> index2, <span class="pl-k">double</span> position2[],
-    <span class="pl-k">double</span> orientation2[])&gt; PairEnergyCallback;</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned int</span> index1, <span class="pl-k">const double</span>* position1,
+    <span class="pl-k">const double</span>* orientation1, <span class="pl-k">unsigned int</span> index2, <span class="pl-k">const double</span>* position2,
+    <span class="pl-k">const double</span>* orientation2)&gt; PairEnergyCallback;</pre></div>
 
 <p><code>index1</code> = The index of the first particle.</p>
 
@@ -239,8 +250,8 @@ achieve the same outcome by combining the <code>PairEnergyCallback</code> and
 
 <p>Determine the interactions for a given particle.</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">unsigned</span> <span class="pl-en">int</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index, <span class="pl-k">double</span> position[],
-    <span class="pl-k">double</span> orientation[], <span class="pl-k">unsigned</span> <span class="pl-k">int</span> interactions[])&gt; InteractionsCallback;</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">unsigned int</span> (<span class="pl-k">unsigned int</span> index, <span class="pl-k">const double</span>* position,
+    <span class="pl-k">const double</span>* orientation, <span class="pl-k">unsigned int</span>* interactions)&gt; InteractionsCallback;</pre></div>
 
 <p><code>index</code> = The index of the  particle.</p>
 
@@ -255,8 +266,8 @@ achieve the same outcome by combining the <code>PairEnergyCallback</code> and
 
 <p>Apply any post-move updates, e.g. update cell lists, or neighbour lists.</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">void</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index, <span class="pl-k">double</span> position[],
-    <span class="pl-k">double</span> orientation[])&gt; PostMoveCallback;</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">void</span> (<span class="pl-k">unsigned int</span> index, <span class="pl-k">const double</span>* position,
+    <span class="pl-k">const double</span>* orientation)&gt; PostMoveCallback;</pre></div>
 
 <p><code>index</code> = The index of the  particle.</p>
 
@@ -269,8 +280,8 @@ achieve the same outcome by combining the <code>PairEnergyCallback</code> and
 
 <p>Test for non-pairwise energy contributions, such as interactions with a surface or external field.</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index, <span class="pl-k">double</span> position[],
-    <span class="pl-k">double</span> orientation[])&gt; NonPairwiseCallback;</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned int</span>, <span class="pl-k">const double</span>* position,
+    <span class="pl-k">const double</span>* orientation)&gt; NonPairwiseCallback;</pre></div>
 
 <p><code>index</code> = The index of the  particle.</p>
 
@@ -285,8 +296,8 @@ achieve the same outcome by combining the <code>PairEnergyCallback</code> and
 moves outside of the boundary following the virtual move. An example showing how
 to implement custom boundary conditions is provided with the demonstration code.</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">bool</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index, <span class="pl-k">double</span> position[],
-    <span class="pl-k">double</span> orientation[])&gt; BoundaryCallback;</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">bool</span> (<span class="pl-k">unsigned int</span> index, <span class="pl-k">const double</span>* position,
+    <span class="pl-k">const double</span>* orientation)&gt; BoundaryCallback;</pre></div>
 
 <p><code>index</code> = The index of the  particle.</p>
 
@@ -337,22 +348,22 @@ callbacks.energyCallback = std::bind(&amp;Foo::computeEnergy, foo, _1, _2, _3);<
 <p>To use LibVMMC you will want to create an instance of the VMMC object. This has the following
 constructor:</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-en">VMMC</span>(<span class="pl-k">unsigned</span> <span class="pl-k">int</span> nParticles, <span class="pl-k">unsigned</span> <span class="pl-k">int</span> dimension, <span class="pl-k">double</span> coordinates[],
-    <span class="pl-k">double</span> orientations[], <span class="pl-k">double</span> maxTrialTranslation, <span class="pl-k">double</span> maxTrialRotation,
-    <span class="pl-k">double</span> probTranslate, <span class="pl-k">double</span> referenceRadius, <span class="pl-k">unsigned</span> <span class="pl-k">int</span> maxInteractions,
-    <span class="pl-k">double</span> boxSize[], <span class="pl-k">bool</span> isIsotropic[], <span class="pl-k">bool</span> isRepulsive,
+<div class="highlight highlight-cpp"><pre><span class="pl-en">VMMC</span>(<span class="pl-k">unsigned int</span> nParticles, <span class="pl-k">unsigned int</span> dimension, <span class="pl-k">double</span>* coordinates,
+    <span class="pl-k">double</span>* orientations, <span class="pl-k">double</span> maxTrialTranslation, <span class="pl-k">double</span> maxTrialRotation,
+    <span class="pl-k">double</span> probTranslate, <span class="pl-k">double</span> referenceRadius, <span class="pl-k">unsigned int</span> maxInteractions,
+    <span class="pl-k">double</span>* boxSize, <span class="pl-k">bool</span>* isIsotropic, <span class="pl-k">bool</span> isRepulsive,
     <span class="pl-k">const</span> CallbackFunctions&amp; callbacks);</pre></div>
 
-<p><code>nParticles</code> = The number of particles in the simulation box.</p>
+<p><code>nParticles</code> = The number of particles in the simulation box, \(N\).</p>
 
 <p><code>dimension</code> = The dimension of the simulation box (either 2 or 3).</p>
 
 <p><code>coordinates</code> = An array containing coordinates for all of the particles in the
-system, i.e. <code>x1, y1, z1, x2, y2, z2, ... , xN, yN, zN.</code>
+system, i.e. \(x_1, y_1, z_1, x_2, y_2, z_2, \ldots , x_N, y_N, z_N.\)
 Coordinates should run from 0 to the box size in each dimension.</p>
 
 <p><code>orientations</code> = An array containing orientations (unit vectors) for all of the
-particles in the system, i.e. <code>nx1, ny1, nz1, nx2, ny2, nz2, ... , nxN, nyN, nzN.</code>
+particles in the system, i.e. \(\hat{x}_1, \hat{y}_1, \hat{z}_1, \hat{x}_2, \hat{y}_2, \hat{z}_2, \ldots , \hat{x}_N, \hat{y}_N, \hat{z}_N.\)
 In the case of particles interacting via an isotropic potential, the particle
 orientations are entirely redundant, i.e. the orientation has no effect on the
 potential. This allows the use of a single set of callback functions for models
@@ -370,7 +381,9 @@ be applied in practice can be found
 <a href="http://nanotheory.lbl.gov/people/design_rules_paper/methods.pdf">here</a>.</p>
 
 <p><code>referenceRadius</code> = A reference radius for computing the approximate hydrodynamic
-damping factor, e.g. the radius of a typical particle in the system.</p>
+damping factor, e.g. the radius of a typical particle in the system. When
+modeling a molecular system the reference radius should indicate the
+approximate radius of a single molecular unit.</p>
 
 <p><code>maxInteractions</code> = The maximum number of pair interactions that an individual
 particle can make. This will be used to resize LibVMMC's internal data
@@ -407,7 +420,7 @@ which allows <code>std::vector</code> containers to be passed as naked arrays.</
 <p>For example, if we have some function called <code>foo</code> that accepts a C-style
 double array as an argument,</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">void</span> <span class="pl-en">foo</span>(<span class="pl-k">double</span> arr[]);</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">void</span> <span class="pl-en">foo</span>(<span class="pl-k">double</span>* arr);        // or alternatively, void foo(double[]);</pre></div>
 
 <p>then both of the following are valid function calls</p>
 
@@ -421,6 +434,14 @@ std::vector&lt;<span class="pl-k">double</span>&gt; <span class="pl-en">cpp_arr<
 
 <p>Internally, LibVMMC uses <code>std::vector</code> containers for its data structures, with
 data passed to the callback functions in the manner described above.</p>
+
+<h2>
+<a id="units" class="anchor" href="#units" aria-hidden="true"><span class="octicon octicon-link"></span></a>Units</h2>
+<p>Energies returned by the callback functions should be in units of
+<a href="https://en.wikipedia.org/wiki/Boltzmann_constant">Boltzmann's constant</a> multiplied
+by temperature, i.e. \(k_{\rm{B}}T\). Distances are measured in units of the particle
+(or molecular) diameter, \(\sigma\). In the demonstration code we take the
+statistical mechanician's prerogative of setting both \(k_{\rm{B}}T\) and \(\sigma\) equal to one.</p>
 
 <h2>
 <a id="executing-a-virtual-move" class="anchor" href="#executing-a-virtual-move" aria-hidden="true"><span class="octicon octicon-link"></span></a>Executing a virtual move</h2>
@@ -537,15 +558,15 @@ optimised library for pure isotropic systems. This can be achieved as follows:</
 functions that require no particle orientations. For example, the
 <code>PairEnergyCallback</code> becomes</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned</span> <span class="pl-k">int</span> index1, <span class="pl-k">double</span> position1[],
-    <span class="pl-k">unsigned</span> <span class="pl-k">int</span> index2, <span class="pl-k">double</span> position2[])&gt; PairEnergyCallback;</pre></div>
+<div class="highlight highlight-cpp"><pre><span class="pl-k">typedef</span> std::function&lt;<span class="pl-k">double</span> (<span class="pl-k">unsigned int</span> index1, <span class="pl-k">const double</span>* position1,
+    <span class="pl-k">unsigned int</span> index2, <span class="pl-k">const double</span>* position2)&gt; PairEnergyCallback;</pre></div>
 
 <p>In addition, the VMMC object no longer needs the <code>orientations</code> or
 <code>isIsotropic</code> arrays to be passed to its constructor, which is simplified to</p>
 
-<div class="highlight highlight-cpp"><pre><span class="pl-en">VMMC</span>(<span class="pl-k">unsigned</span> <span class="pl-k">int</span> nParticles, <span class="pl-k">unsigned</span> <span class="pl-k">int</span> dimension, <span class="pl-k">double</span> coordinates[],
+<div class="highlight highlight-cpp"><pre><span class="pl-en">VMMC</span>(<span class="pl-k">unsigned int</span> nParticles, <span class="pl-k">unsigned int</span> dimension, <span class="pl-k">double</span>* coordinates,
     <span class="pl-k">double</span> maxTrialTranslation, <span class="pl-k">double</span> maxTrialRotation, <span class="pl-k">double</span> probTranslate,
-    <span class="pl-k">double</span> referenceRadius, <span class="pl-k">unsigned</span> <span class="pl-k">int</span> maxInteractions, <span class="pl-k">double</span> boxSize[],
+    <span class="pl-k">double</span> referenceRadius, <span class="pl-k">unsigned int</span> maxInteractions, <span class="pl-k">double</span>* boxSize,
     <span class="pl-k">bool</span> isRepulsive, <span class="pl-k">const</span> CallbackFunctions&amp; callbacks);</pre></div>
 
 <p>The demo code shows how preprocessor directives can be used to provide support
@@ -553,9 +574,9 @@ for either version of the library, e.g. for the default <code>computeEnergy</cod
 defined in the <code>Model</code> class, we have</p>
 
 <div class="highlight highlight-cpp"><pre>#<span class="pl-k">ifndef</span> ISOTROPIC
-    <span class="pl-k">virtual</span> <span class="pl-k">double</span> <span class="pl-en">computeEnergy</span>(<span class="pl-k">unsigned</span> <span class="pl-k">int</span>, <span class="pl-k">double</span>[], <span class="pl-k">double</span>[]);
+    <span class="pl-k">virtual</span> <span class="pl-k">double</span> <span class="pl-en">computeEnergy</span>(<span class="pl-k">unsigned int</span>, <span class="pl-k">const double</span>*, <span class="pl-k">const double</span>*);
 #<span class="pl-k">else</span>
-    <span class="pl-k">virtual</span> <span class="pl-k">double</span> <span class="pl-en">computeEnergy</span>(<span class="pl-k">unsigned</span> <span class="pl-k">int</span>, <span class="pl-k">double</span>[]);
+    <span class="pl-k">virtual</span> <span class="pl-k">double</span> <span class="pl-en">computeEnergy</span>(<span class="pl-k">unsigned int</span>, <span class="pl-k">const double</span>*);
 #<span class="pl-k">endif</span></pre></div>
 
 <p>The pure isotropic version of LibVMMC can provide a significant performance
@@ -628,10 +649,30 @@ free functions as callbacks.</li>
 <li>It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.</li>
-<li>The use of <code>std::function</code> allows the user to wrap arbitary functions as callbacks
-(rather than only using free functions, as with C-style function pointers). See
-<a href="http://en.cppreference.com/w/cpp/utility/functional/function">here</a> for details
-on how to bind member functions, or function objects.</li>
+</ul>
+
+<h2>
+<a id="help" class="anchor" href="#help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help</h2>
+
+<p>I'm more than happy to answer questions, or to help set up a custom model system,
+but please <a href="https://en.wikipedia.org/wiki/RTFM">RTFM</a> before getting in touch.
+I've tried hard to add extensive comments, documentation, and examples, so it's
+likely that I won't respond if you've not taken the time to read these.</p>
+
+<p>To help new users, some common pitfalls are listed below.</p>
+
+<ul>
+<li>LibVMMC uses a cuboidal simulation box with a centre at \((L_x/2, L_y/2, L_z/2)\),
+where \(Lx\), \(Ly\), and \(Lz\) are the box lengths in each dimension. As such, particle
+positions <i>must</i> run from 0 to the box size in each dimension. If you require
+a different box format, e.g. the centre at \((0, 0, 0\)), which is typical in
+NPT simulations for simplifying changes to the box volume, then simply shift
+the coordinates inside of the callback functions.</li>
+<li>Particle orientations <i>must</i> be specified as unit vectors. While this might
+not be the most efficient representation for your model, it is easy to generalise
+and is provides a consistent representation in two and three dimensions. If
+you require an alternative representation then you'll need to provide support
+for converting between orientation formats.</li>
 </ul>
 
 <h2>
@@ -678,7 +719,7 @@ updated fairly frequently with additional features and performance enhancements.
     <div id="footer_wrap" class="outer">
       <footer class="inner">
       <div>
-      <p style="float:left">&copy; 2015 <a href="http://lesterhedges.net">Lester Hedges</a></p>
+      <p style="float:left">&copy; 2015&#8211;2016 <a href="http://lesterhedges.net">Lester Hedges</a></p>
       <p style="float:right">
         <a href="https://github.com/lohedges"><i class="fa fa-github-square fa-2x"></i></a>
         <a href="https://uk.linkedin.com/in/lesterhedges"><i class="fa fa-linkedin-square fa-2x"></i></a>
