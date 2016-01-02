@@ -66,9 +66,9 @@ public:
             The total interaction energy.
     */
 #ifndef ISOTROPIC
-    double energyCallback(unsigned int, double[], double[]);
+    double energyCallback(unsigned int, const double*, const double*);
 #else
-    double energyCallback(unsigned int, double[]);
+    double energyCallback(unsigned int, const double*);
 #endif
 
     //! Calculate the pair energy between two particles.
@@ -94,9 +94,9 @@ public:
             The pair energy between particles 1 and 2.
     */
 #ifndef ISOTROPIC
-    double pairEnergyCallback(unsigned int, double[], double[], unsigned int, double[], double[]);
+    double pairEnergyCallback(unsigned int, const double*, const double*, unsigned int, const double*, const double*);
 #else
-    double pairEnergyCallback(unsigned int, double[], unsigned int, double[]);
+    double pairEnergyCallback(unsigned int, const double*, unsigned int, const double*);
 #endif
 
     //! Determine the interactions for a given particle.
@@ -116,9 +116,9 @@ public:
             The number of interactions.
     */
 #ifndef ISOTROPIC
-    unsigned int interactionsCallback(unsigned int, double[], double[], unsigned int[]);
+    unsigned int interactionsCallback(unsigned int, const double*, const double*, unsigned int*);
 #else
-    unsigned int interactionsCallback(unsigned int, double[], unsigned int[]);
+    unsigned int interactionsCallback(unsigned int, const double*, unsigned int*);
 #endif
 
     //! Apply any post-move updates for a given particle.
@@ -132,9 +132,9 @@ public:
             The orientation of the particle following the  move.
     */
 #ifndef ISOTROPIC
-    void postMoveCallback(unsigned int, double[], double[]);
+    void postMoveCallback(unsigned int, const double*, const double*);
 #else
-    void postMoveCallback(unsigned int, double[]);
+    void postMoveCallback(unsigned int, const double*);
 #endif
 
     //! Check for non-pairwise energy contributions.
@@ -151,9 +151,9 @@ public:
             The total non-pairwise energy felt by the particle.
     */
 #ifndef ISOTROPIC
-    double nonPairwiseCallback(unsigned int, double[], double[]);
+    double nonPairwiseCallback(unsigned int, const double*, const double*);
 #else
-    double nonPairwiseCallback(unsigned int, double[]);
+    double nonPairwiseCallback(unsigned int, const double*);
 #endif
 
     //! Check custom boundary condition.
@@ -170,9 +170,9 @@ public:
             Whether the particle is outside the boundary.
     */
 #ifndef ISOTROPIC
-    bool boundaryCallback(unsigned int, double[], double[]);
+    bool boundaryCallback(unsigned int, const double*, const double*);
 #else
-    bool boundaryCallback(unsigned int, double[]);
+    bool boundaryCallback(unsigned int, const double*);
 #endif
 
     //! Calculate global energy.

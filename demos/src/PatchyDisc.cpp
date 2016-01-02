@@ -61,7 +61,7 @@ PatchyDisc::PatchyDisc(
     }
 }
 
-double PatchyDisc::energyCallback(unsigned int particle, double position[], double orientation[])
+double PatchyDisc::energyCallback(unsigned int particle, const double* position, const double* orientation)
 {
     // N.B. This method is somewhat redundant since the same functionality
     // could be achieved by using a combination of the interactionsCallback
@@ -99,8 +99,8 @@ double PatchyDisc::energyCallback(unsigned int particle, double position[], doub
     return energy;
 }
 
-double PatchyDisc::pairEnergyCallback(unsigned int particle1, double position1[],
-    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+double PatchyDisc::pairEnergyCallback(unsigned int particle1, const double* position1,
+    const double* orientation1, unsigned int particle2, const double* position2, const double* orientation2)
 {
     // Separation vector.
     std::vector<double> sep(2);
@@ -162,7 +162,7 @@ double PatchyDisc::pairEnergyCallback(unsigned int particle1, double position1[]
 }
 
 unsigned int PatchyDisc::interactionsCallback(unsigned int particle,
-    double position[], double orientation[], unsigned int interactions[])
+    const double* position, const double* orientation, unsigned int* interactions)
 {
     // Interaction counter.
     unsigned int nInteractions = 0;
@@ -206,7 +206,7 @@ unsigned int PatchyDisc::interactionsCallback(unsigned int particle,
     return nInteractions;
 }
 
-void PatchyDisc::postMoveCallback(unsigned int particle, double position[], double orientation[])
+void PatchyDisc::postMoveCallback(unsigned int particle, const double* position, const double* orientation)
 {
     // Copy coordinates/orientations.
     for (unsigned int i=0;i<box.dimension;i++)
@@ -223,12 +223,12 @@ void PatchyDisc::postMoveCallback(unsigned int particle, double position[], doub
         cells.updateCell(newCell, particles[particle], particles);
 }
 
-double PatchyDisc::nonPairwiseCallback(unsigned int particle, double position[], double orientation[])
+double PatchyDisc::nonPairwiseCallback(unsigned int particle, const double* position, const double* orientation)
 {
     return 0;
 }
 
-bool PatchyDisc::boundaryCallback(unsigned int particle, double position[], double orientation[])
+bool PatchyDisc::boundaryCallback(unsigned int particle, const double* position, const double* orientation)
 {
     return false;
 }

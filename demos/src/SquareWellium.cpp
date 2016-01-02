@@ -38,9 +38,9 @@ SquareWellium::SquareWellium(
 }
 
 #ifndef ISOTROPIC
-double SquareWellium::energyCallback(unsigned int particle, double position[], double orientation[])
+double SquareWellium::energyCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-double SquareWellium::energyCallback(unsigned int particle, double position[])
+double SquareWellium::energyCallback(unsigned int particle, const double* position)
 #endif
 {
     // N.B. This method is somewhat redundant since the same functionality
@@ -85,11 +85,11 @@ double SquareWellium::energyCallback(unsigned int particle, double position[])
 }
 
 #ifndef ISOTROPIC
-double SquareWellium::pairEnergyCallback(unsigned int particle1, double position1[],
-    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+double SquareWellium::pairEnergyCallback(unsigned int particle1, const double* position1,
+    const double* orientation1, unsigned int particle2, const double* position2, const double* orientation2)
 #else
 double SquareWellium::pairEnergyCallback(unsigned int particle1,
-    double position1[], unsigned int particle2, double position2[])
+    const double* position1, unsigned int particle2, const double* position2)
 #endif
 {
     // Separation vector.
@@ -115,10 +115,10 @@ double SquareWellium::pairEnergyCallback(unsigned int particle1,
 
 #ifndef ISOTROPIC
 unsigned int SquareWellium::interactionsCallback(unsigned int particle,
-    double position[], double orientation[], unsigned int interactions[])
+    const double* position, const double* orientation, unsigned int* interactions)
 #else
 unsigned int SquareWellium::interactionsCallback(unsigned int particle,
-    double position[], unsigned int interactions[])
+    const double* position, unsigned int* interactions)
 #endif
 {
     // Interaction counter.
@@ -174,9 +174,9 @@ unsigned int SquareWellium::interactionsCallback(unsigned int particle,
 }
 
 #ifndef ISOTROPIC
-void SquareWellium::postMoveCallback(unsigned int particle, double position[], double orientation[])
+void SquareWellium::postMoveCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-void SquareWellium::postMoveCallback(unsigned int particle, double position[])
+void SquareWellium::postMoveCallback(unsigned int particle, const double* position)
 #endif
 {
     // Copy coordinates/orientations.
@@ -197,18 +197,18 @@ void SquareWellium::postMoveCallback(unsigned int particle, double position[])
 }
 
 #ifndef ISOTROPIC
-double SquareWellium::nonPairwiseCallback(unsigned int particle, double position[], double orientation[])
+double SquareWellium::nonPairwiseCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-double SquareWellium::nonPairwiseCallback(unsigned int particle, double position[])
+double SquareWellium::nonPairwiseCallback(unsigned int particle, const double* position)
 #endif
 {
     return 0;
 }
 
 #ifndef ISOTROPIC
-bool SquareWellium::boundaryCallback(unsigned int particle, double position[], double orientation[])
+bool SquareWellium::boundaryCallback(unsigned int particle, const double* position, const double* orientation)
 #else
-bool SquareWellium::boundaryCallback(unsigned int particle, double position[])
+bool SquareWellium::boundaryCallback(unsigned int particle, const double* position)
 #endif
 {
     return false;
