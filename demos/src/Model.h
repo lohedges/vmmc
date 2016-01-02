@@ -68,9 +68,9 @@ public:
             The total interaction energy.
      */
 #ifndef ISOTROPIC
-    virtual double computeEnergy(unsigned int, double[], double[]);
+    virtual double computeEnergy(unsigned int, const double*, const double*);
 #else
-    virtual double computeEnergy(unsigned int, double[]);
+    virtual double computeEnergy(unsigned int, const double*);
 #endif
 
     //! Calculate the pair energy between two particles.
@@ -96,9 +96,9 @@ public:
             The pair energy between particles 1 and 2.
      */
 #ifndef ISOTROPIC
-    virtual double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
+    virtual double computePairEnergy(unsigned int, const double*, const double*, unsigned int, const double*, const double*);
 #else
-    virtual double computePairEnergy(unsigned int, double[], unsigned int, double[]);
+    virtual double computePairEnergy(unsigned int, const double*, unsigned int, const double*);
 #endif
 
     //! Determine the interactions for a given particle.
@@ -118,9 +118,9 @@ public:
             The number of interactions.
      */
 #ifndef ISOTROPIC
-    virtual unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
+    virtual unsigned int computeInteractions(unsigned int, const double*, const double*, unsigned int*);
 #else
-    virtual unsigned int computeInteractions(unsigned int, double[], unsigned int[]);
+    virtual unsigned int computeInteractions(unsigned int, const double*, unsigned int*);
 #endif
 
     //! Apply any post-move updates for a given particle.
@@ -134,9 +134,9 @@ public:
             The orientation of the particle following the virtual move.
     */
 #ifndef ISOTROPIC
-    virtual void applyPostMoveUpdates(unsigned int, double[], double[]);
+    virtual void applyPostMoveUpdates(unsigned int, const double*, const double*);
 #else
-    virtual void applyPostMoveUpdates(unsigned int, double[]);
+    virtual void applyPostMoveUpdates(unsigned int, const double*);
 #endif
 
     //! Get the average pair energy.

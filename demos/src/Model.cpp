@@ -39,9 +39,9 @@ Model::Model(
 }
 
 #ifndef ISOTROPIC
-double Model::computeEnergy(unsigned int particle, double position[], double orientation[])
+double Model::computeEnergy(unsigned int particle, const double* position, const double* orientation)
 #else
-double Model::computeEnergy(unsigned int particle, double position[])
+double Model::computeEnergy(unsigned int particle, const double* position[])
 #endif
 {
     // N.B. This method is somewhat redundant since the same functionality
@@ -86,11 +86,11 @@ double Model::computeEnergy(unsigned int particle, double position[])
 }
 
 #ifndef ISOTROPIC
-double Model::computePairEnergy(unsigned int particle1, double position1[], double orientation1[],
-    unsigned int particle2, double position2[], double orientation2[])
+double Model::computePairEnergy(unsigned int particle1, const double* position1, const double* orientation1,
+    unsigned int particle2, const double* position2, const double* orientation2)
 #else
 double Model::computePairEnergy(unsigned int particle1,
-    double position1[], unsigned int particle2, double position2[])
+    const double* position1, unsigned int particle2, const double* position2)
 #endif
 {
     std::cerr << "[ERROR] Model: Virtual function Model::computePairEnergy() must be defined.\n";
@@ -99,10 +99,10 @@ double Model::computePairEnergy(unsigned int particle1,
 
 #ifndef ISOTROPIC
 unsigned int Model::computeInteractions(unsigned int particle,
-    double position[], double orientation[], unsigned int interactions[])
+    const double* position, const double* orientation, unsigned int* interactions)
 #else
 unsigned int Model::computeInteractions(unsigned int particle,
-    double position[], unsigned int interactions[])
+    const double* position, unsigned int* interactions)
 #endif
 {
     // Interaction counter.
@@ -158,9 +158,9 @@ unsigned int Model::computeInteractions(unsigned int particle,
 }
 
 #ifndef ISOTROPIC
-void Model::applyPostMoveUpdates(unsigned int particle, double position[], double orientation[])
+void Model::applyPostMoveUpdates(unsigned int particle, const double* position, const double* orientation)
 #else
-void Model::applyPostMoveUpdates(unsigned int particle, double position[])
+void Model::applyPostMoveUpdates(unsigned int particle, const double* position)
 #endif
 {
     // Copy coordinates/orientations.
