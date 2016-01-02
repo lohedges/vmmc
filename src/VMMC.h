@@ -55,9 +55,9 @@ namespace vmmc
             The total interaction energy felt by the particle.
     */
 #ifndef ISOTROPIC
-    typedef std::function<double (unsigned int, double[], double[])> EnergyCallback;
+    typedef std::function<double (unsigned int, const double*, const double*)> EnergyCallback;
 #else
-    typedef std::function<double (unsigned int, double[])> EnergyCallback;
+    typedef std::function<double (unsigned int, const double*)> EnergyCallback;
 #endif
 
     //! Calculate the pair energy between two particles.
@@ -83,9 +83,9 @@ namespace vmmc
             The pair interaction energy between particles 1 and 2.
     */
 #ifndef ISOTROPIC
-    typedef std::function<double (unsigned int, double[], double[], unsigned int, double[], double[])> PairEnergyCallback;
+    typedef std::function<double (unsigned int, const double*, const double*, unsigned int, const double*, const double*)> PairEnergyCallback;
 #else
-    typedef std::function<double (unsigned int, double[], unsigned int, double[])> PairEnergyCallback;
+    typedef std::function<double (unsigned int, const double*, unsigned int, const double*)> PairEnergyCallback;
 #endif
 
     //! Determine the interactions for a particle.
@@ -105,9 +105,9 @@ namespace vmmc
             The number of interactions.
     */
 #ifndef ISOTROPIC
-    typedef std::function<unsigned int (unsigned int, double[], double[], unsigned int[])> InteractionsCallback;
+    typedef std::function<unsigned int (unsigned int, const double*, const double*, unsigned int[])> InteractionsCallback;
 #else
-    typedef std::function<unsigned int (unsigned int, double[], unsigned int[])> InteractionsCallback;
+    typedef std::function<unsigned int (unsigned int, const double*, unsigned int[])> InteractionsCallback;
 #endif
 
     //! Apply any post-move updates for a given particle.
@@ -121,9 +121,9 @@ namespace vmmc
             The orientation of the particle following the virtual move.
     */
 #ifndef ISOTROPIC
-    typedef std::function<void (unsigned int, double[], double[])> PostMoveCallback;
+    typedef std::function<void (unsigned int, const double*, const double*)> PostMoveCallback;
 #else
-    typedef std::function<void (unsigned int, double[])> PostMoveCallback;
+    typedef std::function<void (unsigned int, const double*)> PostMoveCallback;
 #endif
 
     //! Calculate the non-pairwise energy felt by a particle.
@@ -140,9 +140,9 @@ namespace vmmc
             The total non-pairwise energy felt by the particle.
     */
 #ifndef ISOTROPIC
-    typedef std::function<double (unsigned int, double[], double[])> NonPairwiseCallback;
+    typedef std::function<double (unsigned int, const double*, const double*)> NonPairwiseCallback;
 #else
-    typedef std::function<double (unsigned int, double[])> NonPairwiseCallback;
+    typedef std::function<double (unsigned int, const double*)> NonPairwiseCallback;
 #endif
 
     //! Check custom boundary condition.
@@ -159,9 +159,9 @@ namespace vmmc
             Whether the particle lies outside the custom boundary.
     */
 #ifndef ISOTROPIC
-    typedef std::function<bool (unsigned int, double[], double[])> BoundaryCallback;
+    typedef std::function<bool (unsigned int, const double*, const double*)> BoundaryCallback;
 #else
-    typedef std::function<bool (unsigned int, double[])> BoundaryCallback;
+    typedef std::function<bool (unsigned int, const double*)> BoundaryCallback;
 #endif
 
     // DATA TYPES
