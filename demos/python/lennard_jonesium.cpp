@@ -30,10 +30,10 @@ unsigned int dimension;
 unsigned int maxInteractions;
 
 // Callback function prototypes.
-double computeEnergy(unsigned int, double[], double[]);
-double computePairEnergy(unsigned int, double[], double[], unsigned int, double[], double[]);
-unsigned int computeInteractions(unsigned int, double[], double[], unsigned int[]);
-void applyPostMoveUpdates(unsigned int, double[], double[]);
+double computeEnergy(unsigned int, const double*, const double*);
+double computePairEnergy(unsigned int, const double*, const double*, unsigned int, const double*, const double*);
+unsigned int computeInteractions(unsigned int, const double*, const double*, unsigned int*);
+void applyPostMoveUpdates(unsigned int, const double*, const double*);
 
 // Function prototypes.
 double getEnergy();
@@ -212,7 +212,7 @@ int main(int argc, char** argv)
 
 // Function definitions.
 
-double computeEnergy(unsigned int particle, double position[], double orientation[])
+double computeEnergy(unsigned int particle, const double* position, const double* orientation)
 {
     // Create position and orientation objects.
     PyObject *pPosition = PyList_New(dimension);
@@ -248,8 +248,8 @@ double computeEnergy(unsigned int particle, double position[], double orientatio
     return energy;
 }
 
-double computePairEnergy(unsigned int particle1, double position1[],
-    double orientation1[], unsigned int particle2, double position2[], double orientation2[])
+double computePairEnergy(unsigned int particle1, const double* position1, const double* orientation1,
+    unsigned int particle2, const double* position2, const double* orientation2)
 {
     // Create position and orientation objects.
     PyObject *pPosition1 = PyList_New(dimension);
@@ -294,7 +294,7 @@ double computePairEnergy(unsigned int particle1, double position1[],
 }
 
 unsigned int computeInteractions(unsigned int particle,
-    double position[], double orientation[], unsigned int interactions[])
+    const double* position, const double* orientation, unsigned int* interactions)
 {
     // Create position, orientation, and interactions objects.
     PyObject *pPosition = PyList_New(dimension);
@@ -340,7 +340,7 @@ unsigned int computeInteractions(unsigned int particle,
     return nInteractions;
 }
 
-void applyPostMoveUpdates(unsigned int particle, double position[], double orientation[])
+void applyPostMoveUpdates(unsigned int particle, const double* position, const double* orientation)
 {
     // Create position and orientation objects.
     PyObject *pPosition = PyList_New(dimension);
