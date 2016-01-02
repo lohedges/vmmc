@@ -273,7 +273,7 @@ $(demos): %: %.cpp $(demo_library_header) $(library) $(demo_library) $(demo_obje
 	-$(CXX) $(CXXFLAGS) -Wfatal-errors -I$(demo_dir)/src $@.cpp $(library) $(demo_library) $(LIBS) $(LDFLAGS) -o $@
 
 # Compile C++ Python API demonstration code.
-$(python_demos): $(python_sources) .check_python .compiler_flags
+$(python_demos): $(python_demo_files) $(python_sources) .check_python .compiler_flags
 	$(call colorecho, 1, "--> Linking CXX executable $@")
 	-$(CXX) $(CXXFLAGS) -Wfatal-errors -I$(python_header) $@.cpp $(library) $(python_library) $(LIBS) $(LDFLAGS) -o $@
 
