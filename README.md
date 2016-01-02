@@ -1,6 +1,6 @@
 # LibVMMC
 
-<p>Copyright &copy; 2015 <a href="http://lesterhedges.net">Lester Hedges</a>
+<p>Copyright &copy; 2015-2016 <a href="http://lesterhedges.net">Lester Hedges</a>
 <a href="http://www.gnu.org/licenses/gpl-3.0.html">
 <img width="80" src="http://www.gnu.org/graphics/gplv3-127x51.png"></a></p>
 
@@ -142,12 +142,18 @@ interface to user-defined potentials. These callbacks allow LibVMMC to be
 blind to the implementation of the model, as well as the model to be blind to
 the details of the VMMC algorithm.
 
-Details of the callback prototypes are given below:
+Details of the callback prototypes are given below . The `const` keyword is
+used to aid readability and to prevent the user from modifying particle positions
+and orientations. (For those unfamiliar with C/C++, `const double* p_double`
+means that you can't modify the data pointed to by `p_double`, although you
+can change what `p_double` points to.) For simplicity we make use of the
+"pointer to type" representation of array data, i.e. all pointer arguments
+in the callback prototypes represent arrays.
 
 ### Particle energy
 Calculate the total pair interaction energy felt by a particle.
 ```cpp
-double energyCallback(unsigned int index, double position[], double orientation[]);
+double energyCallback(unsigned int index, const double* position, const double* orientation);
 ```
 `index` = The particle index.
 
@@ -162,9 +168,9 @@ achieve the same outcome by combining the `pairEnergyCallback` and
 ### Pair energy
 Calculate the pair interaction between two particles.
 ```cpp
-double pairEnergyCallback(unsigned int index1, double position1[],
-    double orientation1[], unsigned int index2, double position2[],
-    double orientation2[]);
+double pairEnergyCallback(unsigned int index1, const double* position1,
+    const double* orientation1, unsigned int index2, const double* position2,
+    const double* orientation2);
 ```
 `index1` = The index of the first particle.
 
@@ -181,8 +187,8 @@ double pairEnergyCallback(unsigned int index1, double position1[],
 ### Interactions
 Determine the interactions for a given particle.
 ```cpp
-unsigned int interactionsCallback(unsigned int index, double position[],
-    double orientation[], unsigned int interactions[]);
+unsigned int interactionsCallback(unsigned int index, const double* position,
+    const double* orientation, unsigned int* interactions);
 ```
 `index` = The index of the  particle.
 
@@ -208,7 +214,7 @@ Test for non-pairwise energy contributions, such as interactions with a
 surface or external field.
 
 ```cpp
-double nonPairwiseCallback(unsigned int index, double position[], double orientation[]);
+double nonPairwiseCallback(unsigned int index, const double* position, const double* orientation);
 ```
 `index` = The index of the  particle.
 
@@ -222,7 +228,7 @@ moves outside of the boundary following the virtual move. An example showing
 how to implement custom boundary conditions is provided with the demonstration
 code.
 ```cpp
-bool boundaryCallback(unsigned int index, double position[], double orientation[]);
+bool boundaryCallback(unsigned int index, const double* position, const double* orientation);
 ```
 `index` = The index of the  particle.
 
@@ -245,10 +251,10 @@ the virtual callback functions. The `LennardJonesium`, `SquareWellium`, and
 To use LibVMMC you will want to create an instance of the VMMC object. This has the following
 constructor:
 ```cpp
-VMMC(Model* model, unsigned int nParticles, unsigned int dimension, double coordinates[],
-    double orientations[], double maxTrialTranslation, double maxTrialRotation,
+VMMC(Model* model, unsigned int nParticles, unsigned int dimension, double* coordinates,
+    double* orientations, double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
-    double boxSize[], bool isIsotropic[], bool isRepulsive);
+    double* boxSize, bool* isIsotropic, bool isRepulsive);
 ```
 
 `model` = A pointer to the derived model object.
@@ -280,7 +286,9 @@ be applied in practice can be found
 [here](http://nanotheory.lbl.gov/people/design_rules_paper/methods.pdf).
 
 `referenceRadius` = A reference radius for computing the approximate hydrodynamic
-damping factor, e.g. the radius of a typical particle in the system.
+damping factor, e.g. the radius of a typical particle in the system. When modeling a
+molecular system the reference radius should indicate the approximate radius of a
+single molecular unit.
 
 `maxInteractions` = The maximum number of pair interactions that an individual
 particle can make. This will be used to resize LibVMMC's internal data
@@ -314,7 +322,7 @@ For example, if we have some function called `foo` that accepts a C-style
 double array as an argument,
 
 ```cpp
-void foo(double arr[]);
+void foo(double* arr);        // or alternatively, void foo(double arr[]);
 ```
 
 then both of the following are valid function calls
@@ -330,6 +338,13 @@ foo(&cpp_arr[0]);
 ```
 Internally, LibVMMC uses `std::vector` containers for its data structures, with
 data passed to the callback functions in the manner described above.
+
+## Units
+Energies returned by the callback functions should be in units of
+[Boltzmann's constant](https://en.wikipedia.org/wiki/Boltzmann_constant) multiplied
+by temperature, i.e. kT. Distances are measured in units of the particle
+(or molecular) diameter, sigma. In the demonstration code we take the
+statistical mechanician's prerogative of setting both kT and sigma equal to one.
 
 ## Executing a virtual move
 Once an instance of the VMMC object is created, e.g.
@@ -409,8 +424,8 @@ functions that require no particle orientations. For example, the
 `pairEnergyCallback` becomes
 
 ```cpp
-double pairEnergyCallback(unsigned int index1, double position1[],
-    unsigned int index2, double position2[]);
+double pairEnergyCallback(unsigned int index1, const double* position1,
+    unsigned int index2, const double* position2);
 ```
 
 In addition, the VMMC object no longer needs the `orientations` or
@@ -418,9 +433,9 @@ In addition, the VMMC object no longer needs the `orientations` or
 
 ```cpp
 VMMC(Model* model, unsigned int nParticles, unsigned int dimension,
-    double coordinates[], double maxTrialTranslation, double maxTrialRotation,
+    double* coordinates, double maxTrialTranslation, double maxTrialRotation,
     double probTranslate, double referenceRadius, unsigned int maxInteractions,
-    double boxSize[], bool isRepulsive);
+    double* boxSize, bool isRepulsive);
 ```
 
 The demo code shows how preprocessor directives can be used to provide support
@@ -429,9 +444,9 @@ defined in the `Model` class, we have
 
 ```cpp
 #ifndef ISOTROPIC
-    virtual double energyCallback(unsigned int, double[], double[]);
+    virtual double energyCallback(unsigned int, const double*, const double*);
 #else
-    virtual double energyCallback(unsigned int, double[]);
+    virtual double energyCallback(unsigned int, const double*);
 #endif
 ```
 
@@ -489,12 +504,30 @@ in a square box. In this case, a rotation across the periodic boundary can cause
 the cluster to overlap.
 
 ## Tips
-* The `nonPairwiseCallback` function can be used to account for non-pairwise
-terms in the potential, such as an external field, or the interaction between
-particles and a surface.
 * It is not a requirement that all particles in the simulation box be of the same
 type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
+
+## Help
+I'm more than happy to answer questions or help set up a custom model system,
+but please [RTFM](https://en.wikipedia.org/wiki/RTFM) before getting in touch.
+I've tried hard to add extensive comments, documentation, and examples, so it's
+likely that I won't respond if you've not taken the time to read these.
+
+To help new users, some common pitfalls are listed below.
+
+* LibVMMC uses a cuboidal simulation box with a centre at (Lx/2, Ly/2, Lz/2),
+where Lx, Ly, and Lz are the box lengths in each dimension. As such, particle
+positions *must* run from 0 to the box size in each dimension. If you require
+a different box format, e.g. the centre at (0, 0, 0), which is typical in
+NPT simulations for simplifying changes to the box volume, then simply shift
+the coordinates inside of the callback functions.
+
+* Particle orientations *must* be specified as unit vectors. While this might
+not be the most efficient representation for your model, it is easy to generalise
+and is provides a consistent representation in two and three dimensions. If
+you require an alternative representation then you'll need to provide support
+for converting between orientation formats.
 
 ## Citing LibVMMC
 If you make If you make use of LibVMMC in any published research please cite the canonical VMMC reference:
