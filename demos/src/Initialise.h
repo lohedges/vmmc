@@ -63,9 +63,9 @@ public:
             Whether the particle lies outside of the spherocylinder.
     */
 #ifndef ISOTROPIC
-    bool outsideSpherocylinder(unsigned int, double[], double[]);
+    bool outsideSpherocylinder(unsigned int, const double*, const double*);
 #else
-    bool outsideSpherocylinder(unsigned int, double[]);
+    bool outsideSpherocylinder(unsigned int, double*);
 #endif
 
 private:

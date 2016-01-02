@@ -111,9 +111,9 @@ void Initialise::random(std::vector<Particle>& particles, CellList& cells, Box& 
 }
 
 #ifndef ISOTROPIC
-bool Initialise::outsideSpherocylinder(unsigned int particle, double position[], double orientation[])
+bool Initialise::outsideSpherocylinder(unsigned int particle, const double* position, const double* orientation)
 #else
-bool Initialise::outsideSpherocylinder(unsigned int particle, double position[])
+bool Initialise::outsideSpherocylinder(unsigned int particle, const double* position)
 #endif
 {
     // Centre of sphere or circle.
