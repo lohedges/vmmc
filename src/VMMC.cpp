@@ -65,7 +65,14 @@ namespace vmmc
         maxInteractions(maxInteractions_),
         isRepusive(isRepusive_)
     {
-        // Check dimensionality is valid.
+        // Check number of particles.
+        if (nParticles == 0)
+        {
+            std::cerr << "[ERROR] VMMC: Number of particle must be > 0!\n";
+            exit(EXIT_FAILURE);
+        }
+
+        // Check dimensionality.
         if (dimension == 3) is3D = true;
         else if (dimension == 2) is3D = false;
         else
@@ -74,10 +81,43 @@ namespace vmmc
             exit(EXIT_FAILURE);
         }
 
+        // Check maximum trial translation.
+        if (maxTrialTranslation < 0)
+        {
+            std::cerr << "[ERROR] VMMC: Maximum trial translation must be > 0!\n";
+            exit(EXIT_FAILURE);
+        }
+
+        // Check maximum trial rotation.
+        if (maxTrialRotation < 0)
+        {
+            std::cerr << "[ERROR] VMMC: Maximum trial rotation must be > 0!\n";
+            exit(EXIT_FAILURE);
+        }
+
+        // Check reference radius.
+        if (referenceRadius < 0)
+        {
+            std::cerr << "[ERROR] VMMC: Reference radius must be > 0!\n";
+            exit(EXIT_FAILURE);
+        }
+
+        // N.B. There's no need to check probTranslate since anything less than zero
+        // will be treated as zero, and anything greater than one will be treated as one.
+
         // Store simulation box size.
         boxSize.resize(dimension);
         for (unsigned int i=0;i<dimension;i++)
+        {
             boxSize[i] = boxSize_[i];
+
+            // Check box size.
+            if (boxSize[i] < 0)
+            {
+                std::cerr << "[ERROR] VMMC: Box length must be > 0!\n";
+                exit(EXIT_FAILURE);
+            }
+        }
 
         // Allocate memory.
         moveParams.trialVector.resize(dimension);
@@ -112,10 +152,27 @@ namespace vmmc
 #ifndef ISOTROPIC
                 particles[i].preMoveOrientation[j] = orientations[dimension*i + j];
 #endif
+
+                // Check coordinate.
+                if ((particles[i].preMovePosition[j] < 0) ||
+                    (particles[i].preMovePosition[j] > boxSize[j]))
+                {
+                    std::cerr << "[ERROR] VMMC: Coordinates must run from 0 to the box size!\n";
+                    exit(EXIT_FAILURE);
+                }
             }
 
-            // Store particle potential style.
 #ifndef ISOTROPIC
+            // Check that orientation is a unit vector.
+            if (std::abs(1.0 - computeNorm(particles[i].preMoveOrientation)) > 1e-6)
+            {
+                std::cerr << "[ERROR] VMMC: Particle orientations must be unit vectors!\n";
+                exit(EXIT_FAILURE);
+            }
+#endif
+
+#ifndef ISOTROPIC
+            // Store particle potential style.
             isIsotropic[i] = isIsotropic_[i];
 #endif
         }
