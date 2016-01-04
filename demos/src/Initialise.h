@@ -65,7 +65,7 @@ public:
 #ifndef ISOTROPIC
     bool outsideSpherocylinder(unsigned int, const double*, const double*);
 #else
-    bool outsideSpherocylinder(unsigned int, double*);
+    bool outsideSpherocylinder(unsigned int, const double*);
 #endif
 
 private:

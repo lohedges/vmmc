@@ -41,7 +41,7 @@ Model::Model(
 #ifndef ISOTROPIC
 double Model::computeEnergy(unsigned int particle, const double* position, const double* orientation)
 #else
-double Model::computeEnergy(unsigned int particle, const double* position[])
+double Model::computeEnergy(unsigned int particle, const double* position)
 #endif
 {
     // N.B. This method is somewhat redundant since the same functionality

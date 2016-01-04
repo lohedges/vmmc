@@ -33,7 +33,7 @@ double SquareWellium::computePairEnergy(unsigned int particle1, const double* po
     const double* orientation1, unsigned int particle2, const double* position2, const double* orientation2)
 #else
 double SquareWellium::computePairEnergy(unsigned int particle1,
-    const double position1, unsigned int particle2, const double* position2)
+    const double* position1, unsigned int particle2, const double* position2)
 #endif
 {
     // Separation vector.
