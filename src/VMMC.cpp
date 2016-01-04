@@ -743,7 +743,7 @@ namespace vmmc
                 bool isOutsideBoundary = callbacks.boundaryCallback(particle,
                     &postMoveParticle.postMovePosition[0], &postMoveParticle.postMoveOrientation[0]);
 #else
-                bool isOutSideBoundary = callbacks.boundaryCallback(particle, &postMoveParticle.postMovePosition[0]);
+                bool isOutsideBoundary = callbacks.boundaryCallback(particle, &postMoveParticle.postMovePosition[0]);
 #endif
                 // Particle has moved outside boundary. Abort move!
                 if (isOutsideBoundary) isEarlyExit = true;
