@@ -66,7 +66,8 @@ namespace vmmc
         callbacks(callbacks_)
     {
         // Check number of particles.
-        if (nParticles == 0)
+        if ((nParticles == 0) ||
+            (nParticles > (1 + std::numeric_limits<unsigned int>::max() - nParticles)))
         {
             std::cerr << "[ERROR] VMMC: Number of particle must be > 0!\n";
             exit(EXIT_FAILURE);
