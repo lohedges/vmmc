@@ -381,6 +381,10 @@ $ ./demos/square_wellium
 $ vmd trajectory.xyz -e vmd.tcl
 ```
 
+Note that the trajectories are intended to be used for visualisation purposes
+only. The atomic coordinates are not saved to file with enough accuracy for
+them to reliably be used as restart files, i.e. overlaps may occur.
+
 The demo code also illustrates how to implement efficient, dynamically
 updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
 for implementation details.
