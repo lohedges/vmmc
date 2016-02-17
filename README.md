@@ -529,7 +529,7 @@ the coordinates inside of the callback functions.
 
 * Particle orientations *must* be specified as unit vectors. While this might
 not be the most efficient representation for your model, it is easy to generalise
-and is provides a consistent representation in two and three dimensions. If
+and provides a consistent representation in two and three dimensions. If
 you require an alternative representation then you'll need to provide support
 for converting between orientation formats.
 
