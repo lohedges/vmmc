@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     std::vector<double> boxSize;            // size of simulation box in each dimension
 
     // Work out base length of simulation box (particle diameter is one).
-    if (dimension == 2) baseLength = std::pow((nParticles*M_PI)/(2.0*density), 1.0/2.0);
+    if (dimension == 2) baseLength = std::pow((nParticles*M_PI)/(4.0*density), 1.0/2.0);
     else baseLength = std::pow((nParticles*M_PI)/(6.0*density), 1.0/3.0);
 
     for (unsigned int i=0;i<dimension;i++)
