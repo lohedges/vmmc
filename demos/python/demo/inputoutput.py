@@ -147,7 +147,7 @@ class InputOutput:
 
         # Set sensible atom radius.
         f.write("set sel [atomselect top \"name X\"]\n")
-        f.write("atomselect0 set radius 0.4\n")
+        f.write("atomselect0 set radius 0.5\n")
 
         # Set default particle to blue.
         f.write("color Name X blue\n")
