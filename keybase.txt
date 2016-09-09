@@ -1,0 +1,54 @@
+==================================================================
+https://keybase.io/loh
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://vmmc.xyz
+  * I am loh (https://keybase.io/loh) on keybase.
+  * I have a public key ASD9b231MyMw2c0YAFwf2v-ClECtxR3ykt6Y7BvDc-U8wQo
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0120fd6f6df5332330d9cd18005c1fdaff829440adc51df292de98ec1bc373e53cc10a",
+            "host": "keybase.io",
+            "kid": "0120fd6f6df5332330d9cd18005c1fdaff829440adc51df292de98ec1bc373e53cc10a",
+            "uid": "5611e6627047d0d44236ea513e1fbd19",
+            "username": "loh"
+        },
+        "service": {
+            "hostname": "vmmc.xyz",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "client": {
+        "name": "keybase.io go client",
+        "version": "1.0.17"
+    },
+    "ctime": 1473435204,
+    "expire_in": 504576000,
+    "merkle_root": {
+        "ctime": 1473435054,
+        "hash": "4585ade5635fca3ab5d85fa907d5eadb1268dc8395e84e57dcd2993cd97546f80335c91fd1547afe7e045e8616cbefad769438db46c67c55ef3dc8bd791a9fe1",
+        "seqno": 627118
+    },
+    "prev": "b079309dee7f9be98b543543ce5e7e85a661ac24b75b1ef67bf6b4a7685bafbc",
+    "seqno": 11,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg/W9t9TMjMNnNGABcH9r/gpRArcUd8pLemOwbw3PlPMEKp3BheWxvYWTFAut7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwZmQ2ZjZkZjUzMzIzMzBkOWNkMTgwMDVjMWZkYWZmODI5NDQwYWRjNTFkZjI5MmRlOThlYzFiYzM3M2U1M2NjMTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZmQ2ZjZkZjUzMzIzMzBkOWNkMTgwMDVjMWZkYWZmODI5NDQwYWRjNTFkZjI5MmRlOThlYzFiYzM3M2U1M2NjMTBhIiwidWlkIjoiNTYxMWU2NjI3MDQ3ZDBkNDQyMzZlYTUxM2UxZmJkMTkiLCJ1c2VybmFtZSI6ImxvaCJ9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoidm1tYy54eXoiLCJwcm90b2NvbCI6Imh0dHA6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjE3In0sImN0aW1lIjoxNDczNDM1MjA0LCJleHBpcmVfaW4iOjUwNDU3NjAwMCwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE0NzM0MzUwNTQsImhhc2giOiI0NTg1YWRlNTYzNWZjYTNhYjVkODVmYTkwN2Q1ZWFkYjEyNjhkYzgzOTVlODRlNTdkY2QyOTkzY2Q5NzU0NmY4MDMzNWM5MWZkMTU0N2FmZTdlMDQ1ZTg2MTZjYmVmYWQ3Njk0MzhkYjQ2YzY3YzU1ZWYzZGM4YmQ3OTFhOWZlMSIsInNlcW5vIjo2MjcxMTh9LCJwcmV2IjoiYjA3OTMwOWRlZTdmOWJlOThiNTQzNTQzY2U1ZTdlODVhNjYxYWMyNGI3NWIxZWY2N2JmNmI0YTc2ODViYWZiYyIsInNlcW5vIjoxMSwidGFnIjoic2lnbmF0dXJlIn2jc2lnxEDq546WbIlidNNF70ZAXbFL0rEsh2H+2OAk4NmD1uidXSkO2t++HM2YysZ5X+Q4U2ohRbH7RHNubw429sY9mVoGqHNpZ190eXBlIKRoYXNogqR0eXBlCKV2YWx1ZcQgofXLF1bv6zgWPvf9qh5DYw9JTyEyL8Y/1uQAM9X+ORijdGFnzQICp3ZlcnNpb24B
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/loh
+
+==================================================================
