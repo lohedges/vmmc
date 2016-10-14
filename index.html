@@ -500,7 +500,9 @@ be used as restart files, i.e. overlaps may occur.</p>
 
 <p>The demo code also illustrates how to implement efficient, dynamically
 updated cell lists. See <code>demos/src/CellList.h</code> and <code>demos/src/CellList.cpp</code>
-for implementation details.</p>
+for implementation details. If you are simulating a system of highly size asymmetric particles,
+then it might be preferable to search for interactions using a more efficient data structure,
+such as a <a href="https://github.com/lohedges/aabbcc">bounding volume hierarchy</a>.</p>
 
 <p>Also included in the <code>demos/python</code> directory are examples showing how to
 interface with Python code via the <a href="https://docs.python.org/2/c-api/">Python C API</a>.
