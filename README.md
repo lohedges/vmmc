@@ -445,7 +445,10 @@ of the demos.
 
 The demo code also illustrates how to implement efficient, dynamically
 updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
-for implementation details.
+for implementation details. If you are simulating a system of highly size
+asymmetric particles, then it might be preferable to search for interactions
+using a more efficient data structure, such as a
+[bounding volume hierarchy](https://github.com/lohedges/aabbcc).
 
 Also included in the `demos/python` directory are examples showing how to
 interface with Python code via the [Python C API](https://docs.python.org/2/c-api/).
