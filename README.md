@@ -387,7 +387,10 @@ them to reliably be used as restart files, i.e. overlaps may occur.
 
 The demo code also illustrates how to implement efficient, dynamically
 updated cell lists. See `demos/src/CellList.h` and `demos/src/CellList.cpp`
-for implementation details.
+for implementation details. If you are simulating a system of highly size
+2asymmetric particles, then it might be preferable to search for interactions
+2using a more efficient data structure, such as a
+2[bounding volume hierarchy](https://github.com/lohedges/aabbcc).
 
 ## Tests
 A full test suite is forthcoming. This will allow a detailed comparison between
