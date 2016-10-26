@@ -47,10 +47,10 @@ public:
             The maximum number of interactions per particle.
 
         \param interactionEnergy_
-            The square well interaction energy (in units of kBT).
+            The interaction energy (in units of kBT).
 
         \param interactionRange_
-            The square well interaction range (in units of the particle diameter).
+            The interaction range (in units of the particle diameter).
      */
     Model(Box&, std::vector<Particle>&, CellList&, unsigned int, double, double);
 
