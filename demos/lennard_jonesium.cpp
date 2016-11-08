@@ -15,6 +15,9 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstdlib>
+#include <iostream>
+
 #include "Demo.h"
 #include "VMMC.h"
 
