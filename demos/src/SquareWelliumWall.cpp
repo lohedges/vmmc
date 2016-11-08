@@ -15,6 +15,9 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Box.h"
+#include "CellList.h"
+#include "Particle.h"
 #include "SquareWelliumWall.h"
 
 SquareWelliumWall::SquareWelliumWall(

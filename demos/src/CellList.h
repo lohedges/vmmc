@@ -18,14 +18,7 @@
 #ifndef _CELLLIST_H
 #define _CELLLIST_H
 
-#include <cmath>
-
-#include "Box.h"
-#include "Particle.h"
-
-#ifndef M_PI
-    #define M_PI 3.1415926535897932384626433832795
-#endif
+#include <vector>
 
 /*! \file CellList.h
     \brief An efficient, dynamically updated cell list implementation for
@@ -42,6 +35,10 @@
     estimated from the range of the pair interaction and overflows are checked
     for at run time.
 */
+
+// FORWARD DECLARATIONS
+
+struct Particle;
 
 //! Structure containing attributes for an individual cell.
 struct Cell

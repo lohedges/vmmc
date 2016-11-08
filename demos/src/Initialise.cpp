@@ -15,7 +15,13 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+
+#include "Box.h"
+#include "CellList.h"
+#include "Particle.h"
 #include "Initialise.h"
+#include "MersenneTwister.h"
 
 Initialise::Initialise()
 {

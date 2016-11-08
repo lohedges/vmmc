@@ -15,6 +15,11 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cmath>
+
+#include "Box.h"
+#include "Particle.h"
+#include "CellList.h"
 #include "LennardJonesium.h"
 
 LennardJonesium::LennardJonesium(

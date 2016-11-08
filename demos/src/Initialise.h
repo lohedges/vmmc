@@ -18,11 +18,15 @@
 #ifndef _INITIALISE_H
 #define _INITIALISE_H
 
-#include "CellList.h"
-#include "MersenneTwister.h"
-
 /*! \file Initialise.h
 */
+
+// FORWARD DECLARATIONS
+
+class  Box;
+class  CellList;
+struct Particle;
+class  MersenneTwister;
 
 //! Class for the initialisation of particle configurations.
 class Initialise

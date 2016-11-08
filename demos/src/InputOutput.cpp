@@ -15,6 +15,13 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cmath>
+#include <fstream>
+#include <iostream>
+
+#include "Box.h"
+#include "CellList.h"
+#include "Particle.h"
 #include "InputOutput.h"
 
 InputOutput::InputOutput() {}

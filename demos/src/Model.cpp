@@ -15,7 +15,13 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+#include <limits>
+
+#include "Box.h"
+#include "CellList.h"
 #include "Model.h"
+#include "Particle.h"
 
 double INF = std::numeric_limits<double>::infinity();
 

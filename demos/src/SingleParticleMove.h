@@ -18,12 +18,18 @@
 #ifndef _SINGLEPARTICLEMOVE_H
 #define _SINGLEPARTICLEMOVE_H
 
+#include <vector>
+
 #include "MersenneTwister.h"
-#include "Model.h"
 
 /*! \file SingleParticleMove.h
     \brief A class for executing single particle Move Monte Carlo moves (translations and rotations).
 */
+
+// FORWARD DECLARATIONS
+
+class  Model;
+struct Particle;
 
 //! Container for storing move parameters.
 struct MoveParams

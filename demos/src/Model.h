@@ -18,12 +18,15 @@
 #ifndef _MODEL_H
 #define _MODEL_H
 
-#include <limits>
-
-#include "CellList.h"
+#include <vector>
 
 /*! \file Model.h
 */
+
+// FORWARD DECLARATIONS
+class  Box;
+class  CellList;
+struct Particle;
 
 // Global infinity constant for hard core repulsions.
 extern double INF;
