@@ -20,6 +20,9 @@
 #endif
 
 #include <Python.h>
+#include <cstdlib>
+#include <iostream>
+
 #include "VMMC.h"
 
 // Global Python objects.

@@ -19,6 +19,9 @@
 #error patchy_disc.cpp cannot be linked to isotropic VMMC library!
 #endif
 
+#include <cstdlib>
+#include <iostream>
+
 #include "Demo.h"
 #include "VMMC.h"
 
