@@ -21,7 +21,8 @@
 #include <vector>
 
 #include "MersenneTwister.h"
-#include "Model.h"
+
+class Model;
 
 /*! \file VMMC.h
     \brief A simple class for executing Virtual Move Monte Carlo moves (cluster translations and rotations).

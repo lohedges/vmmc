@@ -16,6 +16,13 @@
 */
 
 #ifndef ISOTROPIC
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+
+#include "Box.h"
+#include "CellList.h"
+#include "Particle.h"
 #include "PatchyDisc.h"
 
 PatchyDisc::PatchyDisc(

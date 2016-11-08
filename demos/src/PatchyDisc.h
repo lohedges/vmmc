@@ -19,11 +19,17 @@
 #ifndef _PATCHYDISC_H
 #define _PATCHYDISC_H
 
-#include "CellList.h"
+#include <vector>
+
 #include "Model.h"
 
 /*! \file PatchyDisc.h
 */
+
+// FORWARD DECLARATIONS
+class  Box;
+class  CellList;
+struct Particle;
 
 // Global infinity constant for hard core repulsions.
 extern double INF;

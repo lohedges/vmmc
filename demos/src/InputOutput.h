@@ -18,14 +18,17 @@
 #ifndef _INPUTOUTPUT_H
 #define _INPUTOUTPUT_H
 
-#include <fstream>
 #include <string>
-
-#include "CellList.h"
 
 /*! \file InputOutput.h
     \brief A class for reading/writing data.
 */
+
+// FORWARD DECLARATIONS
+
+class  Box;
+class  CellList;
+struct Particle;
 
 class InputOutput
 {

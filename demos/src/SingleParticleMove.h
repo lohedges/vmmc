@@ -18,13 +18,20 @@
 #ifndef _SINGLEPARTICLEMOVE_H
 #define _SINGLEPARTICLEMOVE_H
 
-#include "CellList.h"
+#include <vector>
+
 #include "MersenneTwister.h"
-#include "Model.h"
 
 /*! \file SingleParticleMove.h
     \brief A class for executing single particle Move Monte Carlo moves (translations and rotations).
 */
+
+// FORWARD DECLARATIONS
+
+class  Box;
+class  CellList;
+class  Model;
+struct Particle;
 
 // Global infinity constant for hard core repulsions.
 extern double INF;

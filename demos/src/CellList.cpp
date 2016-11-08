@@ -15,7 +15,16 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+
 #include "CellList.h"
+#include "Particle.h"
+
+#ifndef M_PI
+    #define M_PI 3.1415926535897932384626433832795
+#endif
 
 CellList::CellList() : dimension(3)
 {

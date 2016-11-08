@@ -18,7 +18,6 @@
 #ifndef _BOX_H
 #define _BOX_H
 
-#include <iostream>
 #include <vector>
 
 /*! \file Box.h
@@ -62,7 +61,7 @@ public:
     unsigned int dimension;             //!< Dimensionality of the simulation box.
 
 private:
-    std::vector<bool> isPeriodic;       //!< Whether the box is periodic across each boundary.
+    std::vector<bool>   isPeriodic;     //!< Whether the box is periodic across each boundary.
     std::vector<double> posMinImage;    //!< Minimum image condition in each dimension.
     std::vector<double> negMinImage;    //!< Negative minimum image condition in each dimension.
 };

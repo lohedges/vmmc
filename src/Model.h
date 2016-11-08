@@ -18,9 +18,6 @@
 #ifndef _MODEL_H
 #define _MODEL_H
 
-#include <cstdlib>
-#include <iostream>
-
 /*! \file Model.h
 */
 

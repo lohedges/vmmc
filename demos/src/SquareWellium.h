@@ -18,13 +18,18 @@
 #ifndef _SQUAREWELLIUM_H
 #define _SQUAREWELLIUM_H
 
-#include <limits>
+#include <vector>
 
-#include "CellList.h"
 #include "Model.h"
 
 /*! \file SquareWellium.h
 */
+
+// FORWARD DECLARATIONS
+
+class  Box;
+class  CellList;
+struct Particle;
 
 // Global infinity constant for hard core repulsions.
 extern double INF;
