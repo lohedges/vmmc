@@ -10,33 +10,33 @@ Before Compiling:
 -# If you do not already have it, download and install <a href="http://git-scm.com">
 git</a>. To check if git is installed, try
 \code
-$ git --version
+git --version
 \endcode
 -# Download the libvmmc source via
 \code
-$ git clone https://github.com/lohedges/vmmc.git
+git clone https://github.com/lohedges/vmmc.git
 \endcode
 
 Compiling and Installing:
 -# Change to the newly created vmmc directory
 \code
-$ cd vmmc
+cd vmmc
 \endcode
 -# run Make
 \code
-$ make build
-$ make install
+make build
+make install
 \endcode
 By default, the library installs to /usr/local. Therefore, you may need admin
 priveleges for the final "make install" step above. An alternative is to change
 the install location:
 \code
-$ PREFIX={MY_INSTALL_DIR} make install
+make PREFIX=MY_INSTALL_DIR install
 \endcode
 Further details on using the Makefile can be found by running make without
 a target, i.e.
 \code
-$ make
+make
 \endcode
 
 \section cpp_sec Linking with C/C++
@@ -51,13 +51,13 @@ in the code.
 
 Then to compile, we can use something like the following:
 \code
-$ c++ -std=c++11 example.cpp -lvmmc
+g++ -std=c++11 example.cpp -lvmmc
 \endcode
 
 This assumes that we have used the default install location /usr/local/. If
 we specify an install location, we would use a command more like the following:
 \code
-$ c++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
+g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 \endcode
 
 \section deps External dependencies

@@ -85,8 +85,8 @@ A `Makefile` is included for building and installing LibVMMC.
 To compile LibVMMC, then install the library, documentation, and demos:
 
 ```bash
-$ make build
-$ make install
+make build
+make install
 ```
 
 By default, the library installs to `/usr/local`. Therefore, you may need admin
@@ -94,14 +94,14 @@ privileges for the final `make install` step above. An alternative is to change
 the install location:
 
 ```bash
-$ make PREFIX=MY_INSTALL_DIR install
+make PREFIX=MY_INSTALL_DIR install
 ```
 
 Further details on using the Makefile can be found by running make without
 a target, i.e.
 
 ```bash
-$ make
+make
 ```
 
 ## Compiling and linking
@@ -116,14 +116,14 @@ in the code.
 Then to compile, we can use something like the following:
 
 ```bash
-$ g++ -std=c++11 example.cpp -lvmmc
+g++ -std=c++11 example.cpp -lvmmc
 ```
 
 This assumes that we have used the default install location `/usr/local`. If
 we specify an install location, we would use a command more like the following:
 
 ```bash
-$ g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
+g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc
 ```
 
 Note that the `-std=c++11` compiler flag is needed for `std::random`.
@@ -377,8 +377,8 @@ and to draw the periodic simulation box when visualising the trajectory with
 run, e.g.
 
 ```bash
-$ ./demos/square_wellium
-$ vmd trajectory.xyz -e vmd.tcl
+./demos/square_wellium
+vmd trajectory.xyz -e vmd.tcl
 ```
 
 Note that the trajectories are intended to be used for visualisation purposes
@@ -423,7 +423,7 @@ We provide preprocessor directives that allow LibVMMC to be compiled as an
 optimised library for pure isotropic systems. This can be achieved as follows:
 
 ```bash
-$ make OPTFLAGS=-DISOTROPIC build
+make OPTFLAGS=-DISOTROPIC build
 ```
 
 The isotropic version of LibVMMC provides a simplified set of callback
