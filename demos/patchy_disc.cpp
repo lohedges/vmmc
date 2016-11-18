@@ -19,11 +19,16 @@
 #error patchy_disc.cpp cannot be compiled against isotropic VMMC library!
 #endif
 
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 
 #include "Demo.h"
 #include "VMMC.h"
+
+#ifndef M_PI
+    #define M_PI 3.1415926535897932384626433832795
+#endif
 
 int main(int argc, char** argv)
 {

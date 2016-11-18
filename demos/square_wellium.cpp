@@ -15,11 +15,16 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 
 #include "Demo.h"
 #include "VMMC.h"
+
+#ifndef M_PI
+    #define M_PI 3.1415926535897932384626433832795
+#endif
 
 int main(int argc, char** argv)
 {
