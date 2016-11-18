@@ -38,7 +38,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
 
-<p>Copyright © 2015 <a href="http://lesterhedges.net">Lester Hedges</a>
+<p>Copyright © 2015-2016 <a href="http://lesterhedges.net">Lester Hedges</a>
 <a href="http://www.gnu.org/licenses/gpl-3.0.html">
 <img width="80" src="http://www.gnu.org/graphics/gplv3-127x51.png"></a></p>
 
@@ -133,19 +133,19 @@ pulling on the cluster is the same.</p>
 
 <p>To compile LibVMMC, then install the library, documentation, and demos:</p>
 
-<div class="highlight highlight-bash"><pre>$ make build
-$ make install</pre></div>
+<div class="highlight highlight-bash"><pre>make build
+make install</pre></div>
 
 <p>By default, the library installs to <code>/usr/local</code>. Therefore, you may need admin
 priveleges for the final <code>make install</code> step above. An alternative is to change
 the install location:</p>
 
-<div class="highlight highlight-bash"><pre>$ make PREFIX=MY_INSTALL_DIR install</pre></div>
+<div class="highlight highlight-bash"><pre>make PREFIX=MY_INSTALL_DIR install</pre></div>
 
 <p>Further details on using the Makefile can be found by running make without
 a target, i.e.</p>
 
-<div class="highlight highlight-bash"><pre>$ make</pre></div>
+<div class="highlight highlight-bash"><pre>make</pre></div>
 
 <h2>
 <a id="compiling-and-linking" class="anchor" href="#compiling-and-linking" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compiling and linking</h2>
@@ -158,12 +158,12 @@ in the code.</p>
 
 <p>Then to compile, we can use something like the following:</p>
 
-<div class="highlight highlight-bash"><pre>$ g++ -std=c++11 example.cpp -lvmmc</pre></div>
+<div class="highlight highlight-bash"><pre>g++ -std=c++11 example.cpp -lvmmc</pre></div>
 
 <p>This assumes that we have used the default install location <code>/usr/local</code>. If
 we specify an install location, we would use a command more like the following:</p>
 
-<div class="highlight highlight-bash"><pre>$ g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc</pre></div>
+<div class="highlight highlight-bash"><pre>g++ -std=c++11 example.cpp -I/my/path/include -L/my/path/lib -lvmmc</pre></div>
 
 <p>Note that the <code>-std=c++11</code> compiler flag is needed for <code>std::function</code> and
 <code>std::random</code>.</p>
@@ -487,8 +487,8 @@ and to draw the periodic simulation box when visualising the trajectory with
 <a href="http://www.ks.uiuc.edu/Research/vmd/">VMD</a>. To generate and view a trajectory,
 run, e.g.</p>
 
-<div class="highlight highlight-bash"><pre>$ ./demos/square_wellium
-$ vmd trajectory.xyz -e vmd.tcl</pre></div>
+<div class="highlight highlight-bash"><pre>./demos/square_wellium
+vmd trajectory.xyz -e vmd.tcl</pre></div>
 
 <p>Note that the trajectories are intended to be used for visualisation purposes only.
 The atomic coordinates are not saved to file with enough accuracy for them to reliably
@@ -558,7 +558,7 @@ functions, or to update particle orientations during VMMC trial moves.</p>
 <p>We provide preprocessor directives that allow LibVMMC to be compiled as an
 optimised library for pure isotropic systems. This can be achieved as follows:</p>
 
-<div class="highlight highlight-bash"><pre>$ make OPTFLAGS=-DISOTROPIC build</pre></div>
+<div class="highlight highlight-bash"><pre>make OPTFLAGS=-DISOTROPIC build</pre></div>
 
 <p>The isotropic version of LibVMMC provides a simplified set of callback
 functions that require no particle orientations. For example, the
