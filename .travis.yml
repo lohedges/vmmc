@@ -44,8 +44,6 @@ matrix:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y python
-  - sudo updatedb
 
 script:
   - make CXX=$COMPILER devel
