@@ -106,6 +106,28 @@ a target, i.e.
 make
 ```
 
+### Windows users
+Although intended to be used on a [Unix-like](https://en.wikipedia.org/wiki/Unix-like)
+operating system, LibVMMC works fine on Windows using [MinGW](http://mingw.org).
+For modern, 64-bit Windows systems, we recommend using [MYSYS2](http://msys2.github.io).
+This has been used to successfully build on Windows 7 and 10. After installing
+MYSYS2 (following the instructions on the [website](http://msys2.github.io))
+you will need to install several additional packages:
+
+```bash
+pacman -S gcc git make python2 diffutils
+
+```
+
+You can now clone the repository and build LibVMMC as follows:
+
+```bash
+updatedb
+git clone https://github.com/lohedges/vmmc
+cd vmmc
+make build
+```
+
 ## Compiling and linking
 To use LibVMMC with a C/C++ code first include the LibVMMC header file somewhere
 in the code.
