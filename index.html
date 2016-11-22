@@ -147,6 +147,27 @@ a target, i.e.</p>
 
 <div class="highlight highlight-bash"><pre>make</pre></div>
 
+<h3>
+<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Windows users</h2>
+
+<p> Although intended to be used on a
+<a href="https://en.wikipedia.org/wiki/Unix-like">Unix-like</a> operating system, LibVMMC works fine on Windows using
+<a href="http://mingw.org">MinGW</a>. For modern, 64-bit Windows systems, we recommend using
+<a href="http://msys2.github.io">MYSYS2</a>. This has been used to successfully build on Windows 7 and 10.
+After installing MYSYS2 (following the instructions on the
+<a href="http://msys2.github.io">website</a>) you will need to install several additional packages:</p>
+
+<div class="highlight highlight-bash"><pre>pacman -S gcc git make python diffutils</pre></div>
+
+<p>You can now clone the repository and build LibVMMC as follows:</p>
+
+<div class="highlight highlight-bash"><pre>
+updatedb
+git clone https://github.com/lohedges/vmmc
+cd vmmc
+make build
+</pre></div>
+
 <h2>
 <a id="compiling-and-linking" class="anchor" href="#compiling-and-linking" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compiling and linking</h2>
 
