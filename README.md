@@ -4,6 +4,8 @@
 <a href="http://www.gnu.org/licenses/gpl-3.0.html">
 <img width="80" src="http://www.gnu.org/graphics/gplv3-127x51.png"></a></p>
 
+[![Build Status](https://travis-ci.org/lohedges/vmmc.svg?branch=master)](https://travis-ci.org/lohedges/vmmc)
+
 ## About
 A simple C++ library to implement the "virtual-move" Monte Carlo (VMMC)
 algorithm of [Steve Whitelam](http://nanotheory.lbl.gov/people/SteveWhitelam.html)
