@@ -485,8 +485,8 @@ The pure isotropic version of LibVMMC can provide a significant performance
 gain when executing rotations of large clusters in isotropic systems.
 
 Note that the demo `patchy_disc.cpp` will not compile against the isotropic
-version of the library since the model is anisotropic and requires that
-particle orientations are passed to its callback functions.
+version of the library since the model is anisotropic and requires
+particle orientations to be passed to its callback functions.
 
 ## Limitations
 * The calculation of the hydrodynamic damping factor assumes a spherical cluster,
@@ -561,7 +561,7 @@ you require an alternative representation then you'll need to provide support
 for converting between orientation formats.
 
 ## Citing LibVMMC
-If you make If you make use of LibVMMC in any published research please cite the canonical VMMC reference:
+If you make use of LibVMMC in any published research please cite the canonical VMMC reference:
 
 * Avoiding unphysical kinetic traps in Monte Carlo simulations of strongly
 attractive particles, S. Whitelam and P.L. Geissler,
