@@ -618,11 +618,6 @@ type. Make use of the particle indices that are passed to callback functions in
 order to distinguish different species.
 
 ## Help
-I'm more than happy to answer questions or help set up a custom model system,
-but please [RTFM](https://en.wikipedia.org/wiki/RTFM) before getting in touch.
-I've tried hard to add extensive comments, documentation, and examples, so it's
-likely that I won't respond if you've not taken the time to read these.
-
 To help new users, some common pitfalls are listed below.
 
 * LibVMMC uses a cuboidal simulation box with a centre at (Lx/2, Ly/2, Lz/2),
