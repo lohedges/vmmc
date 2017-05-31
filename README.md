@@ -163,7 +163,7 @@ LibVMMC works via four user-defined callback functions that abstract model
 specific details, such as the pair potential. Callback functions are
 implemented using a pure abstract `Model` base class that provides an
 interface to user-defined potentials. These callbacks allow LibVMMC to be
-blind to the implementation of the model, as well as the model to be blind to
+blind to the implementation of the model, and likewise the model to be blind to
 the details of the VMMC algorithm.
 
 Details of the callback prototypes are given below . The `const` keyword is
