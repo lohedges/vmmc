@@ -164,7 +164,7 @@ LibVMMC works via several user-defined callback functions that abstract model
 specific details, such as the pair potential. We make use of C++11's
 `std::function` to provide a general-purpose function wrapper, i.e.
 the callbacks can be free functions, member functions, etc. These callbacks
-allow LibVMMC to be blind to the implementation of the model, as well as
+allow LibVMMC to be blind to the implementation of the model, and likewise
 the model to be blind to the details of the VMMC algorithm. The generic
 nature of the function wrapper provides great flexibility to the user, freeing
 them from a specific design choice for the model in hand. It is possible to
