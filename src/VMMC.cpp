@@ -306,7 +306,7 @@ namespace vmmc
 
     void VMMC::getClusterTranslations(unsigned long long clusterStatistics[]) const
     {
-        for (unsigned int i=0;i<nParticles;i++)
+        for (unsigned int i=0;i<nParticles+1;i++)
             clusterStatistics[i] = clusterTranslations[i];
     }
 
@@ -317,7 +317,7 @@ namespace vmmc
 
     void VMMC::getClusterRotations(unsigned long long clusterStatistics[]) const
     {
-        for (unsigned int i=0;i<nParticles;i++)
+        for (unsigned int i=0;i<nParticles+1;i++)
             clusterStatistics[i] = clusterRotations[i];
     }
 
