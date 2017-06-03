@@ -128,8 +128,8 @@ namespace vmmc
         moveParams.trialVector.resize(dimension);
         particles.resize(nParticles);
         moveList.resize(nParticles);
-        clusterTranslations.resize(nParticles);
-        clusterRotations.resize(nParticles);
+        clusterTranslations.resize(nParticles+1);
+        clusterRotations.resize(nParticles+1);
         frustratedLinks.resize(nParticles);
 #ifndef ISOTROPIC
         isIsotropic.resize(nParticles);
@@ -146,6 +146,9 @@ namespace vmmc
             particles[i].preMoveOrientation.resize(dimension);
             particles[i].postMoveOrientation.resize(dimension);
 #endif
+
+            // Initialise moving boolean flag.
+            particles[i].isMoving = false;
 
             // Initialise frustrated boolean flag.
             particles[i].isFrustrated = false;
