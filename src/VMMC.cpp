@@ -69,7 +69,7 @@ namespace vmmc
         maxInteractions(maxInteractions_),
         isRepusive(isRepusive_)
     {
-		// Check number of particles.
+        // Check number of particles.
         if ((nParticles == 0) ||
             (nParticles > (1 + std::numeric_limits<unsigned int>::max() - nParticles)))
         {
@@ -128,8 +128,8 @@ namespace vmmc
         moveParams.trialVector.resize(dimension);
         particles.resize(nParticles);
         moveList.resize(nParticles);
-        clusterTranslations.resize(nParticles+1);
-        clusterRotations.resize(nParticles+1);
+        clusterTranslations.resize(nParticles);
+        clusterRotations.resize(nParticles);
         frustratedLinks.resize(nParticles);
 #ifndef ISOTROPIC
         isIsotropic.resize(nParticles);
@@ -265,8 +265,8 @@ namespace vmmc
                 nRotations += moveParams.isRotation;
 
                 // Tally cluster size.
-                if (moveParams.isRotation) clusterRotations[nMoving]++;
-                else clusterTranslations[nMoving]++;
+                if (moveParams.isRotation) clusterRotations[nMoving-1]++;
+                else clusterTranslations[nMoving-1]++;
             }
             else
             {
@@ -306,7 +306,7 @@ namespace vmmc
 
     void VMMC::getClusterTranslations(unsigned long long clusterStatistics[]) const
     {
-        for (unsigned int i=0;i<nParticles+1;i++)
+        for (unsigned int i=0;i<nParticles;i++)
             clusterStatistics[i] = clusterTranslations[i];
     }
 
@@ -317,7 +317,7 @@ namespace vmmc
 
     void VMMC::getClusterRotations(unsigned long long clusterStatistics[]) const
     {
-        for (unsigned int i=0;i<nParticles+1;i++)
+        for (unsigned int i=0;i<nParticles;i++)
             clusterStatistics[i] = clusterRotations[i];
     }
 
