@@ -67,6 +67,9 @@ CXX := g++
 # Installation path.
 PREFIX := /usr/local
 
+# Python version.
+PYTHON := 3.7
+
 # Path for source files.
 src_dir := src
 
@@ -113,10 +116,10 @@ commit := $(shell git describe --abbrev=4 --dirty --always --tags 2> /dev/null)
 branch := $(shell git rev-parse --abbrev-ref HEAD 2> /dev/null)
 
 # Python header file.
-python_header := $(shell locate Python.h | grep 2.7 | head -n 1 | awk -F "/Python.h" '{print $$1}')
+python_header := $(shell locate Python.h | grep $(PYTHON) | head -n 1 | awk -F "/Python.h" '{print $$1}')
 
 # Python library.
-python_library := $(shell locate libpython2.7 | head -n 1)
+python_library := $(shell locate libpython$(PYTHON) | head -n 1)
 
 # C++ compiler flags for development build.
 cxxflags_devel := -O0 -std=c++11 -g -Wall -Isrc -DCOMMIT=\"$(commit)\" -DBRANCH=\"$(branch)\" $(OPTFLAGS)

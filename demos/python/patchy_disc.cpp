@@ -114,7 +114,7 @@ int main(int argc, char** argv)
     PyObject *initialise = PyObject_CallObject(pClass, NULL);
 
     // Create method name string.
-    pString = PyString_FromString("random");
+    pString = PyUnicode_FromString("random");
 
     // Generate a random particle configuration.
     pResult = PyObject_CallMethodObjArgs(initialise, pString, particles, cells, box, NULL);
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
     io = PyObject_CallObject(pClass, NULL);
 
     // Create method name string.
-    pString = PyString_FromString("vmd_script");
+    pString = PyUnicode_FromString("vmd_script");
 
     // Create VMD TcL script.
     pResult = PyObject_CallMethodObjArgs(io, pString, pBoxSize, NULL);
@@ -229,10 +229,10 @@ double computeEnergy(unsigned int particle, const double* position, const double
     }
 
     // Create method name string.
-    PyObject *pString = PyString_FromString("compute_energy");
+    PyObject *pString = PyUnicode_FromString("compute_energy");
 
     // Particle index.
-    PyObject *pParticle = PyInt_FromLong(particle);
+    PyObject *pParticle = PyLong_FromLong(particle);
 
     // Execute Python callback.
     PyObject *pResult = PyObject_CallMethodObjArgs(patchyDisc,
@@ -270,11 +270,11 @@ double computePairEnergy(unsigned int particle1, const double* position1, const 
     }
 
     // Create method name string.
-    PyObject *pString = PyString_FromString("compute_pair_energy");
+    PyObject *pString = PyUnicode_FromString("compute_pair_energy");
 
     // Particle indices.
-    PyObject *pParticle1 = PyInt_FromLong(particle1);
-    PyObject *pParticle2 = PyInt_FromLong(particle2);
+    PyObject *pParticle1 = PyLong_FromLong(particle1);
+    PyObject *pParticle2 = PyLong_FromLong(particle2);
 
     // Execute Python callback.
     PyObject *pResult = PyObject_CallMethodObjArgs(patchyDisc, pString, pParticle1,
@@ -313,13 +313,13 @@ unsigned int computeInteractions(unsigned int particle,
 
     // Initialise interaction list.
     for (unsigned int i=0;i<maxInteractions;i++)
-        PyList_SetItem(pInteractions, i, PyInt_FromLong(0));
+        PyList_SetItem(pInteractions, i, PyLong_FromLong(0));
 
     // Create method name string.
-    PyObject *pString = PyString_FromString("compute_interactions");
+    PyObject *pString = PyUnicode_FromString("compute_interactions");
 
     // Particle index.
-    PyObject *pParticle = PyInt_FromLong(particle);
+    PyObject *pParticle = PyLong_FromLong(particle);
 
     // Execute Python callback.
     PyObject *pResult = PyObject_CallMethodObjArgs(patchyDisc, pString,
@@ -357,10 +357,10 @@ void applyPostMoveUpdates(unsigned int particle, const double* position, const d
     }
 
     // Create method name string.
-    PyObject *pString = PyString_FromString("apply_post_move_updates");
+    PyObject *pString = PyUnicode_FromString("apply_post_move_updates");
 
     // Particle index.
-    PyObject *pParticle = PyInt_FromLong(particle);
+    PyObject *pParticle = PyLong_FromLong(particle);
 
     // Execute Python callback.
     PyObject *pResult = PyObject_CallMethodObjArgs(patchyDisc,
@@ -377,7 +377,7 @@ void applyPostMoveUpdates(unsigned int particle, const double* position, const d
 double getEnergy()
 {
     // Create method name string.
-    PyObject *pString = PyString_FromString("get_energy");
+    PyObject *pString = PyUnicode_FromString("get_energy");
 
     // Execute Python callback.
     PyObject *pResult = PyObject_CallMethodObjArgs(patchyDisc, pString, NULL);
@@ -395,10 +395,10 @@ double getEnergy()
 void appendXyzTrajectory(bool clearFile)
 {
     // Create method name string.
-    PyObject *pString = PyString_FromString("append_xyz_trajectory");
+    PyObject *pString = PyUnicode_FromString("append_xyz_trajectory");
 
     // Box dimension.
-    PyObject *pDimension = PyInt_FromLong(dimension);
+    PyObject *pDimension = PyLong_FromLong(dimension);
 
     // Whether to wipe file.
     PyObject *pClearFile = PyBool_FromLong(clearFile);

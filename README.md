@@ -99,6 +99,15 @@ the install location:
 make PREFIX=MY_INSTALL_DIR install
 ```
 
+Python demos are are built against Python 3.7. To use a different version of
+Python, run, e.g:
+
+```
+make PYTHON=3.9 build
+```
+
+(Python 2 is no longer supported.)
+
 Further details on using the Makefile can be found by running make without
 a target, i.e.
 
@@ -475,7 +484,7 @@ using a more efficient data structure, such as a
 [bounding volume hierarchy](https://github.com/lohedges/aabbcc).
 
 Also included in the `demos/python` directory are examples showing how to
-interface with Python code via the [Python C API](https://docs.python.org/2/c-api/).
+interface with Python code via the [Python C API](https://docs.python.org/3/c-api/).
 Note that this code is intended to be used for illustrative purposes and
 avoids the use of additional dependencies (e.g. [NumPy](http://www.numpy.org)).
 As such, it is likely that performance could be significantly improved.
