@@ -1,5 +1,5 @@
 sudo: required
-dist: precise
+dist: xenial
 language: cpp
 
 notifications:
@@ -14,8 +14,8 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-4.9
-            - python
-            - python-dev
+            - python3.5
+            - python3.5-dev
       env: COMPILER=g++-4.9
     - compiler: gcc
       addons:
@@ -24,8 +24,8 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-5
-            - python
-            - python-dev
+            - python3.5
+            - python3.5-dev
       env: COMPILER=g++-5
     - compiler: clang
       addons:
@@ -35,8 +35,8 @@ matrix:
             - llvm-toolchain-precise-3.6
           packages:
             - clang-3.6
-            - python
-            - python-dev
+            - python3.5
+            - python3.5-dev
       env: COMPILER=clang++-3.6
     - compiler: clang
       addons:
@@ -46,12 +46,12 @@ matrix:
             - llvm-toolchain-precise-3.7
           packages:
             - clang-3.7
-            - python
-            - python-dev
+            - python3.5
+            - python3.5-dev
       env: COMPILER=clang++-3.7
 
 before_script:
   - sudo updatedb
 
 script:
-  - make CXX=$COMPILER devel
+  - make CXX=$COMPILER PYTHON=3.5 devel
