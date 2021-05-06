@@ -647,7 +647,7 @@ namespace vmmc
         std::vector<double> centerOfMass(dimension);
         std::vector<double> delta(dimension);
 
-        double hydroRadius;
+        double hydroRadius = 0;
 
         // Calculate center of mass of the moving cluster (translations only).
         if (!moveParams.isRotation)
@@ -674,7 +674,7 @@ namespace vmmc
             }
 
             double a1 = delta[0]*moveParams.trialVector[1] - delta[1]*moveParams.trialVector[0];
-            hydroRadius = a1*a1;
+            hydroRadius += a1*a1;
 
             if (is3D)
             {
